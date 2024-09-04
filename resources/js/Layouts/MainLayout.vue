@@ -4,6 +4,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import {computed} from "vue";
 import {usePage} from "@inertiajs/vue3";
 import {Link} from "@inertiajs/vue3";
+import {Method} from  "@inertiajs/core";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user)
@@ -12,14 +13,14 @@ const props = defineProps([
     'title'
 ])
 
-const navigation = [
+const navigation: Array<{name: string, href: string, current: boolean}> = [
     // { name: 'Dashboard', href: '#', current: true },
     // { name: 'Team', href: '#', current: false },
     // { name: 'Projects', href: '#', current: false },
     // { name: 'Calendar', href: '#', current: false },
     // { name: 'Reports', href: '#', current: false },
 ]
-const userNavigation = [
+const userNavigation: Array<{name: string, href: string, method: Method|undefined}> = [
     // { name: 'Your Profile', href: '#' },
     // { name: 'Settings', href: '#' },
     { name: 'Abmelden', href: '/logout', method: 'post' },
