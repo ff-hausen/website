@@ -33,12 +33,14 @@ const userNavigation: Array<{name: string, href: string, method: Method|undefine
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 flex items-center">
-                            <img class="h-14 hidden md:block" src="/images/ffhausen-logo.png" aria-hidden="true"/>
-                            <div class="ml-2 flex flex-col justify-center text-white font-black leading-tight text-justify">
-                                <div>Freiwillige Feuerwehr</div>
-                                <div>Frankfurt Hausen</div>
-                            </div>
+                        <div class="flex-shrink-0">
+                            <Link href="/" class="flex items-center">
+                                <img class="h-14" src="/images/ffhausen-logo.png" aria-hidden="true"/>
+                                <div class="hidden md:block ml-2 flex flex-col justify-center text-white font-black leading-tight text-justify">
+                                    <div>Freiwillige Feuerwehr</div>
+                                    <div>Frankfurt Hausen</div>
+                                </div>
+                            </Link>
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
@@ -125,7 +127,7 @@ const userNavigation: Array<{name: string, href: string, method: Method|undefine
             </div>
         </header>
         <main>
-            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <slot />
             </div>
         </main>
