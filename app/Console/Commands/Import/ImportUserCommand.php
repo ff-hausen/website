@@ -18,9 +18,9 @@ use function Laravel\Prompts\error;
 use function Laravel\Prompts\pause;
 use function Laravel\Prompts\spin;
 
-class ImportPeopleCommand extends Command
+class ImportUserCommand extends Command
 {
-    protected $signature = 'import:people {filename : report.csv from Florix export Erreichbarkeiten}
+    protected $signature = 'import:user {filename : report.csv from Florix export Erreichbarkeiten}
                             {--ea : Einsatzabteilung} {--verein : Vereinsmitglied} {--em : Alters- und Ehrenmitglied}
                             {--no-create : Erstellt keine neuen Benutzer}';
 
