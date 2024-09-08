@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c935199981e05db99e31672e983dbb92",
+    "content-hash": "2414bfed5767b69433168b2fe10b7564",
     "packages": [
         {
             "name": "amphp/amp",
@@ -7510,11 +7510,17 @@
         },
         {
             "name": "tii/csv-state-parser",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "/Users/tii/projects/packages/csv-state-parser",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TiiFuchs/csv-state-parser.git",
                 "reference": "293e48f00b03d71e452668e1309d26a55e475ce6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TiiFuchs/csv-state-parser/zipball/293e48f00b03d71e452668e1309d26a55e475ce6",
+                "reference": "293e48f00b03d71e452668e1309d26a55e475ce6",
+                "shasum": ""
             },
             "require": {
                 "php": "^8.2"
@@ -7526,17 +7532,13 @@
                 "spatie/ray": "^1.41"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Tii\\CsvStateParser\\": "src/",
                     "Tii\\CsvStateParser\\Tests\\": "tests/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7547,9 +7549,11 @@
                 }
             ],
             "description": "Parses CSV files with a simple finite-state machine.",
-            "transport-options": {
-                "relative": false
-            }
+            "support": {
+                "issues": "https://github.com/TiiFuchs/csv-state-parser/issues",
+                "source": "https://github.com/TiiFuchs/csv-state-parser/tree/v1.1.0"
+            },
+            "time": "2024-09-07T12:47:49+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -11491,7 +11495,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
