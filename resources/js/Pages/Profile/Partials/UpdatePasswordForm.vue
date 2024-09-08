@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import InputError from '@/Components/Laravel/InputError.vue';
+import InputLabel from '@/Components/Laravel/InputLabel.vue';
+import PrimaryButton from '@/Components/Laravel/PrimaryButton.vue';
+import TextInput from '@/Components/Laravel/TextInput.vue';
+import {useForm} from '@inertiajs/vue3';
+import {ref} from 'vue';
 
 const passwordInput = ref<HTMLInputElement | null>(null);
 const currentPasswordInput = ref<HTMLInputElement | null>(null);
@@ -47,7 +47,7 @@ const updatePassword = () => {
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel for="current_password" value="Current Password"/>
 
                 <TextInput
                     id="current_password"
@@ -58,11 +58,11 @@ const updatePassword = () => {
                     autocomplete="current-password"
                 />
 
-                <InputError :message="form.errors.current_password" class="mt-2" />
+                <InputError :message="form.errors.current_password" class="mt-2"/>
             </div>
 
             <div>
-                <InputLabel for="password" value="New Password" />
+                <InputLabel for="password" value="New Password"/>
 
                 <TextInput
                     id="password"
@@ -73,11 +73,11 @@ const updatePassword = () => {
                     autocomplete="new-password"
                 />
 
-                <InputError :message="form.errors.password" class="mt-2" />
+                <InputError :message="form.errors.password" class="mt-2"/>
             </div>
 
             <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="Confirm Password"/>
 
                 <TextInput
                     id="password_confirmation"
@@ -87,7 +87,7 @@ const updatePassword = () => {
                     autocomplete="new-password"
                 />
 
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                <InputError :message="form.errors.password_confirmation" class="mt-2"/>
             </div>
 
             <div class="flex items-center gap-4">

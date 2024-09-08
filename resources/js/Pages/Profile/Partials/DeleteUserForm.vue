@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import DangerButton from '@/Components/DangerButton.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import Modal from '@/Components/Modal.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { useForm } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
+import DangerButton from '@/Components/Laravel/DangerButton.vue';
+import InputError from '@/Components/Laravel/InputError.vue';
+import InputLabel from '@/Components/Laravel/InputLabel.vue';
+import Modal from '@/Components/Laravel/Modal.vue';
+import SecondaryButton from '@/Components/Laravel/SecondaryButton.vue';
+import TextInput from '@/Components/Laravel/TextInput.vue';
+import {useForm} from '@inertiajs/vue3';
+import {nextTick, ref} from 'vue';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);
@@ -64,7 +64,7 @@ const closeModal = () => {
                 </p>
 
                 <div class="mt-6">
-                    <InputLabel for="password" value="Password" class="sr-only" />
+                    <InputLabel for="password" value="Password" class="sr-only"/>
 
                     <TextInput
                         id="password"
@@ -76,11 +76,11 @@ const closeModal = () => {
                         @keyup.enter="deleteUser"
                     />
 
-                    <InputError :message="form.errors.password" class="mt-2" />
+                    <InputError :message="form.errors.password" class="mt-2"/>
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closeModal"> Cancel</SecondaryButton>
 
                     <DangerButton
                         class="ms-3"
