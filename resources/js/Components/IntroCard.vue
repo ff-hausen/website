@@ -7,7 +7,7 @@ const { image, pull = "left" } = defineProps<{
 
 <template>
     <div
-        class="my-2 h-[400px] overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat"
+        class="my-2 h-[400px] overflow-hidden rounded-xl bg-cover bg-no-repeat"
         :style="{
             backgroundImage: 'url(' + image + ')',
         }"
