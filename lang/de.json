@@ -1,0 +1,11 @@
+{
+    "First name": "Vorname",
+    "Last name": "Nachname",
+    "Full name": "Name",
+    "Username": "Benutzername",
+    "Email": "E-Mail Adresse",
+    "Created at": "Erstellt am",
+    "Updated at": "Bearbeitet am",
+    "Email verified at": "E-Mail verifiziert am",
+    "User count": "Anzahl Benutzer"
+}
