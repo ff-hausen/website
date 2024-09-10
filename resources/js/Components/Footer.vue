@@ -10,7 +10,7 @@ import { Link } from "@inertiajs/vue3";
         >
             <div class="flex text-center text-sm text-slate-600">
                 <h2 class="sr-only mr-4">Footer</h2>
-                <p>&copy; 2024 Freiwillige Feuerwehr Frankfurt Hausen e.V.</p>
+                <p>&copy; 2024 Freiwillige Feuerwehr Frankfurt-Hausen e.V.</p>
             </div>
             <div class="leading-none">&nbsp;</div>
             <div
