@@ -31,7 +31,7 @@ const userNavigation: Array<{
     href: string;
     method: Method | undefined;
 }> = [
-    // { name: 'Your Profile', href: '#' },
+    { name: "Your Profile", href: "/profile" },
     // { name: 'Settings', href: '#' },
     { name: "Abmelden", href: route("logout"), method: "post" },
 ];
