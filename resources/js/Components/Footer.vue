@@ -16,8 +16,9 @@ import { Link } from "@inertiajs/vue3";
             <div
                 class="flex flex-wrap items-center justify-evenly text-sm font-semibold text-slate-900"
             >
-                <Link :href="route('impressum')">Impressum</Link>
-                <!--            <div class="mx-4 h-4 w-px bg-slate-200 leading-6"></div>-->
+                <Link :href="route('imprint')">Impressum</Link>
+                <div class="mx-4 h-4 w-px bg-slate-200 leading-6"></div>
+                <Link :href="route('privacy')">Datenschutzerklärung</Link>
             </div>
         </div>
     </footer>
