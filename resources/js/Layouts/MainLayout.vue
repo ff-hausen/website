@@ -13,11 +13,20 @@ import { computed } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import { Method } from "@inertiajs/core";
 import Avatar from "@/Components/Avatar.vue";
+import Footer from "@/Components/Footer.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 
-const props = defineProps(["title"]);
+const props = withDefaults(
+    defineProps<{
+        title?: string;
+        noFooter?: boolean;
+    }>(),
+    {
+        noFooter: false,
+    },
+);
 
 const navigation: Array<{ name: string; href: string; current: boolean }> = [
     // { name: 'Einsatzabteilung', href: '#', current: false },
@@ -263,6 +272,7 @@ const userNavigation: Array<{
                 <slot />
             </div>
         </main>
+        <Footer v-if="!props.noFooter" />
     </div>
 </template>
 
