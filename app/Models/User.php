@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Creativeorange\Gravatar\Facades\Gravatar;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser, HasName
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
     use HasFactory, Notifiable;
 
@@ -22,7 +23,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     ];
 
     protected $appends = [
-        'imageUrl',
+        'image_url',
     ];
 
     /**
@@ -66,14 +67,22 @@ class User extends Authenticatable implements FilamentUser, HasName
         return $this->belongsToMany(Role::class);
     }
 
-    public function getImageUrlAttribute(): string
-    {
-        return Gravatar::get($this->email);
-    }
-
     protected function fullName(): Attribute
     {
         return Attribute::get(fn () => $this->first_name.' '.$this->last_name);
+    }
+
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::get(
+            function () {
+                if (! Gravatar::exists($this->email)) {
+                    return null;
+                }
+
+                return Gravatar::get($this->email);
+            },
+        );
     }
 
     public function isAdmin(): bool
@@ -89,5 +98,10 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function getFilamentName(): string
     {
         return $this->full_name;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->image_url;
     }
 }
