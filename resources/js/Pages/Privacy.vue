@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Box from "@/Components/Box.vue";
+import { Head } from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head title="Datenschutzerklärung" />
+
     <MainLayout title="Datenschutzerklärung">
         <Box class="lg:max-w-[900px] lg:rounded-lg">
             <h2>1. Datenschutz auf einen Blick</h2>
