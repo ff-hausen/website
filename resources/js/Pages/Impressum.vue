@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
+import Box from "@/Components/Box.vue";
 </script>
 
 <template>
     <Head title="Impressum" />
 
     <MainLayout title="Impressum">
-        <div class="mx-auto mt-4 max-w-[700px] rounded-xl bg-white px-8 py-4">
+        <Box class="lg:max-w-[900px] lg:rounded-lg">
+            <!--        <div class="mx-auto mt-4 max-w-[700px] rounded-xl bg-white px-8 py-4">-->
             <p>
                 Freiwillige Feuerwehr Frankfurt-Hausen e.V.<br />
                 Am Ellerfeld 18<br />
@@ -46,7 +48,7 @@ import MainLayout from "@/Layouts/MainLayout.vue";
                 Quelle:
                 <a href="https://www.e-recht24.de">https://www.e-recht24.de</a>
             </p>
-        </div>
+        </Box>
     </MainLayout>
 </template>
 

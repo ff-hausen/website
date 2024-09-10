@@ -6,6 +6,7 @@ import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import TextInput from "@/Components/Laravel/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
+import Box from "@/Components/Box.vue";
 
 defineProps<{
     canResetPassword?: boolean;
@@ -31,9 +32,7 @@ const submit = () => {
     <MainLayout>
         <Head title="Login" />
 
-        <div
-            class="mx-auto mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
-        >
+        <Box class="sm:max-w-md sm:rounded-lg">
             <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
                 {{ status }}
             </div>
@@ -100,6 +99,6 @@ const submit = () => {
                     </PrimaryButton>
                 </div>
             </form>
-        </div>
+        </Box>
     </MainLayout>
 </template>

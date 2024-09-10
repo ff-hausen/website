@@ -31,6 +31,7 @@ defineProps<{
                     />
                 </div>
 
+                <!-- mx-auto my-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg -->
                 <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>

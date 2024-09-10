@@ -3,6 +3,7 @@ import { computed } from "vue";
 import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
+import Box from "@/Components/Box.vue";
 
 const props = defineProps<{
     status?: string;
@@ -23,9 +24,7 @@ const verificationLinkSent = computed(
     <MainLayout>
         <Head title="E-Mail bestätigen" />
 
-        <div
-            class="mx-auto mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
-        >
+        <Box class="sm:max-w-md sm:rounded-lg">
             <div class="mb-4 text-sm text-gray-600">
                 Bevor wir anfangen, kannst Du bitte Deine E-Mail-Adresse
                 bestätigen, indem Du auf den Link klickst, den wir Dir gerade
@@ -59,6 +58,6 @@ const verificationLinkSent = computed(
                     </Link>
                 </div>
             </form>
-        </div>
+        </Box>
     </MainLayout>
 </template>

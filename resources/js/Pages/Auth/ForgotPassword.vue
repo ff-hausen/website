@@ -5,6 +5,7 @@ import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import TextInput from "@/Components/Laravel/TextInput.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
+import Box from "@/Components/Box.vue";
 
 defineProps<{
     status?: string;
@@ -23,9 +24,7 @@ const submit = () => {
     <MainLayout>
         <Head title="Passwort vergessen" />
 
-        <div
-            class="mx-auto mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
-        >
+        <Box class="sm:max-w-md sm:rounded-lg">
             <div class="mb-4 text-sm text-gray-600">
                 Du hast Dein Passwort vergessen? Kein Problem! Gib einfach Deine
                 E-Mail Adresse ein und wir senden Dir einen Link zum
@@ -63,6 +62,6 @@ const submit = () => {
                     </PrimaryButton>
                 </div>
             </form>
-        </div>
+        </Box>
     </MainLayout>
 </template>
