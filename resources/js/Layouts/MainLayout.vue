@@ -29,10 +29,10 @@ const navigation: Array<{ name: string; href: string; current: boolean }> = [
 const userNavigation: Array<{
     name: string;
     href: string;
-    method: Method | undefined;
+    method?: Method;
 }> = [
-    { name: "Your Profile", href: "/profile" },
-    // { name: 'Settings', href: '#' },
+    { name: "Your Profile", href: "/profile", method: "get" },
+    // { name: 'Settings', href: '#', method: "get" },
     { name: "Abmelden", href: route("logout"), method: "post" },
 ];
 </script>
