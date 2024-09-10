@@ -10,7 +10,7 @@ import IntroCard from "@/Components/IntroCard.vue";
     <MainLayout>
         <Hero
             image="/images/geraetehaus.jpg"
-            class="h-[500px] bg-[top_20%_center]"
+            class="h-[300px] bg-[top_20%_center] md:h-[500px]"
         >
             <h1 class="pb-12 text-3xl lg:text-6xl">
                 Freiwillige Feuerwehr Hausen

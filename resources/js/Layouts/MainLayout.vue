@@ -40,8 +40,7 @@ const userNavigation: Array<{
     href: string;
     method?: Method;
 }> = [
-    { name: "Your Profile", href: "/profile", method: "get" },
-    // { name: 'Settings', href: '#', method: "get" },
+    { name: "Dein Profil", href: "/profile" },
     { name: "Abmelden", href: route("logout"), method: "post" },
 ];
 </script>
@@ -139,7 +138,7 @@ const userNavigation: Array<{
                                         >
                                             <Link
                                                 :href="item.href"
-                                                :method="item.method"
+                                                :method="item.method ?? 'get'"
                                                 as="button"
                                                 type="button"
                                                 :class="[
@@ -238,7 +237,7 @@ const userNavigation: Array<{
                             v-for="item in userNavigation"
                             :key="item.name"
                             :href="item.href"
-                            :method="item.method"
+                            :method="item.method ?? 'get'"
                             as="button"
                             type="button"
                             class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"

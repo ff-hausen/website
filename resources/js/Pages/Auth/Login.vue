@@ -29,7 +29,7 @@ const submit = () => {
 
 <template>
     <MainLayout>
-        <Head title="Log in" />
+        <Head title="Login" />
 
         <div
             class="mx-auto mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
@@ -40,7 +40,7 @@ const submit = () => {
 
             <form @submit.prevent="submit">
                 <div>
-                    <InputLabel for="email" value="Email" />
+                    <InputLabel for="email" value="E-Mail Adresse" />
 
                     <TextInput
                         id="email"
@@ -56,7 +56,7 @@ const submit = () => {
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel for="password" value="Password" />
+                    <InputLabel for="password" value="Passwort" />
 
                     <TextInput
                         id="password"
@@ -77,7 +77,7 @@ const submit = () => {
                             v-model:checked="form.remember"
                         />
                         <span class="ms-2 text-sm text-gray-600"
-                            >Remember me</span
+                            >Eingeloggt bleiben</span
                         >
                     </label>
                 </div>
@@ -88,7 +88,7 @@ const submit = () => {
                         :href="route('password.request')"
                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Forgot your password?
+                        Passwort vergessen?
                     </Link>
 
                     <PrimaryButton
@@ -96,7 +96,7 @@ const submit = () => {
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
-                        Log in
+                        Login
                     </PrimaryButton>
                 </div>
             </form>

@@ -29,14 +29,14 @@ const submit = () => {
 
 <template>
     <MainLayout>
-        <Head title="Reset Password" />
+        <Head title="Passwort zurücksetzen" />
 
         <div
             class="mx-auto mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
         >
             <form @submit.prevent="submit">
                 <div>
-                    <InputLabel for="email" value="Email" />
+                    <InputLabel for="email" value="E-Mail Adresse" />
 
                     <TextInput
                         id="email"
@@ -52,7 +52,7 @@ const submit = () => {
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel for="password" value="Password" />
+                    <InputLabel for="password" value="Passwort" />
 
                     <TextInput
                         id="password"
@@ -69,7 +69,7 @@ const submit = () => {
                 <div class="mt-4">
                     <InputLabel
                         for="password_confirmation"
-                        value="Confirm Password"
+                        value="Passwort bestätigen"
                     />
 
                     <TextInput
@@ -92,7 +92,7 @@ const submit = () => {
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
-                        Reset Password
+                        Passwort zurücksetzen
                     </PrimaryButton>
                 </div>
             </form>
