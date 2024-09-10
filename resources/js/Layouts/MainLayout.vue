@@ -209,7 +209,7 @@ const userNavigation: Array<{
                         </div>
                         <div class="ml-3">
                             <div class="text-base font-medium text-white">
-                                {{ user.name }}
+                                {{ user.first_name }} {{ user.last_name }}
                             </div>
                             <div class="text-sm font-medium text-red-300">
                                 {{ user.email }}
