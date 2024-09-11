@@ -23,6 +23,7 @@ return new class extends Migration
         Schema::create('role_user', function (Blueprint $table) {
             $table->foreignIdFor(\App\Models\Role::class);
             $table->foreignIdFor(\App\Models\User::class);
+            $table->unique(['role_id', 'user_id']);
         });
     }
 
