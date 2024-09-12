@@ -46,7 +46,7 @@ const userNavigation: Array<{
 </script>
 
 <template>
-    <div class="min-h-full">
+    <div class="flex min-h-screen flex-col">
         <Disclosure as="nav" class="bg-red-600" v-slot="{ open }">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
@@ -266,7 +266,7 @@ const userNavigation: Array<{
                 </h1>
             </div>
         </header>
-        <main>
+        <main class="flex-grow">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <slot />
             </div>
