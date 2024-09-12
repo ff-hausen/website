@@ -34,7 +34,7 @@ import IntroCard from "@/Components/IntroCard.vue";
         <IntroCard
             image="/images/intro/jugendfeuerwehr.webp"
             pull="right"
-            class="bg-[top_30%_center]"
+            class="bg-[top_30%_left]"
         >
             <h1 class="mb-4 text-xl font-black">Jugendfeuerwehr</h1>
             <p class="text-base">Trifft sich jeden Dienstag um 18:00 Uhr</p>
