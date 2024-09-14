@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
 
 class RoleResource extends Resource
 {
@@ -21,6 +23,13 @@ class RoleResource extends Resource
     protected static ?string $navigationLabel = 'Rollen';
 
     protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getRecordTitle(?Model $record): string|Htmlable|null
+    {
+        return $record->name->value ?? null;
+    }
 
     public static function form(Form $form): Form
     {

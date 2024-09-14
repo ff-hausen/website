@@ -12,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
@@ -27,14 +26,18 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
-    {
-        return $record->full_name;
-    }
+    protected static ?string $recordTitleAttribute = 'full_name';
 
     public static function getGloballySearchableAttributes(): array
     {
         return ['first_name', 'last_name', 'email'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            $record->email,
+        ];
     }
 
     public static function form(Form $form): Form
@@ -85,18 +88,24 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('last_name')
                     ->translateLabel()
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('username')
                     ->translateLabel()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('email')
                     ->translateLabel()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
 
                 Tables\Columns\IconColumn::make('email_verified')
-                    ->label('verifiziert')
+                    ->label('E-Mail verifiziert')
                     ->state(fn (User $user) => $user->email_verified_at !== null)
                     ->tooltip(fn ($state) => $state ? 'E-Mail wurde verifiziert' : 'E-Mail wurde nicht verifiziert')
-                    ->boolean(),
+                    ->boolean()
+                    ->alignCenter()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('roles.name')
                     ->label('Abteilungen')
@@ -111,7 +120,8 @@ class UserResource extends Resource
                         RoleName::Vereinsmitglied => Color::Amber,
                         RoleName::AltersUndEhrenabteilung => Color::Green,
                         default => 'gray',
-                    }),
+                    })
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()

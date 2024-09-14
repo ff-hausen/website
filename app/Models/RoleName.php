@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-enum RoleName: string
+use Filament\Support\Contracts\HasLabel;
+
+enum RoleName: string implements HasLabel
 {
     case Administrator = 'Administrator';
 
@@ -11,4 +13,9 @@ enum RoleName: string
     case Vereinsmitglied = 'Vereinsmitglied';
 
     case AltersUndEhrenabteilung = 'Alters- und Ehrenabteilung';
+
+    public function getLabel(): ?string
+    {
+        return $this->value;
+    }
 }

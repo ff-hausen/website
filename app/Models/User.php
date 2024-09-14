@@ -45,6 +45,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         'last_name',
         'email',
         'email_verified_at',
+        'role_names',
     ];
 
     protected function casts(): array

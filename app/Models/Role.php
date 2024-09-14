@@ -29,6 +29,6 @@ class Role extends Model
 
     public static function byName(RoleName $roleName): static
     {
-        return static::whereName($roleName->value)->first();
+        return static::whereName($roleName)->firstOrFail();
     }
 }
