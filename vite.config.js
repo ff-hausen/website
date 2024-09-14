@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import laravel, { refreshPaths } from "laravel-vite-plugin";
+import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
@@ -7,7 +7,7 @@ export default defineConfig({
         laravel({
             input: "resources/js/app.ts",
             ssr: "resources/js/ssr.ts",
-            refresh: [...refreshPaths, "app/Filament/**"],
+            refresh: true,
         }),
         vue({
             template: {
