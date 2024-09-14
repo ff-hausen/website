@@ -15,7 +15,7 @@ import IntroCard from "@/Components/IntroCard.vue";
             <h1 class="pb-12 text-3xl lg:text-6xl">
                 Freiwillige Feuerwehr Hausen
             </h1>
-            <p class="text-xl lg:text-3xl">Für euch im Einsatz seit 1882</p>
+            <p class="text-xl lg:text-3xl">für euch im Einsatz seit 1882</p>
         </Hero>
 
         <div class="my-8 text-center text-2xl font-black text-red-500">
