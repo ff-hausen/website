@@ -11,6 +11,17 @@ class Role extends Model
         'name',
     ];
 
+    protected $visible = [
+        'name',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'name' => RoleName::class,
+        ];
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);

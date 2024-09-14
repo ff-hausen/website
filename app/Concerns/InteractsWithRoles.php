@@ -14,7 +14,7 @@ trait InteractsWithRoles
 
     public function hasRole(RoleName $roleName): bool
     {
-        return $this->role_names->contains($roleName);
+        return $this->roles->where('name', $roleName)->isNotEmpty();
     }
 
     public function isAdmin(): bool

@@ -3,11 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\Role;
 use App\Models\RoleName;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
@@ -67,7 +69,8 @@ class UserResource extends Resource
                         Forms\Components\CheckboxList::make('roles')
                             ->hiddenLabel()
                             ->columnSpanFull()
-                            ->relationship(titleAttribute: 'name'),
+                            ->relationship()
+                            ->getOptionLabelFromRecordUsing(fn (Role $role) => $role->name->value),
                     ]),
             ]);
     }
@@ -89,32 +92,27 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->searchable(),
 
-                Tables\Columns\IconColumn::make('einsatzabteilung')
-                    ->label('EA')
-                    ->tooltip('Einsatzabteilung')
-                    ->state(fn (User $user) => $user->roles->where('name', RoleName::Einsatzabteilung->value)->isNotEmpty())
-                    ->icon(fn (bool $state) => $state ? 'heroicon-s-check-circle' : 'heroicon-s-x-circle')
-                    ->color(fn (bool $state) => $state ? 'success' : 'danger'),
+                Tables\Columns\IconColumn::make('email_verified')
+                    ->label('verifiziert')
+                    ->state(fn (User $user) => $user->email_verified_at !== null)
+                    ->tooltip(fn ($state) => $state ? 'E-Mail wurde verifiziert' : 'E-Mail wurde nicht verifiziert')
+                    ->boolean(),
 
-                Tables\Columns\IconColumn::make('verein')
-                    ->label('V')
-                    ->tooltip('Verein')
-                    ->state(fn (User $user) => $user->roles->where('name', RoleName::Vereinsmitglied->value)->isNotEmpty())
-                    ->icon(fn (bool $state) => $state ? 'heroicon-s-check-circle' : 'heroicon-s-x-circle')
-                    ->color(fn (bool $state) => $state ? 'success' : 'danger'),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Abteilungen')
+                    ->badge()
+                    ->state(fn (User $user) => $user->role_names->filter(fn ($item) => in_array($item, [
+                        RoleName::Einsatzabteilung,
+                        RoleName::Vereinsmitglied,
+                        RoleName::AltersUndEhrenabteilung,
+                    ])))
+                    ->color(fn ($state) => match ($state) {
+                        RoleName::Einsatzabteilung => Color::Red,
+                        RoleName::Vereinsmitglied => Color::Amber,
+                        RoleName::AltersUndEhrenabteilung => Color::Green,
+                        default => 'gray',
+                    }),
 
-                Tables\Columns\IconColumn::make('alters_ehrenabteilung')
-                    ->label('EM')
-                    ->tooltip('Alters- und Ehrenabteilung')
-                    ->state(fn (User $user) => $user->roles->where('name', RoleName::AltersUndEhrenabteilung->value)->isNotEmpty())
-                    ->icon(fn (bool $state) => $state ? 'heroicon-s-check-circle' : 'heroicon-s-x-circle')
-                    ->color(fn (bool $state) => $state ? 'success' : 'danger'),
-
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->translateLabel()
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()
                     ->dateTime()

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Concerns\InteractsWithRoles;
 use Creativeorange\Gravatar\Facades\Gravatar;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -18,6 +19,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, MustVerifyEmail
 {
     use HasFactory, Notifiable;
+    use InteractsWithRoles;
 
     protected $with = [
         'roles',
@@ -25,13 +27,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
 
     protected $appends = [
         'image_url',
+        'role_names',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -40,21 +38,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $visible = [
+        'id',
+        'username',
+        'first_name',
+        'last_name',
+        'email',
+        'email_verified_at',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -77,18 +69,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
     {
         return Attribute::get(
             function () {
-                if (! Gravatar::exists($this->email)) {
-                    return null;
-                }
-
                 return Gravatar::get($this->email);
             },
         );
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->roles->where('name', RoleName::Administrator->value)->isNotEmpty();
     }
 
     public function canAccessPanel(Panel $panel): bool

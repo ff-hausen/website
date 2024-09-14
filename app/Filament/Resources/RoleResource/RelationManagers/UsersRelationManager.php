@@ -30,11 +30,14 @@ class UsersRelationManager extends RelationManager
             ->recordTitleAttribute('username')
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->searchable(),
             ])
             ->filters([
                 //

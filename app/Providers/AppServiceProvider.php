@@ -19,12 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-        //            return (new MailMessage)
-        //                ->subject('E-Mail Adresse bestätigen')
-        //                ->line('Klicke auf die Schaltfläche unten, um Deine E-Mail-Adresse zu bestätigen.')
-        //                ->action('E-Mail Adresse bestätigen', $url);
-        //        });
-
+        //
     }
 }
