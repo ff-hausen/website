@@ -45,6 +45,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         'last_name',
         'email',
         'email_verified_at',
+        'image_url',
         'role_names',
     ];
 
@@ -63,7 +64,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
 
     protected function fullName(): Attribute
     {
-        return Attribute::get(fn () => $this->first_name.' '.$this->last_name);
+        return Attribute::get(fn() => $this->first_name . ' ' . $this->last_name);
     }
 
     protected function imageUrl(): Attribute
