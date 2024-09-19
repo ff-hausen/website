@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ContactForm\ContactFormController;
+use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
