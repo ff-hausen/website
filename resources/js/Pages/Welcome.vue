@@ -3,6 +3,11 @@ import { Head } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Hero from "@/Components/Hero.vue";
 import IntroCard from "@/Components/IntroCard.vue";
+import ContactForm from "@/Components/ContactForm.vue";
+
+const { contactFormTopics } = defineProps<{
+    contactFormTopics: string[];
+}>();
 </script>
 
 <template>
@@ -48,5 +53,7 @@ import IntroCard from "@/Components/IntroCard.vue";
             <h1 class="mb-4 text-xl font-black">Minifeuerwehr</h1>
             <p class="text-base">Trifft sich jeden Freitag um 16:30 Uhr</p>
         </IntroCard>
+
+        <ContactForm :topics="contactFormTopics" />
     </MainLayout>
 </template>

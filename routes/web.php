@@ -1,12 +1,17 @@
 <?php
 
+use App\Http\Controllers\ContactForm\ContactFormController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WelcomeController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
+Route::post('/contact-form/send', [ContactFormController::class, 'store'])
+    ->middleware(HandlePrecognitiveRequests::class)
+    ->name('contact-form.send');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -22,3 +27,5 @@ Route::inertia('/impressum', 'Imprint')->name('imprint');
 Route::inertia('/privacy', 'Privacy')->name('privacy');
 
 require __DIR__.'/auth.php';
+
+Route::get('/.well-known/change-password', fn () => to_route('profile.edit'));
