@@ -21,6 +21,10 @@ class ContactFormTopicsResource extends Resource
 {
     protected static ?string $model = ContactFormTopics::class;
 
+    protected static ?string $modelLabel = 'Kontaktformular Thema';
+
+    protected static ?string $pluralModelLabel = 'Kontaktformular Themen';
+
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
 
     protected static ?string $navigationLabel = 'Kontaktformular Themen';
@@ -48,7 +52,7 @@ class ContactFormTopicsResource extends Resource
                                     ->required()
                                     ->email()
                                     ->hiddenLabel(),
-                            )->addActionLabel('An Hinzufügen'),
+                            )->addActionLabel('Empfänger hinzufügen'),
 
                         Repeater::make('cc')
                             ->label('Kopie an')
@@ -58,7 +62,7 @@ class ContactFormTopicsResource extends Resource
                                     ->email()
                                     ->hiddenLabel(),
                             )->defaultItems(0)
-                            ->addActionLabel('CC Hinzufügen'),
+                            ->addActionLabel('Empfänger hinzufügen'),
                     ]),
 
                 Placeholder::make('created_at')
