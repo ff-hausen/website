@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactFormTopics;
 use Inertia\Inertia;
 
 class WelcomeController extends Controller
@@ -11,7 +12,7 @@ class WelcomeController extends Controller
         $contactFormRecipients = config('contact-form.recipients');
 
         return Inertia::render('Welcome', [
-            'contactFormTopics' => array_keys($contactFormRecipients),
+            'contactFormTopics' => ContactFormTopics::getTopics(),
         ]);
     }
 }

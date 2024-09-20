@@ -6,6 +6,7 @@ use App\Filament\AvatarProviders\DiceBearAvatarProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -33,6 +34,11 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Red,
             ])
 //            ->topNavigation()
+            ->navigationGroups([
+                NavigationGroup::make('Benutzerverwaltung'),
+                NavigationGroup::make('Konfiguration')
+                    ->collapsed(),
+            ])
             ->defaultAvatarProvider(DiceBearAvatarProvider::class)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

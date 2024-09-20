@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ContactFormTopics;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -9,12 +10,13 @@ class ContactFormRequest extends FormRequest
 {
     public function rules(): array
     {
-        $recipients = config('contact-form.recipients');
-
         return [
             'name' => ['required'],
             'email' => ['required', 'email'],
-            'topic' => ['required', Rule::in(array_keys($recipients))],
+            'topic' => [
+                'required',
+                Rule::when(! $this->isPrecognitive(), fn () => Rule::in(ContactFormTopics::getTopics())),
+            ],
             'message' => ['required', 'min:10'],
         ];
     }
