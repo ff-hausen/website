@@ -29,7 +29,7 @@ const containerClasses =
 
 <style scoped>
 .mask-full {
-    background-color: hsla(0, 0%, 0%, 0.8);
+    background-color: hsla(0, 0%, 0%, 0.7);
 }
 
 @media (min-width: 768px) {

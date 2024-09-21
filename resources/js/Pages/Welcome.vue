@@ -30,7 +30,7 @@ const { contactFormTopics } = defineProps<{
         <IntroCard
             image="/images/intro/einsatzabteilung.webp"
             pull="left"
-            class="bg-[top_center]"
+            class="bg-[right_15%_center]"
         >
             <h1 class="mb-4 text-xl font-black">Einsatzabteilung</h1>
             <p class="text-base">Trifft sich jeden Freitag um 20:00 Uhr</p>
@@ -39,7 +39,7 @@ const { contactFormTopics } = defineProps<{
         <IntroCard
             image="/images/intro/jugendfeuerwehr.webp"
             pull="right"
-            class="bg-[top_30%_left]"
+            class="bg-[left_10%_center]"
         >
             <h1 class="mb-4 text-xl font-black">Jugendfeuerwehr</h1>
             <p class="text-base">Trifft sich jeden Dienstag um 18:00 Uhr</p>
