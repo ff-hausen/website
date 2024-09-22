@@ -15,7 +15,7 @@ const { contactFormTopics } = defineProps<{
     <MainLayout>
         <Hero
             image="/images/geraetehaus.webp"
-            class="h-[300px] bg-[top_20%_center] md:h-[500px]"
+            class="mb-4 h-[300px] bg-[top_20%_center] md:mb-12 md:h-[500px]"
         >
             <h1 class="pb-12 text-3xl lg:text-6xl">
                 Freiwillige Feuerwehr Hausen
