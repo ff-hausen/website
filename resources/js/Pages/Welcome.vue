@@ -51,6 +51,7 @@ const { contactFormTopics } = defineProps<{
         </IntroCard>
 
         <ContactSection
+            id="contact"
             title="Schreib uns!"
             :contactFormTopics="contactFormTopics"
         >
