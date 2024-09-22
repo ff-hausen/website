@@ -4,10 +4,12 @@ import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
 import { Head } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
+import ManagePasskeysForm from "@/Pages/Profile/Partials/ManagePasskeysForm.vue";
 
 defineProps<{
     mustVerifyEmail?: boolean;
     status?: string;
+    passkeys: Array;
 }>();
 </script>
 
@@ -34,6 +36,10 @@ defineProps<{
                 <!-- mx-auto my-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg -->
                 <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
                     <UpdatePasswordForm class="max-w-xl" />
+                </div>
+
+                <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+                    <ManagePasskeysForm :passkeys="passkeys" class="max-w-xl" />
                 </div>
 
                 <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
