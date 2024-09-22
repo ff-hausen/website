@@ -27,14 +27,9 @@ const form = useForm("post", route("contact-form.send"), {
                 },
             })
         "
-        class="pb-24 pt-20 sm:pb-32 lg:px-8"
+        class="lg:px-8"
     >
-        <div
-            class="mx-auto max-w-xl rounded-xl border border-gray-400 p-4 md:p-8 lg:max-w-lg"
-        >
-            <h2 class="mb-4 text-xl font-bold text-red-600 drop-shadow-xl">
-                Kontaktformular
-            </h2>
+        <div class="mx-auto max-w-xl p-4 md:p-8 lg:max-w-lg">
             <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div class="sm:col-span-2">
                     <InputLabel for="name" value="Name" required />

@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Hero from "@/Components/Hero.vue";
 import IntroCard from "@/Components/IntroCard.vue";
-import ContactForm from "@/Components/ContactForm.vue";
+import ContactSection from "@/Components/ContactSection.vue";
 
 const { contactFormTopics } = defineProps<{
     contactFormTopics: string[];
@@ -22,10 +22,6 @@ const { contactFormTopics } = defineProps<{
             </h1>
             <p class="text-xl lg:text-3xl">für euch im Einsatz seit 1882</p>
         </Hero>
-
-        <div class="my-8 text-center text-2xl font-black text-red-500">
-            🚨 Work in progress!
-        </div>
 
         <IntroCard
             image="/images/intro/einsatzabteilung.webp"
@@ -54,6 +50,13 @@ const { contactFormTopics } = defineProps<{
             <p class="text-base">Trifft sich jeden Freitag um 16:30 Uhr</p>
         </IntroCard>
 
-        <ContactForm :topics="contactFormTopics" />
+        <ContactSection
+            title="Schreib uns!"
+            :contactFormTopics="contactFormTopics"
+        >
+            Proin volutpat consequat porttitor cras nullam gravida at. Orci
+            molestie a eu arcu. Sed ut tincidunt integer elementum id sem. Arcu
+            sed malesuada et magna.
+        </ContactSection>
     </MainLayout>
 </template>
