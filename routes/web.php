@@ -23,7 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/profile/passkey', PasskeyController::class)->only(['destroy']);
+    // Passkeys
+    Route::resource('/profile/passkeys', PasskeyController::class)->only(['destroy']);
+    Route::get('/profile/passkeys/register', [PasskeyController::class, 'register'])->name('passkeys.register');
 });
 
 Route::inertia('/impressum', 'Imprint')->name('imprint');

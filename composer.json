@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.9",
         "spatie/laravel-data": "^4.8",
         "tightenco/ziggy": "^2.0",
-        "tii/csv-state-parser": "^1.0"
+        "tii/csv-state-parser": "^1.0",
+        "web-auth/webauthn-lib": "^5.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

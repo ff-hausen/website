@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/de";
+import { startRegistration } from "@simplewebauthn/browser";
 
 dayjs.extend(relativeTime);
 dayjs.locale("de");
@@ -19,6 +20,11 @@ const form = useForm({
     name: "",
 });
 
+async function registerPasskey() {
+    const options = await axios.get(route("passkeys.register"));
+    const passkey = await startRegistration(options.data);
+}
+
 // const passkeys = [
 //     { id: 3, name: "adipisicing", created_at: moment().subtract(2, "hours") },
 //     { id: 2, name: "officia", created_at: moment().subtract(5, "days") },
@@ -27,7 +33,7 @@ const form = useForm({
 </script>
 
 <template>
-    <section>
+    <section id="managePasskeys">
         <header>
             <h2 class="text-lg font-medium text-gray-900">
                 Passkeys verwalten
@@ -39,7 +45,7 @@ const form = useForm({
             </p>
         </header>
 
-        <form @submit.prevent="form.post('/')" class="mt-6 space-y-6">
+        <form @submit.prevent="registerPasskey()" class="mt-6 space-y-6">
             <div>
                 <InputLabel value="Passkey Name" />
                 <TextInput
@@ -72,8 +78,9 @@ const form = useForm({
                         </div>
                         <div>
                             <Link
-                                :href="route('passkey.destroy', passkey)"
+                                :href="route('passkeys.destroy', passkey)"
                                 method="delete"
+                                preserve-scroll
                                 as="button"
                                 class="cursor-pointer rounded-lg border border-slate-400 px-4 py-1 transition-colors hover:bg-red-500 hover:text-white"
                             >
