@@ -17,10 +17,12 @@ const { contactFormTopics } = defineProps<{
             image="/images/geraetehaus.webp"
             class="mb-4 h-[300px] bg-[top_20%_center] md:mb-12 md:h-[500px]"
         >
-            <h1 class="pb-12 text-3xl lg:text-6xl">
+            <h1 class="pb-12 text-3xl md:text-4xl lg:text-5xl">
                 Freiwillige Feuerwehr Hausen
             </h1>
-            <p class="text-xl lg:text-3xl">für euch im Einsatz seit 1882</p>
+            <p class="text-xl md:text-2xl lg:text-3xl">
+                für euch im Einsatz seit 1882
+            </p>
         </Hero>
 
         <IntroCard
@@ -28,7 +30,7 @@ const { contactFormTopics } = defineProps<{
             pull="left"
             class="bg-[right_15%_center]"
         >
-            <h1 class="mb-4 text-xl font-black">Einsatzabteilung</h1>
+            <h1 class="mb-4 text-2xl font-black">Einsatzabteilung</h1>
             <p class="text-base">Trifft sich jeden Freitag um 20:00 Uhr</p>
         </IntroCard>
 
@@ -37,7 +39,7 @@ const { contactFormTopics } = defineProps<{
             pull="right"
             class="bg-[left_10%_center]"
         >
-            <h1 class="mb-4 text-xl font-black">Jugendfeuerwehr</h1>
+            <h1 class="mb-4 text-2xl font-black">Jugendfeuerwehr</h1>
             <p class="text-base">Trifft sich jeden Dienstag um 18:00 Uhr</p>
         </IntroCard>
 
@@ -46,7 +48,7 @@ const { contactFormTopics } = defineProps<{
             pull="left"
             class="bg-[top_15%_center]"
         >
-            <h1 class="mb-4 text-xl font-black">Minifeuerwehr</h1>
+            <h1 class="mb-4 text-2xl font-black">Minifeuerwehr</h1>
             <p class="text-base">Trifft sich jeden Freitag um 16:30 Uhr</p>
         </IntroCard>
 

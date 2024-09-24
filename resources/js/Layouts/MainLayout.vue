@@ -45,7 +45,15 @@ const userNavigation: Array<{
     as?: string | Component;
 }> = [
     { name: "Dein Profil", href: route("profile.edit"), as: Link },
-    { name: "Admin", href: route("filament.admin.pages.dashboard"), as: "a" },
+    ...(user.value?.role_names?.includes("Administrator")
+        ? [
+              {
+                  name: "Admin",
+                  href: route("filament.admin.pages.dashboard"),
+                  as: "a",
+              },
+          ]
+        : []),
     { name: "Abmelden", href: route("logout"), method: "post", as: LinkButton },
 ];
 </script>
@@ -61,10 +69,11 @@ const userNavigation: Array<{
                                 <img
                                     class="h-10"
                                     src="/images/ffhausen-logo.png"
+                                    alt=""
                                     aria-hidden="true"
                                 />
                                 <div
-                                    class="ml-2 flex hidden flex-col justify-center text-justify font-black leading-tight text-white md:block"
+                                    class="ml-2 hidden flex-col justify-center text-justify font-black leading-tight text-white md:block"
                                 >
                                     <div>Freiwillige Feuerwehr</div>
                                     <div>Frankfurt Hausen</div>
