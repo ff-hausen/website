@@ -6,6 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -30,6 +31,12 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo('/images/ffhausen-logo.png')
             ->colors([
                 'primary' => Color::Red,
+            ])
+            ->navigationItems([
+                NavigationItem::make('Zurück zur Seite')
+                    ->url('/')
+                    ->icon('heroicon-o-arrow-left')
+                    ->sort(-3),
             ])
             ->navigationGroups([
                 NavigationGroup::make('Benutzerverwaltung'),
