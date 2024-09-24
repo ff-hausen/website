@@ -139,9 +139,10 @@ const userNavigation: Array<UserNavigationItem> = [
                                         >
                                             <component
                                                 :is="
-                                                    item.method === 'get'
-                                                        ? Link
-                                                        : LinkButton
+                                                    item.method &&
+                                                    item.method !== 'get'
+                                                        ? LinkButton
+                                                        : Link
                                                 "
                                                 :href="item.href"
                                                 :method="item.method ?? 'get'"
@@ -237,7 +238,11 @@ const userNavigation: Array<UserNavigationItem> = [
                             :key="item.name"
                             :href="item.href"
                             :method="item.method ?? 'get'"
-                            :as="item.method === 'get' ? Link : LinkButton"
+                            :as="
+                                item.method && item.method !== 'get'
+                                    ? LinkButton
+                                    : Link
+                            "
                             class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"
                         >
                             {{ item.name }}
