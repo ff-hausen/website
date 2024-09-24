@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Passkeys
-    Route::resource('/profile/passkeys', PasskeyController::class)->only(['destroy']);
+    Route::resource('/profile/passkeys', PasskeyController::class)->only(['store', 'destroy']);
     Route::get('/profile/passkeys/register', [PasskeyController::class, 'register'])->name('passkeys.register');
 });
 

@@ -7,7 +7,11 @@ import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/de";
-import { startRegistration } from "@simplewebauthn/browser";
+import {
+    browserSupportsWebAuthn,
+    startRegistration,
+} from "@simplewebauthn/browser";
+import axios from "axios";
 
 dayjs.extend(relativeTime);
 dayjs.locale("de");
@@ -18,22 +22,45 @@ defineProps<{
 
 const form = useForm({
     name: "",
+    passkey: null,
 });
 
 async function registerPasskey() {
-    const options = await axios.get(route("passkeys.register"));
-    const passkey = await startRegistration(options.data);
-}
+    if (!browserSupportsWebAuthn()) {
+        return;
+    }
 
-// const passkeys = [
-//     { id: 3, name: "adipisicing", created_at: moment().subtract(2, "hours") },
-//     { id: 2, name: "officia", created_at: moment().subtract(5, "days") },
-//     { id: 1, name: "ut", created_at: moment().subtract(1, "months") },
-// ];
+    form.clearErrors();
+
+    const options = await axios.get(route("passkeys.register"), {
+        params: { name: form.name },
+        validateStatus: (status: number) => [200, 422].includes(status),
+    });
+
+    if (options.status === 422) {
+        form.errors.name = options.data.errors.name[0];
+        return;
+    }
+
+    let passkey;
+    try {
+        passkey = await startRegistration(options.data);
+    } catch (e) {
+        form.errors.name =
+            "Passkey-Erstellung fehlgeschlagen. Bitte versuchen Sie es erneut.";
+
+        return;
+    }
+
+    form.passkey = JSON.stringify(passkey);
+    form.post(route("passkeys.store"), {
+        preserveScroll: true,
+    });
+}
 </script>
 
 <template>
-    <section id="managePasskeys">
+    <section id="managePasskeys" v-show="browserSupportsWebAuthn()">
         <header>
             <h2 class="text-lg font-medium text-gray-900">
                 Passkeys verwalten
