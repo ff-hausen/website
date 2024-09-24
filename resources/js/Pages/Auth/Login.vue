@@ -7,6 +7,11 @@ import TextInput from "@/Components/Laravel/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Box from "@/Components/Box.vue";
+import axios from "axios";
+import {
+    browserSupportsWebAuthn,
+    startAuthentication,
+} from "@simplewebauthn/browser";
 
 defineProps<{
     canResetPassword?: boolean;
@@ -20,12 +25,30 @@ const form = useForm({
 });
 
 const submit = () => {
+    if (!form.email && !form.password && browserSupportsWebAuthn()) {
+        authenticateWithPasskey();
+        return;
+    }
+
     form.post(route("login"), {
         onFinish: () => {
             form.reset("password");
         },
     });
 };
+
+const passkeyForm = useForm({
+    answer: null,
+});
+
+async function authenticateWithPasskey() {
+    const options = await axios(route("passkeys.authenticateOptions"));
+
+    const answer = await startAuthentication(options.data);
+
+    passkeyForm.answer = JSON.stringify(answer);
+    passkeyForm.post(route("passkeys.authenticate"));
+}
 </script>
 
 <template>
@@ -46,12 +69,15 @@ const submit = () => {
                         type="email"
                         class="mt-1 block w-full"
                         v-model="form.email"
-                        required
                         autofocus
-                        autocomplete="username"
+                        autocomplete="username webauthn"
                     />
 
                     <InputError class="mt-2" :message="form.errors.email" />
+                    <InputError
+                        class="mt-2"
+                        :message="passkeyForm.errors.answer"
+                    />
                 </div>
 
                 <div class="mt-4">
@@ -62,7 +88,6 @@ const submit = () => {
                         type="password"
                         class="mt-1 block w-full"
                         v-model="form.password"
-                        required
                         autocomplete="current-password"
                     />
 

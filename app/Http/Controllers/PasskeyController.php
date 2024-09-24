@@ -3,41 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Passkey;
+use App\Support\JsonSerializer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Webauthn\AttestationStatement\AttestationStatementSupportManager;
+use Webauthn\AuthenticatorAssertionResponse;
+use Webauthn\AuthenticatorAssertionResponseValidator;
 use Webauthn\AuthenticatorAttestationResponse;
 use Webauthn\AuthenticatorAttestationResponseValidator;
 use Webauthn\AuthenticatorSelectionCriteria;
 use Webauthn\CeremonyStep\CeremonyStepManagerFactory;
-use Webauthn\Denormalizer\WebauthnSerializerFactory;
 use Webauthn\PublicKeyCredential;
 use Webauthn\PublicKeyCredentialCreationOptions;
+use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialRpEntity;
 use Webauthn\PublicKeyCredentialUserEntity;
 
 class PasskeyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    public function register(Request $request)
+    public function registerOptions(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -62,7 +49,8 @@ class PasskeyController extends Controller
 
         Session::flash('passkey-registration-options', $options);
 
-        return response()->json($options);
+        return response(JsonSerializer::serialize($options))
+            ->header('Content-Type', 'application/json');
     }
 
     /**
@@ -75,25 +63,18 @@ class PasskeyController extends Controller
             'passkey' => ['required', 'json'],
         ]);
 
-        /** @var PublicKeyCredential $publicKeyCredential */
-        $publicKeyCredential = (new WebauthnSerializerFactory(AttestationStatementSupportManager::create()))
-            ->create()
-            ->deserialize($data['passkey'], PublicKeyCredential::class, 'json');
+        $publicKeyCredential = JsonSerializer::deserialize($data['passkey'], PublicKeyCredential::class);
 
         if (! $publicKeyCredential->response instanceof AuthenticatorAttestationResponse) {
             return to_route('login');
         }
-
-        /** @var PublicKeyCredentialCreationOptions $publicKeyCredentialCreationOptions */
-        $publicKeyCredentialCreationOptions = Session::get('passkey-registration-options');
-        $publicKeyCredentialCreationOptions->challenge = base64_decode($publicKeyCredentialCreationOptions->challenge);
 
         try {
             $publicKeyCredentialSource = AuthenticatorAttestationResponseValidator::create(
                 (new CeremonyStepManagerFactory)->creationCeremony()
             )->check(
                 authenticatorAttestationResponse: $publicKeyCredential->response,
-                publicKeyCredentialCreationOptions: $publicKeyCredentialCreationOptions,
+                publicKeyCredentialCreationOptions: Session::get('passkey-registration-options'),
                 host: $request->getHost(),
             );
         } catch (\Throwable $e) {
@@ -106,37 +87,71 @@ class PasskeyController extends Controller
 
         $request->user()->passkeys()->create([
             'name' => $data['name'],
-            'credential_id' => $publicKeyCredentialSource->publicKeyCredentialId,
-            'data' => (new WebauthnSerializerFactory(AttestationStatementSupportManager::create()))
-                ->create()
-                ->serialize($publicKeyCredentialSource, 'json'),
+            'data' => $publicKeyCredentialSource,
         ]);
 
         return to_route('profile.edit')->withFragment('managePasskey');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Passkey $passkey)
+    public function authenticateOptions()
     {
-        //
+        $options = new PublicKeyCredentialRequestOptions(
+            challenge: Str::random(),
+            rpId: parse_url(config('app.url'), PHP_URL_HOST),
+        );
+
+        Session::flash('passkey-authentication-options', $options);
+
+        return response(JsonSerializer::serialize($options))
+            ->header('Content-Type', 'application/json');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Passkey $passkey)
+    public function authenticate(Request $request)
     {
-        //
-    }
+        $data = $request->validate([
+            'answer' => ['required', 'json'],
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Passkey $passkey)
-    {
-        //
+        $publicKeyCredential = JsonSerializer::deserialize($data['answer'], PublicKeyCredential::class);
+
+        if (! $publicKeyCredential->response instanceof AuthenticatorAssertionResponse) {
+            return to_route('profile.edit')->withFragment('managePasskeys');
+        }
+
+        $passkey = Passkey::firstWhere('credential_id', $publicKeyCredential->rawId);
+
+        if (! $passkey) {
+            throw ValidationException::withMessages([
+                'answer' => 'Dieser Passkey ist ungültig.',
+            ]);
+        }
+
+        try {
+            $publicKeyCredentialSource = AuthenticatorAssertionResponseValidator::create(
+                (new CeremonyStepManagerFactory)->requestCeremony()
+            )->check(
+                publicKeyCredentialSource: $passkey->data,
+                authenticatorAssertionResponse: $publicKeyCredential->response,
+                publicKeyCredentialRequestOptions: Session::get('passkey-authentication-options'),
+                host: $request->getHost(),
+                userHandle: null,
+            );
+        } catch (\Throwable $e) {
+            Log::error('Passkey authentication failed.', ['error' => $e]);
+
+            throw ValidationException::withMessages([
+                'answer' => 'Dieser Passkey ist ungültig.',
+            ]);
+        }
+
+        $passkey->update([
+            'data' => $publicKeyCredentialSource,
+        ]);
+
+        Auth::loginUsingId($passkey->user_id);
+        $request->session()->regenerate();
+
+        return to_route('dashboard');
     }
 
     /**

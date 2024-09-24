@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\PublicKeyCredentialSourceCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,7 +26,7 @@ class Passkey extends Model
     protected function casts(): array
     {
         return [
-            'data' => 'json',
+            'data' => PublicKeyCredentialSourceCast::class,
         ];
     }
 

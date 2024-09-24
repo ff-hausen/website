@@ -55,6 +55,9 @@ async function registerPasskey() {
     form.passkey = JSON.stringify(passkey);
     form.post(route("passkeys.store"), {
         preserveScroll: true,
+        onSuccess() {
+            form.reset();
+        },
     });
 }
 </script>
