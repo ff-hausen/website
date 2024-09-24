@@ -119,10 +119,10 @@ class PasskeyController extends Controller
     public function authenticate(Request $request)
     {
         $data = $request->validate([
-            'answer' => ['required', 'json'],
+            'passkey' => ['required', 'json'],
         ]);
 
-        $publicKeyCredential = JsonSerializer::deserialize($data['answer'], PublicKeyCredential::class);
+        $publicKeyCredential = JsonSerializer::deserialize($data['passkey'], PublicKeyCredential::class);
 
         if (! $publicKeyCredential->response instanceof AuthenticatorAssertionResponse) {
             return to_route('profile.edit')->withFragment('managePasskeys');
@@ -132,7 +132,7 @@ class PasskeyController extends Controller
 
         if (! $passkey) {
             throw ValidationException::withMessages([
-                'answer' => 'Dieser Passkey ist ungültig.',
+                'passkey' => 'Dieser Passkey ist ungültig.',
             ]);
         }
 
@@ -150,7 +150,7 @@ class PasskeyController extends Controller
             Log::error('Passkey authentication failed.', ['error' => $e]);
 
             throw ValidationException::withMessages([
-                'answer' => 'Dieser Passkey ist ungültig.',
+                'passkey' => 'Dieser Passkey ist ungültig.',
             ]);
         }
 
@@ -158,10 +158,10 @@ class PasskeyController extends Controller
             'data' => $publicKeyCredentialSource,
         ]);
 
-        Auth::loginUsingId($passkey->user_id);
+        Auth::loginUsingId($passkey->user_id, $request->boolean('remember'));
         $request->session()->regenerate();
 
-        return to_route('dashboard');
+        return redirect()->intended(route('dashboard'));
     }
 
     /**

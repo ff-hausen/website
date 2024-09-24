@@ -23,6 +23,7 @@ defineProps<{
 const form = useForm({
     email: "",
     password: "",
+    passkey: "",
     remember: false,
 });
 
@@ -39,10 +40,6 @@ const submit = () => {
     });
 };
 
-const passkeyForm = useForm({
-    answer: "",
-});
-
 async function authenticateWithPasskey(useBrowserAutofill = false) {
     const options = await axios(route("passkeys.authenticateOptions"), {
         params: {
@@ -52,8 +49,8 @@ async function authenticateWithPasskey(useBrowserAutofill = false) {
 
     const answer = await startAuthentication(options.data, useBrowserAutofill);
 
-    passkeyForm.answer = JSON.stringify(answer);
-    passkeyForm.post(route("passkeys.authenticate"));
+    form.passkey = JSON.stringify(answer);
+    form.post(route("passkeys.authenticate"));
 }
 
 onMounted(() => {
@@ -84,10 +81,7 @@ onMounted(() => {
                     />
 
                     <InputError class="mt-2" :message="form.errors.email" />
-                    <InputError
-                        class="mt-2"
-                        :message="passkeyForm.errors.answer"
-                    />
+                    <InputError class="mt-2" :message="form.errors.passkey" />
                 </div>
 
                 <div class="mt-4">
