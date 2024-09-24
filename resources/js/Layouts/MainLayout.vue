@@ -9,7 +9,7 @@ import {
     MenuItems,
 } from "@headlessui/vue";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { computed } from "vue";
+import { type Component, computed } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import { Method } from "@inertiajs/core";
 import Footer from "@/Components/Footer.vue";

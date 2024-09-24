@@ -40,7 +40,7 @@ const submit = () => {
 };
 
 const passkeyForm = useForm({
-    answer: null,
+    answer: "",
 });
 
 async function authenticateWithPasskey(useBrowserAutofill = false) {

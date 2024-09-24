@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { Link } from "@inertiajs/vue3";
+import { InertiaLinkProps, Link } from "@inertiajs/vue3";
+
+defineProps<Omit<InertiaLinkProps, "as" | "type">>();
 </script>
 
 <template>
-    <Link as="button" type="button">
+    <Link as="button" type="button" v-bind="$props">
         <slot />
     </Link>
 </template>

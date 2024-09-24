@@ -4,12 +4,14 @@ import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
 import { Head } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import ManagePasskeysForm from "@/Pages/Profile/Partials/ManagePasskeysForm.vue";
+import ManagePasskeysForm, {
+    Passkey,
+} from "@/Pages/Profile/Partials/ManagePasskeysForm.vue";
 
 defineProps<{
     mustVerifyEmail?: boolean;
     status?: string;
-    passkeys: Array;
+    passkeys: Array<Passkey>;
 }>();
 </script>
 

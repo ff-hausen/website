@@ -16,13 +16,19 @@ import axios from "axios";
 dayjs.extend(relativeTime);
 dayjs.locale("de");
 
+export type Passkey = {
+    id: number;
+    name: string;
+    created_at: string;
+};
+
 defineProps<{
-    passkeys: Array;
+    passkeys: Array<Passkey>;
 }>();
 
 const form = useForm({
     name: "",
-    passkey: null,
+    passkey: "",
 });
 
 async function registerPasskey() {
