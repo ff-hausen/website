@@ -11,40 +11,30 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { type Component, computed } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
-import { Method } from "@inertiajs/core";
 import Footer from "@/Components/Footer.vue";
 import LinkButton from "@/Components/LinkButton.vue";
+import { MainNavigationItem, UserNavigationItem } from "@/types";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 
-const props = withDefaults(
-    defineProps<{
-        title?: string;
-        noFooter?: boolean;
-    }>(),
-    {
-        noFooter: false,
-    },
-);
+const { title, noFooter = false } = defineProps<{
+    title?: string;
+    noFooter?: boolean;
+}>();
 
-const asButton = {
-    as: "button",
-    type: "button",
-};
-
-const navigation: Array<{ name: string; href: string; current: boolean }> = [
+const navigation: Array<MainNavigationItem> = [
     // { name: 'Einsatzabteilung', href: '#', current: false },
     // { name: 'Jugendfeuerwehr', href: '#', current: false },
     // { name: 'Minifeuerwehr', href: '#', current: false },
 ];
-const userNavigation: Array<{
-    name: string;
-    href: string;
-    method?: Method;
-    as?: string | Component;
-}> = [
-    { name: "Dein Profil", href: route("profile.edit"), as: Link },
+
+const userNavigation: Array<UserNavigationItem> = [
+    {
+        name: "Dein Profil",
+        href: route("profile.edit"),
+        as: Link,
+    },
     ...(user.value?.role_names?.includes("Administrator")
         ? [
               {
@@ -54,7 +44,12 @@ const userNavigation: Array<{
               },
           ]
         : []),
-    { name: "Abmelden", href: route("logout"), method: "post", as: LinkButton },
+    {
+        name: "Abmelden",
+        href: route("logout"),
+        method: "post",
+        as: LinkButton,
+    },
 ];
 </script>
 
@@ -262,10 +257,10 @@ const userNavigation: Array<{
             </DisclosurePanel>
         </Disclosure>
 
-        <header class="bg-white shadow-sm" v-if="props.title">
+        <header class="bg-white shadow-sm" v-if="title">
             <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
                 <h1 class="text-lg font-semibold leading-6 text-gray-900">
-                    {{ props.title }}
+                    {{ title }}
                 </h1>
             </div>
         </header>
@@ -274,7 +269,7 @@ const userNavigation: Array<{
                 <slot />
             </div>
         </main>
-        <Footer v-if="!props.noFooter" />
+        <Footer v-if="!noFooter" />
     </div>
 </template>
 
