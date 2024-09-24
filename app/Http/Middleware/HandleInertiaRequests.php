@@ -2,12 +2,29 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
+    public function handle(Request $request, Closure $next)
+    {
+        $response = parent::handle($request, $next);
+
+        if ($response instanceof RedirectResponse) {
+            $path = parse_url($response->getTargetUrl(), PHP_URL_PATH);
+            if (str_starts_with($path, '/admin')) {
+                return Inertia::location($response->getTargetUrl());
+            }
+        }
+
+        return $response;
+    }
+
     /**
      * The root template that is loaded on the first page visit.
      *
@@ -18,7 +35,7 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      */
-    public function version(Request $request): string|null
+    public function version(Request $request): ?string
     {
         return parent::version($request);
     }

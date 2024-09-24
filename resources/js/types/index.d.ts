@@ -1,6 +1,5 @@
 import { Config } from "ziggy-js";
 import { Method } from "@inertiajs/core";
-import { type Component } from "vue";
 
 export interface User {
     id: number;
@@ -32,5 +31,4 @@ export interface UserNavigationItem {
     name: string;
     href: string;
     method?: Method;
-    as?: string | Component;
 }

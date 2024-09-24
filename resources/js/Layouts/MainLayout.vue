@@ -12,8 +12,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { type Component, computed } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import Footer from "@/Components/Footer.vue";
-import LinkButton from "@/Components/LinkButton.vue";
 import { MainNavigationItem, UserNavigationItem } from "@/types";
+import LinkButton from "@/Components/LinkButton.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -33,14 +33,12 @@ const userNavigation: Array<UserNavigationItem> = [
     {
         name: "Dein Profil",
         href: route("profile.edit"),
-        as: Link,
     },
     ...(user.value?.role_names?.includes("Administrator")
         ? [
               {
                   name: "Admin",
                   href: route("filament.admin.pages.dashboard"),
-                  as: "a",
               },
           ]
         : []),
@@ -48,7 +46,6 @@ const userNavigation: Array<UserNavigationItem> = [
         name: "Abmelden",
         href: route("logout"),
         method: "post",
-        as: LinkButton,
     },
 ];
 </script>
@@ -141,7 +138,11 @@ const userNavigation: Array<UserNavigationItem> = [
                                             v-slot="{ active }"
                                         >
                                             <component
-                                                :is="item.as"
+                                                :is="
+                                                    item.method === 'get'
+                                                        ? Link
+                                                        : LinkButton
+                                                "
                                                 :href="item.href"
                                                 :method="item.method ?? 'get'"
                                                 :class="[
@@ -236,7 +237,7 @@ const userNavigation: Array<UserNavigationItem> = [
                             :key="item.name"
                             :href="item.href"
                             :method="item.method ?? 'get'"
-                            :as="item.as ?? Link"
+                            :as="item.method === 'get' ? Link : LinkButton"
                             class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"
                         >
                             {{ item.name }}
