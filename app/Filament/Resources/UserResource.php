@@ -57,10 +57,6 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('username')
-                    ->translateLabel()
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->translateLabel()
                     ->email()
@@ -92,11 +88,6 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('last_name')
                     ->translateLabel()
                     ->searchable(),
-
-                Tables\Columns\TextColumn::make('username')
-                    ->translateLabel()
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('email')
                     ->translateLabel()

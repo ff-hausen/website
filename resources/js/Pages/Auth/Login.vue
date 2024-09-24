@@ -12,6 +12,8 @@ import {
     browserSupportsWebAuthn,
     startAuthentication,
 } from "@simplewebauthn/browser";
+import { onMounted } from "vue";
+import SecondaryButton from "@/Components/Laravel/SecondaryButton.vue";
 
 defineProps<{
     canResetPassword?: boolean;
@@ -41,14 +43,22 @@ const passkeyForm = useForm({
     answer: null,
 });
 
-async function authenticateWithPasskey() {
-    const options = await axios(route("passkeys.authenticateOptions"));
+async function authenticateWithPasskey(useBrowserAutofill = false) {
+    const options = await axios(route("passkeys.authenticateOptions"), {
+        params: {
+            email: form.email,
+        },
+    });
 
-    const answer = await startAuthentication(options.data);
+    const answer = await startAuthentication(options.data, useBrowserAutofill);
 
     passkeyForm.answer = JSON.stringify(answer);
     passkeyForm.post(route("passkeys.authenticate"));
 }
+
+onMounted(() => {
+    authenticateWithPasskey(true);
+});
 </script>
 
 <template>
@@ -94,7 +104,7 @@ async function authenticateWithPasskey() {
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>
 
-                <div class="mt-4 block">
+                <div class="mt-4 block flex justify-between">
                     <label class="flex items-center">
                         <Checkbox
                             name="remember"
@@ -104,9 +114,7 @@ async function authenticateWithPasskey() {
                             >Eingeloggt bleiben</span
                         >
                     </label>
-                </div>
 
-                <div class="mt-4 flex items-center justify-end">
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
@@ -114,14 +122,39 @@ async function authenticateWithPasskey() {
                     >
                         Passwort vergessen?
                     </Link>
+                </div>
 
-                    <PrimaryButton
-                        class="ms-4"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                    >
-                        Login
-                    </PrimaryButton>
+                <div class="mt-4 flex items-center justify-end gap-4">
+                    <div class="flex items-center">
+                        <SecondaryButton
+                            v-if="browserSupportsWebAuthn() && !form.password"
+                            @click="authenticateWithPasskey()"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="mr-2 size-4"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
+                                />
+                            </svg>
+                            Login mit Passkey
+                        </SecondaryButton>
+
+                        <PrimaryButton
+                            class="ms-4"
+                            :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing"
+                        >
+                            Login
+                        </PrimaryButton>
+                    </div>
                 </div>
             </form>
         </Box>

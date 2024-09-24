@@ -12,8 +12,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { computed } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import { Method } from "@inertiajs/core";
-import Avatar from "@/Components/Avatar.vue";
 import Footer from "@/Components/Footer.vue";
+import LinkButton from "@/Components/LinkButton.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -28,20 +28,25 @@ const props = withDefaults(
     },
 );
 
+const asButton = {
+    as: "button",
+    type: "button",
+};
+
 const navigation: Array<{ name: string; href: string; current: boolean }> = [
     // { name: 'Einsatzabteilung', href: '#', current: false },
     // { name: 'Jugendfeuerwehr', href: '#', current: false },
     // { name: 'Minifeuerwehr', href: '#', current: false },
-    // { name: 'Calendar', href: '#', current: false },
-    // { name: 'Reports', href: '#', current: false },
 ];
 const userNavigation: Array<{
     name: string;
     href: string;
     method?: Method;
+    as?: string | Component;
 }> = [
-    { name: "Dein Profil", href: "/profile" },
-    { name: "Abmelden", href: route("logout"), method: "post" },
+    { name: "Dein Profil", href: route("profile.edit"), as: Link },
+    { name: "Admin", href: route("filament.admin.pages.dashboard"), as: "a" },
+    { name: "Abmelden", href: route("logout"), method: "post", as: LinkButton },
 ];
 </script>
 
@@ -113,11 +118,6 @@ const userNavigation: Array<{
                                             :src="user.image_url"
                                             alt=""
                                         />
-                                        <Avatar
-                                            v-else
-                                            :name="user.username"
-                                            class="h-8 w-8 rounded-full"
-                                        />
                                     </MenuButton>
                                 </div>
                                 <transition
@@ -136,18 +136,17 @@ const userNavigation: Array<{
                                             :key="item.name"
                                             v-slot="{ active }"
                                         >
-                                            <Link
+                                            <component
+                                                :is="item.as"
                                                 :href="item.href"
                                                 :method="item.method ?? 'get'"
-                                                as="button"
-                                                type="button"
                                                 :class="[
                                                     active ? 'bg-gray-100' : '',
                                                     'block w-full px-4 py-2 text-left text-sm text-gray-700',
                                                 ]"
                                             >
                                                 {{ item.name }}
-                                            </Link>
+                                            </component>
                                         </MenuItem>
                                     </MenuItems>
                                 </transition>
@@ -209,11 +208,6 @@ const userNavigation: Array<{
                                 :src="user.image_url"
                                 alt=""
                             />
-                            <Avatar
-                                v-else
-                                :name="user.username"
-                                class="h-10 w-10 rounded-full"
-                            />
                         </div>
                         <div class="ml-3">
                             <div class="text-base font-medium text-white">
@@ -233,27 +227,27 @@ const userNavigation: Array<{
                         </button>
                     </div>
                     <div class="mt-3 space-y-1 px-2">
-                        <Link
+                        <DisclosureButton
                             v-for="item in userNavigation"
                             :key="item.name"
                             :href="item.href"
                             :method="item.method ?? 'get'"
-                            as="button"
-                            type="button"
-                            class="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"
+                            :as="item.as ?? Link"
+                            class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"
                         >
                             {{ item.name }}
-                        </Link>
+                        </DisclosureButton>
                     </div>
                 </div>
                 <div class="border-t border-red-700 pb-3 pt-4" v-else>
                     <div class="mt-3 space-y-1 px-2">
-                        <Link
+                        <DisclosureButton
                             :href="route('login')"
-                            class="hover:bg-opacity-75block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-red-500"
+                            :as="Link"
+                            class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"
                         >
                             Mitgliederbereich
-                        </Link>
+                        </DisclosureButton>
                     </div>
                 </div>
             </DisclosurePanel>

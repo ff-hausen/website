@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\AvatarProviders\DiceBearAvatarProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,17 +28,14 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandLogo('/images/ffhausen-logo.png')
-            ->login()
             ->colors([
                 'primary' => Color::Red,
             ])
-//            ->topNavigation()
             ->navigationGroups([
                 NavigationGroup::make('Benutzerverwaltung'),
                 NavigationGroup::make('Konfiguration')
                     ->collapsed(),
             ])
-            ->defaultAvatarProvider(DiceBearAvatarProvider::class)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

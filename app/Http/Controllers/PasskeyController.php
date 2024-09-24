@@ -20,6 +20,7 @@ use Webauthn\PublicKeyCredential;
 use Webauthn\PublicKeyCredentialCreationOptions;
 use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialRpEntity;
+use Webauthn\PublicKeyCredentialSource;
 use Webauthn\PublicKeyCredentialUserEntity;
 
 class PasskeyController extends Controller
@@ -43,7 +44,7 @@ class PasskeyController extends Controller
             challenge: Str::random(),
             authenticatorSelection: new AuthenticatorSelectionCriteria(
                 authenticatorAttachment: AuthenticatorSelectionCriteria::AUTHENTICATOR_ATTACHMENT_NO_PREFERENCE,
-                residentKey: AuthenticatorSelectionCriteria::RESIDENT_KEY_REQUIREMENT_REQUIRED,
+                residentKey: AuthenticatorSelectionCriteria::RESIDENT_KEY_REQUIREMENT_PREFERRED,
             )
         );
 
@@ -93,11 +94,20 @@ class PasskeyController extends Controller
         return to_route('profile.edit')->withFragment('managePasskey');
     }
 
-    public function authenticateOptions()
+    public function authenticateOptions(Request $request)
     {
+        $allowCredentials = $request->query('email')
+            ? Passkey::whereRelation('user', 'email', $request->email)
+                ->get()
+                ->map(fn (Passkey $passkey) => $passkey->data)
+                ->map(fn (PublicKeyCredentialSource $publicKeyCredentialSource) => $publicKeyCredentialSource->getPublicKeyCredentialDescriptor())
+                ->all()
+            : [];
+
         $options = new PublicKeyCredentialRequestOptions(
             challenge: Str::random(),
             rpId: parse_url(config('app.url'), PHP_URL_HOST),
+            allowCredentials: $allowCredentials,
         );
 
         Session::flash('passkey-authentication-options', $options);

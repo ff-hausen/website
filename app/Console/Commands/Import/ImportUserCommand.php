@@ -78,7 +78,7 @@ class ImportUserCommand extends Command
             $this->clearScreen();
             (new Table($this->output))
                 ->setColumnWidths($columnWidths)
-                ->setHeaders(['Nachname', 'Vorname', 'E-Mail', 'Benutzername', 'Status'])
+                ->setHeaders(['Nachname', 'Vorname', 'E-Mail', 'Status'])
                 ->setRows($rows->toArray())
                 ->render();
         }
@@ -143,33 +143,8 @@ class ImportUserCommand extends Command
                 $person->lastName,
                 $person->firstName,
                 $person->email(),
-                $this->username($person),
                 $this->status[$person] ?? terminal_style('...', 'yellow'),
             ]);
-    }
-
-    protected function username(Person $person): string
-    {
-        [$username, $hostname] = explode('@', $person->email(), 2) + [null, null];
-
-        if ($hostname === 'ff-frankfurt-hausen.de') {
-            return mb_strtolower($username);
-        }
-
-        $lengthFirst = 0;
-
-        do {
-            $lengthFirst++;
-
-            $username = Str::of($person->firstName)->lower()->substr(0, $lengthFirst)->append('.')
-                .Str::of($person->lastName)
-                    ->lower()
-                    ->replace(['ä', 'ö', 'ü', 'ß'], ['ae', 'oe', 'ue', 'ss'])
-                    ->replaceMatches(['/\s+/', '/[^\w\d]/'], '');
-
-        } while (User::whereUsername($username)->whereNot('email', $person->email())->exists());
-
-        return $username;
     }
 
     public function getUser(mixed $person): ?User
@@ -187,7 +162,6 @@ class ImportUserCommand extends Command
         ], [
             'first_name' => $person->firstName,
             'last_name' => $person->lastName,
-            'username' => $this->username($person),
             'password' => Hash::make(Str::random()),
         ]);
     }
