@@ -9,7 +9,7 @@ import { Head } from "@inertiajs/vue3";
 
     <MainLayout title="Datenschutzerklärung">
         <Box class="md:max-w-[65ch] md:rounded-lg">
-            <article class="prose prose-sm sm:prose-base max-w-none">
+            <article class="prose prose-sm max-w-none sm:prose-base">
                 <h2>1. Datenschutz auf einen Blick</h2>
                 <h3>Allgemeine Hinweise</h3>
                 <p>
@@ -428,6 +428,36 @@ import { Head } from "@inertiajs/vue3";
                     Welche Cookies und Dienste auf dieser Website eingesetzt
                     werden, k&ouml;nnen Sie dieser Datenschutzerkl&auml;rung
                     entnehmen.
+                </p>
+                <h3>Kontaktformular</h3>
+                <p>
+                    Wenn Sie uns per Kontaktformular Anfragen zukommen lassen,
+                    werden Ihre Angaben aus dem Anfrageformular inklusive der
+                    von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung
+                    der Anfrage und f&uuml;r den Fall von Anschlussfragen bei
+                    uns gespeichert. Diese Daten geben wir nicht ohne Ihre
+                    Einwilligung weiter.
+                </p>
+                <p>
+                    Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art.
+                    6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der
+                    Erf&uuml;llung eines Vertrags zusammenh&auml;ngt oder zur
+                    Durchf&uuml;hrung vorvertraglicher Ma&szlig;nahmen
+                    erforderlich ist. In allen &uuml;brigen F&auml;llen beruht
+                    die Verarbeitung auf unserem berechtigten Interesse an der
+                    effektiven Bearbeitung der an uns gerichteten Anfragen (Art.
+                    6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6
+                    Abs. 1 lit. a DSGVO) sofern diese abgefragt wurde; die
+                    Einwilligung ist jederzeit widerrufbar.
+                </p>
+                <p>
+                    Die von Ihnen im Kontaktformular eingegebenen Daten
+                    verbleiben bei uns, bis Sie uns zur L&ouml;schung
+                    auffordern, Ihre Einwilligung zur Speicherung widerrufen
+                    oder der Zweck f&uuml;r die Datenspeicherung entf&auml;llt
+                    (z.&nbsp;B. nach abgeschlossener Bearbeitung Ihrer Anfrage).
+                    Zwingende gesetzliche Bestimmungen &ndash; insbesondere
+                    Aufbewahrungsfristen &ndash; bleiben unber&uuml;hrt.
                 </p>
                 <h3>Gravatar</h3>
                 <p>
