@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Middleware;
@@ -15,11 +14,15 @@ class HandleInertiaRequests extends Middleware
     {
         $response = parent::handle($request, $next);
 
-        if ($response instanceof RedirectResponse) {
-            $path = parse_url($response->getTargetUrl(), PHP_URL_PATH);
-            if (str_starts_with($path, '/admin')) {
-                return Inertia::location($response->getTargetUrl());
-            }
+        $location = $response->headers->get('location');
+        $path = parse_url($location, PHP_URL_PATH);
+
+        if (str_starts_with($path, '/admin')) {
+            return Inertia::location($response->getTargetUrl());
+        }
+
+        if ($location && ! str_starts_with($location, config('app.url'))) {
+            return Inertia::location($location);
         }
 
         return $response;

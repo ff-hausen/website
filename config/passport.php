@@ -72,4 +72,15 @@ return [
         'secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Trusted Clients
+    |--------------------------------------------------------------------------
+    |
+    | A list of trusted client ids, that gets implicitly authorized.
+    |
+    */
+
+    'trusted_clients' => explode(',', env('PASSPORT_TRUSTED_CLIENTS', '')),
+
 ];

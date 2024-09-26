@@ -5,11 +5,23 @@ export interface User {
     id: number;
     first_name: string;
     last_name: string;
-    username: string;
     email: string;
     email_verified_at?: string;
     image_url?: string;
     role_names?: Array<string>;
+}
+
+export interface OAuthClient {
+    id: string;
+    user_id?: number;
+    name: string;
+    provider?: string;
+    redirect: string;
+    personal_access_client: boolean;
+    password_client: boolean;
+    revoked: boolean;
+    created_at?: boolean;
+    updated_at?: boolean;
 }
 
 export type PageProps<
