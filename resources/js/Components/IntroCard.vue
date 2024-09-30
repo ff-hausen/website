@@ -36,20 +36,16 @@ const containerClasses =
     .md\:mask-left {
         background: linear-gradient(
             90deg,
-            hsla(0, 0%, 0%, 1),
-            hsla(0, 0%, 0%, 0.8) 40%,
-            hsla(0, 0%, 0%, 0.4) 60%,
-            hsla(0, 0%, 0%, 0) 100%
+            hsla(0, 0%, 0%, 0.8) 30%,
+            hsla(0, 0%, 0%, 0) 70%
         );
     }
 
     .md\:mask-right {
         background: linear-gradient(
             -90deg,
-            hsla(0, 0%, 0%, 1),
-            hsla(0, 0%, 0%, 0.8) 40%,
-            hsla(0, 0%, 0%, 0.4) 60%,
-            hsla(0, 0%, 0%, 0) 100%
+            hsla(0, 0%, 0%, 0.8) 30%,
+            hsla(0, 0%, 0%, 0) 70%
         );
     }
 }
