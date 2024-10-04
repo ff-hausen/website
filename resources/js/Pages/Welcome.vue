@@ -30,7 +30,8 @@ const { contactFormTopics } = defineProps<{
             pull="left"
             class="bg-[right_15%_center]"
         >
-            <h1 class="mb-4 text-2xl font-black">Einsatzabteilung</h1>
+            <h1 class="text-2xl font-black">Einsatzabteilung</h1>
+            <p>ab 17 Jahren</p>
             <p class="text-base">Trifft sich jeden Freitag um 20:00 Uhr</p>
         </IntroCard>
 
@@ -39,8 +40,12 @@ const { contactFormTopics } = defineProps<{
             pull="right"
             class="bg-[left_10%_center]"
         >
-            <h1 class="mb-4 text-2xl font-black">Jugendfeuerwehr</h1>
-            <p class="text-base">Trifft sich jeden Dienstag um 18:00 Uhr</p>
+            <h1 class="text-2xl font-black">Jugendfeuerwehr</h1>
+            <p>von 10 bis 17 Jahren</p>
+            <p class="text-base">
+                Trifft sich außerhalb der Schulferien jeden Dienstag um 18:00
+                Uhr
+            </p>
         </IntroCard>
 
         <IntroCard
@@ -48,8 +53,11 @@ const { contactFormTopics } = defineProps<{
             pull="left"
             class="bg-[top_15%_center]"
         >
-            <h1 class="mb-4 text-2xl font-black">Minifeuerwehr</h1>
-            <p class="text-base">Trifft sich jeden Freitag um 16:30 Uhr</p>
+            <h1 class="text-2xl font-black">Minifeuerwehr</h1>
+            <p>von 6 bis 10 Jahren</p>
+            <p class="text-base">
+                Trifft sich außerhalb der Schulferien jeden Freitag um 16:30 Uhr
+            </p>
         </IntroCard>
 
         <ContactSection

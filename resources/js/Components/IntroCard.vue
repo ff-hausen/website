@@ -6,7 +6,9 @@ const { image, pull = "left" } = defineProps<{
 
 const maskClasses = [pull === "left" ? "md:mask-left" : "md:mask-right"];
 const containerClasses =
-    pull === "left" ? ["left-0", "items-start"] : ["right-0", "items-end"];
+    pull === "left"
+        ? ["left-0", "items-start", "text-left"]
+        : ["right-0", "items-end", "text-right"];
 </script>
 
 <template>
@@ -18,7 +20,7 @@ const containerClasses =
     >
         <div class="mask-full relative h-full" :class="maskClasses">
             <div
-                class="absolute flex h-full flex-col items-start justify-center px-8 text-white"
+                class="absolute flex h-full flex-col items-start justify-center gap-2 px-8 text-white md:w-[40%]"
                 :class="containerClasses"
             >
                 <slot></slot>
