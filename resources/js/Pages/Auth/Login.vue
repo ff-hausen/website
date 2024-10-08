@@ -12,8 +12,11 @@ import {
     browserSupportsWebAuthn,
     startAuthentication,
 } from "@simplewebauthn/browser";
-import { onMounted } from "vue";
+import { inject, onMounted } from "vue";
 import SecondaryButton from "@/Components/Laravel/SecondaryButton.vue";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 defineProps<{
     canResetPassword?: boolean;

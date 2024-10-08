@@ -9,11 +9,14 @@ import {
     MenuItems,
 } from "@headlessui/vue";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { type Component, computed } from "vue";
+import { type Component, computed, inject } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import Footer from "@/Components/Footer.vue";
 import { MainNavigationItem, UserNavigationItem } from "@/types";
 import LinkButton from "@/Components/LinkButton.vue";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);

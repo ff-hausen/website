@@ -5,6 +5,10 @@ import Box from "@/Components/Box.vue";
 import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import SecondaryButton from "@/Components/Laravel/SecondaryButton.vue";
 import { OAuthClient } from "@/types";
+import { route as ziggyRoute } from "ziggy-js";
+import { inject } from "vue";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const props = defineProps<{
     client: OAuthClient;

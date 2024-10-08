@@ -12,6 +12,10 @@ import {
     startRegistration,
 } from "@simplewebauthn/browser";
 import axios from "axios";
+import { route as ziggyRoute } from "ziggy-js";
+import { inject } from "vue";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 dayjs.extend(relativeTime);
 dayjs.locale("de");

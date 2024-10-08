@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { inject, ref } from "vue";
 import ApplicationLogo from "@/Components/Laravel/ApplicationLogo.vue";
 import Dropdown from "@/Components/Laravel/Dropdown.vue";
 import DropdownLink from "@/Components/Laravel/DropdownLink.vue";
 import NavLink from "@/Components/Laravel/NavLink.vue";
 import ResponsiveNavLink from "@/Components/Laravel/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/vue3";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const showingNavigationDropdown = ref(false);
 </script>

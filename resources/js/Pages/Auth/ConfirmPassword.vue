@@ -6,6 +6,10 @@ import TextInput from "@/Components/Laravel/TextInput.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Box from "@/Components/Box.vue";
+import { route as ziggyRoute } from "ziggy-js";
+import { inject } from "vue";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const form = useForm({
     password: "",

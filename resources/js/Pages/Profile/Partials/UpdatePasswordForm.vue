@@ -4,7 +4,10 @@ import InputLabel from "@/Components/Laravel/InputLabel.vue";
 import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import TextInput from "@/Components/Laravel/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { inject, ref } from "vue";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const passwordInput = ref<HTMLInputElement | null>(null);
 const currentPasswordInput = ref<HTMLInputElement | null>(null);

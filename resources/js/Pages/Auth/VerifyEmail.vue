@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, inject } from "vue";
 import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Box from "@/Components/Box.vue";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const props = defineProps<{
     status?: string;

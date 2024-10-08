@@ -3,6 +3,10 @@ import { useForm } from "laravel-precognition-vue-inertia";
 import InputError from "@/Components/Laravel/InputError.vue";
 import InputLabel from "@/Components/Laravel/InputLabel.vue";
 import TextInput from "@/Components/Laravel/TextInput.vue";
+import { inject } from "vue";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const { topics, selectedTopic = "" } = defineProps<{
     topics: string[];

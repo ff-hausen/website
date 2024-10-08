@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
+import { inject } from "vue";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 </script>
 
 <template>

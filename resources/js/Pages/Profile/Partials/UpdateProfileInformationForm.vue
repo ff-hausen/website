@@ -4,6 +4,10 @@ import InputLabel from "@/Components/Laravel/InputLabel.vue";
 import PrimaryButton from "@/Components/Laravel/PrimaryButton.vue";
 import TextInput from "@/Components/Laravel/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
+import { route as ziggyRoute } from "ziggy-js";
+import { inject } from "vue";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 defineProps<{
     mustVerifyEmail?: Boolean;

@@ -6,7 +6,10 @@ import Modal from "@/Components/Laravel/Modal.vue";
 import SecondaryButton from "@/Components/Laravel/SecondaryButton.vue";
 import TextInput from "@/Components/Laravel/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
-import { nextTick, ref } from "vue";
+import { inject, nextTick, ref } from "vue";
+import { route as ziggyRoute } from "ziggy-js";
+
+const route = inject<typeof ziggyRoute>("route")!;
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);
