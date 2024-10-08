@@ -84,22 +84,26 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
                     ->translateLabel()
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
                     ->translateLabel()
+                    ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('email')
                     ->translateLabel()
+                    ->sortable()
                     ->searchable()
                     ->toggleable(),
 
-                Tables\Columns\IconColumn::make('email_verified')
+                Tables\Columns\IconColumn::make('email_verified_at')
                     ->label('E-Mail verifiziert')
                     ->state(fn (User $user) => $user->email_verified_at !== null)
                     ->tooltip(fn ($state) => $state ? 'E-Mail wurde verifiziert' : 'E-Mail wurde nicht verifiziert')
                     ->boolean()
                     ->alignCenter()
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('roles.name')
