@@ -29,6 +29,9 @@ export type PageProps<
 > = T & {
     auth: {
         user: User;
+        can: {
+            access_admin: boolean;
+        };
     };
     ziggy: Config & { location: string };
 };

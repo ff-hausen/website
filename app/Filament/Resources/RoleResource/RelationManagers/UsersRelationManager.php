@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\RoleResource\RelationManagers;
 
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -11,23 +10,22 @@ use Filament\Tables\Table;
 
 class UsersRelationManager extends RelationManager
 {
+    protected static ?string $title = 'Benutzer';
+
+    protected static ?string $modelLabel = 'Benutzer';
+
+    protected static ?string $pluralModelLabel = 'Benutzer';
+
     protected static string $relationship = 'users';
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('username')
-                    ->translateLabel()
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return $form;
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('username')
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
                     ->translateLabel()
@@ -48,9 +46,7 @@ class UsersRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->modelLabel('Benutzer')
-                    ->translateLabel()
-                    ->recordTitle(fn (User $user) => $user->full_name)
+                    ->recordTitle(fn (User $user) => "$user->full_name <$user->email>")
                     ->recordSelectSearchColumns(['first_name', 'last_name', 'email'])
                     ->multiple(),
             ])

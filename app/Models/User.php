@@ -43,6 +43,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         'id',
         'first_name',
         'last_name',
+        'full_name',
         'email',
         'email_verified_at',
         'image_url',
@@ -67,11 +68,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         return $this->hasMany(Passkey::class);
     }
 
-    protected function fullName(): Attribute
-    {
-        return Attribute::get(fn () => $this->first_name.' '.$this->last_name);
-    }
-
     protected function imageUrl(): Attribute
     {
         return Attribute::get(
@@ -83,7 +79,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->isAdmin();
+        return $this->can('access-admin');
     }
 
     public function getFilamentName(): string

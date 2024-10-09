@@ -14,6 +14,16 @@ enum RoleName: string implements HasLabel
 
     case AltersUndEhrenabteilung = 'Alters- und Ehrenabteilung';
 
+    case JugendfeuerwehrLeitung = 'JF Leitung';
+
+    case JugendfeuerwehrBetreuer = 'JF Betreuer';
+
+    case MinifeuerwehrLeitung = 'MF Leitung';
+
+    case MinifeuerwehrBetreuer = 'MF Betreuer';
+
+    case Wehrfuehrung = 'Wehrführung';
+
     public function getLabel(): ?string
     {
         return $this->value;

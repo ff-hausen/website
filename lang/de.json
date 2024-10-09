@@ -90,5 +90,14 @@
     "Users count": "Anzahl Benutzer",
     "Email verified at": "E-Mail verifiziert am",
     "Created at": "Erstellt am",
-    "Updated at": "Aktualisiert am"
+    "Updated at": "Aktualisiert am",
+    "Title": "Titel",
+    "Start time": "Startzeit",
+    "End time": "Endzeit",
+    "All day": "Ganztägig",
+    "Department": "Abteilung",
+    "Type": "Veranstaltungsart",
+    "Types": "Veranstaltungsarten",
+    "Created by": "Erstellt von",
+    "Responsible": "Verantwortlich"
 }

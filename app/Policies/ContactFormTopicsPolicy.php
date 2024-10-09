@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\ContactFormTopics;
+use App\Models\RoleName;
 use App\Models\User;
 
 class ContactFormTopicsPolicy
@@ -12,7 +13,7 @@ class ContactFormTopicsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
@@ -20,7 +21,7 @@ class ContactFormTopicsPolicy
      */
     public function view(User $user, ContactFormTopics $contactFormTopics): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
@@ -28,7 +29,7 @@ class ContactFormTopicsPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
@@ -36,7 +37,7 @@ class ContactFormTopicsPolicy
      */
     public function update(User $user, ContactFormTopics $contactFormTopics): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
@@ -44,7 +45,7 @@ class ContactFormTopicsPolicy
      */
     public function delete(User $user, ContactFormTopics $contactFormTopics): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
@@ -52,7 +53,7 @@ class ContactFormTopicsPolicy
      */
     public function restore(User $user, ContactFormTopics $contactFormTopics): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
@@ -60,6 +61,6 @@ class ContactFormTopicsPolicy
      */
     public function forceDelete(User $user, ContactFormTopics $contactFormTopics): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 }

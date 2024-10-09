@@ -17,8 +17,17 @@ trait InteractsWithRoles
         return $this->roles->where('name', $roleName)->isNotEmpty();
     }
 
-    public function isAdmin(): bool
+    /**
+     * @param  RoleName[]  $roleNames
+     */
+    public function hasAnyRole(array $roleNames): bool
     {
-        return $this->hasRole(RoleName::Administrator);
+        foreach ($roleNames as $roleName) {
+            if ($this->hasRole($roleName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

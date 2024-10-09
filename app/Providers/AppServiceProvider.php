@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Passport\Client;
+use App\Models\RoleName;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +26,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Gate::define('access-admin', function (User $user) {
+            return $user->hasAnyRole([
+                RoleName::Administrator,
+                RoleName::JugendfeuerwehrLeitung,
+                RoleName::MinifeuerwehrLeitung,
+            ]);
+        });
+
         $this->bootPassport();
     }
 

@@ -37,10 +37,10 @@ const userNavigation: Array<UserNavigationItem> = [
         name: "Dein Profil",
         href: route("profile.edit"),
     },
-    ...(user.value?.role_names?.includes("Administrator")
+    ...(page.props.auth.can.access_admin
         ? [
               {
-                  name: "Admin",
+                  name: "Verwaltung",
                   href: route("filament.admin.pages.dashboard"),
               },
           ]

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Role;
+use App\Models\RoleName;
 use App\Models\User;
 
 class RolePolicy
@@ -12,7 +13,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
@@ -20,7 +21,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->isAdmin();
+        return $user->hasRole(RoleName::Administrator);
     }
 
     /**
