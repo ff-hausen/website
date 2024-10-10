@@ -10,6 +10,7 @@ class UpcomingScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('start_time', '>=', now());
+        $builder->where('start_time', '>=', now())
+            ->orderBy('start_time', 'asc');
     }
 }

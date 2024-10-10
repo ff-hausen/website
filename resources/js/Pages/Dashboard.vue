@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
+import Calendar from "@/Components/Calendar.vue";
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import MainLayout from "@/Layouts/MainLayout.vue";
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">Du bist eingeloggt!</div>
+                    <Calendar department="ea" />
                 </div>
             </div>
         </div>

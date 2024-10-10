@@ -34,6 +34,10 @@ const navigation: Array<MainNavigationItem> = [
 
 const userNavigation: Array<UserNavigationItem> = [
     {
+        name: "Dashboard",
+        href: route("dashboard"),
+    },
+    {
         name: "Dein Profil",
         href: route("profile.edit"),
     },

@@ -17,6 +17,8 @@ class Event extends Model
 
     protected $table = 'calendar_events';
 
+    protected $with = 'type';
+
     protected $fillable = [
         'title',
         'start_time',
@@ -47,6 +49,7 @@ class Event extends Model
             'start_time' => 'datetime',
             'end_time' => 'datetime',
             'department' => Department::class,
+            'all_day' => 'bool',
         ];
     }
 }
