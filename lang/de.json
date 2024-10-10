@@ -99,5 +99,6 @@
     "Type": "Veranstaltungsart",
     "Types": "Veranstaltungsarten",
     "Created by": "Erstellt von",
-    "Responsible": "Verantwortlich"
+    "Responsible": "Verantwortlich",
+    "Description": "Beschreibung"
 }

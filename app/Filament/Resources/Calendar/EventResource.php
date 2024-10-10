@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -114,6 +115,13 @@ class EventResource extends Resource
                                 }),
                         ])->columnSpanFull()
                             ->columns(2),
+
+                        MarkdownEditor::make('description')
+                            ->translateLabel()
+                            ->nullable()
+                            ->disableToolbarButtons([
+                                'heading',
+                            ]),
                     ]),
 
                 Section::make([

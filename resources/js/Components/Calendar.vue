@@ -4,6 +4,7 @@ import { route as ziggyRoute } from "ziggy-js";
 import dayjs from "dayjs";
 import de from "dayjs/locale/de";
 import { CalenderEvent } from "@/types/calendar";
+import InformationModal from "@/Components/InformationModal.vue";
 
 dayjs.locale(de);
 
@@ -96,6 +97,7 @@ function formatStartTime(event: CalenderEvent): string {
                                     >
                                         Titel
                                     </th>
+                                    <th scope="col"></th>
                                     <th
                                         scope="col"
                                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -124,9 +126,23 @@ function formatStartTime(event: CalenderEvent): string {
                                     >
                                         {{ event.title }}
                                     </td>
+                                    <td>
+                                        <InformationModal
+                                            v-if="event.description"
+                                            title="Details"
+                                            :text="event.description"
+                                        />
+                                    </td>
                                     <td
                                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                                     >
+                                        <div
+                                            v-if="
+                                                event.responsible.length === 0
+                                            "
+                                        >
+                                            ?
+                                        </div>
                                         <div
                                             v-for="person in event.responsible"
                                             :key="person.id"

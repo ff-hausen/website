@@ -14,6 +14,7 @@ export interface CalendarResponsibleUser {
 export interface CalenderEvent {
     id: number;
     title: string;
+    description: string;
     start_time: string;
     end_time: string;
     all_day: boolean;

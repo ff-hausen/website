@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('calendar_events', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->text('description')->nullable();
             $table->datetime('start_time');
             $table->datetime('end_time')->nullable();
             $table->boolean('all_day')->default(false);
