@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
@@ -71,8 +72,9 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\CheckboxList::make('roles')
                             ->hiddenLabel()
+                            ->columns(4)
                             ->columnSpanFull()
-                            ->relationship()
+                            ->relationship(modifyQueryUsing: fn (Builder $query) => $query->orderBy('name', 'asc'))
                             ->getOptionLabelFromRecordUsing(fn (Role $role) => $role->name->value),
                     ]),
             ]);
