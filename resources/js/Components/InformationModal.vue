@@ -12,7 +12,7 @@ const modal = useTemplateRef("modal");
 
 <template>
     <div class="">
-        <button role="button" @click="modal.showModal()">
+        <button role="button" @click="modal!.showModal()">
             <InformationCircleIcon class="size-6" />
         </button>
         <dialog ref="modal" class="modal">

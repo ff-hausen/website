@@ -22,10 +22,10 @@ class EditType extends EditRecord
     {
         if ($data['background_color']) {
             $data['text_color'] = ColorContrast::findTextColor($data['background_color']);
+        } else {
+            $data['text_color'] = null;
         }
 
         return $data;
     }
-
-
 }

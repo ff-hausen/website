@@ -55,7 +55,8 @@ class TypeResource extends Resource
 
                 ColorPicker::make('background_color')
                     ->live()
-                    ->afterStateUpdated(fn ($state, Set $set) => $set('text_color', ColorContrast::findTextColor($state))),
+                    ->nullable()
+                    ->afterStateUpdated(fn ($state, Set $set) => $state ? $set('text_color', ColorContrast::findTextColor($state)) : $set('text_color', null)),
 
                 ColorPicker::make('text_color')
                     ->disabled(),

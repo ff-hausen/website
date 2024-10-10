@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { inject, onMounted, ref } from "vue";
+import { inject, onMounted, Ref, ref } from "vue";
 import { route as ziggyRoute } from "ziggy-js";
 import dayjs from "dayjs";
-import { CalendarEventType, CalenderEvent } from "@/types/calendar";
+import { CalenderEvent } from "@/types/calendar";
 import InformationModal from "@/Components/InformationModal.vue";
 import Badge from "@/Components/Badge.vue";
 import axios from "axios";
 
-const route = inject<typeof ziggyRoute>("route");
+const route = inject<typeof ziggyRoute>("route")!;
 
 const props = defineProps<{
     department: string;
 }>();
 
-const events: Array<CalendarEventType> = ref([]);
+const events: Ref<Array<CalenderEvent>> = ref([]);
 
 const dataIsLoading = ref(true);
 
@@ -116,7 +116,7 @@ function formatStartTime(event: CalenderEvent): string {
                                 </tr>
                                 <tr v-for="event in events" :key="event.id">
                                     <td
-                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                                        class="whitespace-nowrap px-3 py-4 align-text-top text-sm text-gray-500"
                                     >
                                         {{ formatStartTime(event) }}
                                     </td>
@@ -128,7 +128,7 @@ function formatStartTime(event: CalenderEvent): string {
                                         />
                                     </td>
                                     <td
-                                        class="flex flex-col whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                                        class="flex flex-col gap-1 whitespace-nowrap py-4 pl-4 pr-3 align-text-top text-sm font-medium text-gray-900 sm:pl-6"
                                     >
                                         <div class="ml-0.5">
                                             {{ event.title }}
@@ -148,7 +148,7 @@ function formatStartTime(event: CalenderEvent): string {
                                         </div>
                                     </td>
                                     <td
-                                        class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                                        class="whitespace-nowrap px-3 py-4 align-text-top text-sm text-gray-500"
                                     >
                                         <div
                                             v-if="
