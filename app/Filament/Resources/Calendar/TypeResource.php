@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Calendar;
 
+use App\Facades\ColorContrast;
 use App\Filament\Resources\Calendar\TypeResource\Pages;
 use App\Models\Calendar\Type;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -49,6 +52,13 @@ class TypeResource extends Resource
                     ->options(EventResource::departmentOptions())
                     ->default(fn () => request()->query('department'))
                     ->required(),
+
+                ColorPicker::make('background_color')
+                    ->live()
+                    ->afterStateUpdated(fn ($state, Set $set) => $set('text_color', ColorContrast::findTextColor($state))),
+
+                ColorPicker::make('text_color')
+                    ->disabled(),
 
                 Placeholder::make('created_at')
                     ->content(fn (?Type $record): string => $record?->created_at?->diffForHumans() ?? '-'),

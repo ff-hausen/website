@@ -12,6 +12,8 @@ class Type extends Model
     protected $fillable = [
         'name',
         'department',
+        'background_color',
+        'text_color',
     ];
 
     public function events(): HasMany

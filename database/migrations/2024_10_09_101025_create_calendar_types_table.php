@@ -12,6 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('department')->default('ea');
+            $table->string('background_color')->nullable();
+            $table->string('text_color')->nullable();
             $table->timestamps();
         });
     }

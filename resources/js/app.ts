@@ -5,8 +5,12 @@ import { createApp, DefineComponent, h } from "vue";
 import { createInertiaApp, router } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
+import dayjs from "dayjs";
+import de from "dayjs/locale/de";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
+
+dayjs.locale(de);
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

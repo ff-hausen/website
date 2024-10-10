@@ -2,11 +2,10 @@
 import { inject, onMounted, ref } from "vue";
 import { route as ziggyRoute } from "ziggy-js";
 import dayjs from "dayjs";
-import de from "dayjs/locale/de";
-import { CalenderEvent } from "@/types/calendar";
+import { CalendarEventType, CalenderEvent } from "@/types/calendar";
 import InformationModal from "@/Components/InformationModal.vue";
-
-dayjs.locale(de);
+import Badge from "@/Components/Badge.vue";
+import axios from "axios";
 
 const route = inject<typeof ziggyRoute>("route");
 
@@ -91,13 +90,13 @@ function formatStartTime(event: CalenderEvent): string {
                                     >
                                         Datum
                                     </th>
+                                    <th scope="col"></th>
                                     <th
                                         scope="col"
                                         class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                                     >
                                         Titel
                                     </th>
-                                    <th scope="col"></th>
                                     <th
                                         scope="col"
                                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -121,17 +120,32 @@ function formatStartTime(event: CalenderEvent): string {
                                     >
                                         {{ formatStartTime(event) }}
                                     </td>
-                                    <td
-                                        class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                                    >
-                                        {{ event.title }}
-                                    </td>
                                     <td>
                                         <InformationModal
                                             v-if="event.description"
                                             title="Details"
                                             :text="event.description"
                                         />
+                                    </td>
+                                    <td
+                                        class="flex flex-col whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                                    >
+                                        <div class="ml-0.5">
+                                            {{ event.title }}
+                                        </div>
+                                        <div>
+                                            <Badge
+                                                :background-color="
+                                                    event.type.background_color
+                                                "
+                                                :text-color="
+                                                    event.type.text_color
+                                                "
+                                                v-if="event.type"
+                                            >
+                                                {{ event.type.name }}
+                                            </Badge>
+                                        </div>
                                     </td>
                                     <td
                                         class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"

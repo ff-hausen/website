@@ -9,6 +9,7 @@
         "bvanhoekelen/terminal-style": "^1.0",
         "creativeorange/gravatar": "^1.0",
         "filament/filament": "^3.2",
+        "hracik/php-color-converter": "^0.0.3",
         "ibrahimbougaoua/filament-sort-order": "^1.1",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.9",

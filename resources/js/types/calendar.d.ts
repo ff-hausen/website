@@ -1,6 +1,9 @@
 export interface CalendarEventType {
     id: number;
     name: string;
+    department: string;
+    background_color: string;
+    text_color: string;
     created_at: string;
     updated_at: string;
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Calendar\TypeResource\Pages;
 
+use App\Facades\ColorContrast;
 use App\Filament\Resources\Calendar\TypeResource;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -14,5 +15,14 @@ class CreateType extends CreateRecord
         return [
 
         ];
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        if ($data['background_color']) {
+            $data['text_color'] = ColorContrast::findTextColor($data['background_color']);
+        }
+
+        return $data;
     }
 }
