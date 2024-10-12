@@ -6,7 +6,6 @@ use App\Filament\Resources\Calendar\EventResource\Pages;
 use App\Models\Calendar\Department;
 use App\Models\Calendar\Event;
 use App\Models\Calendar\Type;
-use App\Models\Scopes\UpcomingScope;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms\Components\Checkbox;
@@ -62,6 +61,7 @@ class EventResource extends Resource
                         TextInput::make('title')
                             ->translateLabel()
                             ->required()
+                            ->autofocus()
                             ->columnSpanFull(),
 
                         Group::make([
@@ -70,6 +70,12 @@ class EventResource extends Resource
                                 ->seconds(false)
                                 ->required()
                                 ->live()
+                                ->default(function () {
+                                    $time = session('event')?->start_time;
+                                    if ($time) {
+                                        return Carbon::parse($time)->addWeek()->toDateTimeLocalString();
+                                    }
+                                })
                                 ->afterStateUpdated(function ($state, Get $get, Set $set) {
                                     if (! $state) {
                                         return;
@@ -92,6 +98,12 @@ class EventResource extends Resource
                                 ->seconds(false)
                                 ->nullable()
                                 ->live()
+                                ->default(function () {
+                                    $time = session('event')?->end_time;
+                                    if ($time) {
+                                        return Carbon::parse($time)->addWeek()->toDateTimeLocalString();
+                                    }
+                                })
                                 ->afterStateUpdated(function ($state, Get $get, Set $set) {
                                     if (! $state) {
                                         return;
@@ -128,7 +140,7 @@ class EventResource extends Resource
                     Select::make('department')
                         ->translateLabel()
                         ->options(self::departmentOptions())
-                        ->default(fn () => request()->query('department'))
+                        ->default(fn () => session('event')?->department ?? request()->query('department'))
                         ->required()
                         ->live(),
 
@@ -139,6 +151,7 @@ class EventResource extends Resource
                         ->createOptionForm([
                             TextInput::make('name'),
                         ])
+                        ->default(fn () => session('event')?->type_id)
                         ->createOptionUsing(function (array $data, Get $get): int {
                             return Type::create([
                                 ...$data,
@@ -203,10 +216,13 @@ class EventResource extends Resource
             ])
             ->defaultSort('start_time', 'asc')
             ->filters([
-                Filter::make('with_past')
-                    ->label('Zeige vergangene Termine')
-                    ->baseQuery(fn (Builder $query) => $query->withoutGlobalScope(UpcomingScope::class))
-                    ->toggle(),
+                Filter::make('only_upcoming')
+                    ->label('nur anstehende Termine')
+                    ->baseQuery(fn (Builder $query) => $query->upcoming())
+                    ->toggle()
+                    ->default()
+                    ->indicateUsing(fn () => null),
+
                 TrashedFilter::make(),
             ])
             ->actions([
@@ -275,10 +291,5 @@ class EventResource extends Resource
         }
 
         return $departmentOptions;
-    }
-
-    public static function typeOptions(): array
-    {
-        return Event::select('type')->distinct()->pluck('type')->toArray();
     }
 }

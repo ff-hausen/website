@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Calendar\EventResource\Pages;
 use App\Filament\Resources\Calendar\EventResource;
 use Carbon\Carbon;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Session;
 
 class CreateEvent extends CreateRecord
 {
@@ -27,5 +28,10 @@ class CreateEvent extends CreateRecord
         }
 
         return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        Session::flash('event', $this->record);
     }
 }

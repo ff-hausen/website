@@ -17,7 +17,7 @@ class ListEvents extends ListRecords
     {
         return [
             CreateAction::make()
-                ->url(fn () => route('filament.admin.resources.calendar.events.create', [
+                ->url(fn () => EventResource::getUrl('create', [
                     'department' => $this->activeTab,
                 ])),
         ];

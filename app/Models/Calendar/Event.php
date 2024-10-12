@@ -2,15 +2,13 @@
 
 namespace App\Models\Calendar;
 
-use App\Models\Scopes\UpcomingScope;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[ScopedBy(UpcomingScope::class)]
 class Event extends Model
 {
     use SoftDeletes;
@@ -52,5 +50,12 @@ class Event extends Model
             'department' => Department::class,
             'all_day' => 'bool',
         ];
+    }
+
+    public function scopeUpcoming(Builder $query): void
+    {
+        $query->where('start_time', '>=', now())
+            ->orWhere('end_time', '>=', now())
+            ->orderBy('start_time');
     }
 }

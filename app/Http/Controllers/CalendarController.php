@@ -17,7 +17,9 @@ class CalendarController extends Controller
             'department' => ['required', Rule::enum(Department::class)],
         ])->validate();
 
-        return EventResource::collection(Event::whereDepartment($request->query('department'))->get());
+        return EventResource::collection(
+            Event::upcoming()->whereDepartment($request->query('department'))->get()
+        );
     }
 
     public function store(Request $request) {}
