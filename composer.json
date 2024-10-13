@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
+        "deployer/deployer": "^7.4",
         "fakerphp/faker": "^1.23",
         "laravel-lang/lang": "^15.7",
         "laravel/breeze": "^2.1",
