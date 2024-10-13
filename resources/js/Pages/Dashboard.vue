@@ -2,6 +2,11 @@
 import { Head } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import Calendar from "@/Components/Calendar.vue";
+import { CalenderEvent } from "@/types/calendar";
+
+defineProps<{
+    events: Array<CalenderEvent>;
+}>();
 </script>
 
 <template>
@@ -17,7 +22,7 @@ import Calendar from "@/Components/Calendar.vue";
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <Calendar department="ea" />
+                    <Calendar :events="events" />
                 </div>
             </div>
         </div>

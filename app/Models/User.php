@@ -23,15 +23,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
     use HasApiTokens, HasFactory, Notifiable;
     use InteractsWithRoles;
 
-    protected $with = [
-        'roles',
-    ];
-
-    protected $appends = [
-        'image_url',
-        'role_names',
-    ];
-
     protected $fillable = [
         'first_name',
         'last_name',
@@ -47,7 +38,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
         'email',
         'email_verified_at',
         'image_url',
-        'role_names',
     ];
 
     protected function casts(): array
@@ -72,6 +62,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
     {
         return Attribute::get(
             function () {
+                if (! $this->email) {
+                    return null;
+                }
+
                 return Gravatar::get($this->email);
             },
         );
