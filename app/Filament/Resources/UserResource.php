@@ -111,7 +111,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('roles.name')
                     ->label('Abteilungen')
                     ->badge()
-                    ->state(fn (User $user) => $user->role_names->filter(fn ($item) => in_array($item, [
+                    ->state(fn (User $user) => $user->roles->pluck('name')->filter(fn ($item) => in_array($item, [
                         RoleName::Einsatzabteilung,
                         RoleName::Vereinsmitglied,
                         RoleName::AltersUndEhrenabteilung,
