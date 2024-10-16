@@ -53,7 +53,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user()->append(['image_url', 'role_names']),
+                'user' => $request->user()->append(['image_url']),
                 'can' => [
                     'access_admin' => $request->user()?->can('access-admin') ?? false,
                 ],
