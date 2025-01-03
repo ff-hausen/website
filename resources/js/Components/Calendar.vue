@@ -69,7 +69,7 @@ function formatStartTime(event: CalenderEvent): string {
                                 <tr v-if="events.length === 0">
                                     <td
                                         class="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500"
-                                        colspan="3"
+                                        colspan="4"
                                     >
                                         Keine Termine vorhanden.
                                     </td>
