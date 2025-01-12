@@ -34,8 +34,12 @@ const navigation: Array<MainNavigationItem> = [
 
 const userNavigation: Array<UserNavigationItem> = [
     {
-        name: "Dashboard",
+        name: "Dienstplan",
         href: route("dashboard"),
+    },
+    {
+        name: "Wiki",
+        href: "https://wiki.ff26.de",
     },
     {
         name: "Dein Profil",

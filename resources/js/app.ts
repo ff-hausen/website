@@ -33,8 +33,8 @@ createInertiaApp({
 router.on("before", (event) => {
     const url = event.detail.visit.url;
 
-    if (url.pathname.startsWith("/admin")) {
+    if (url.host !== location.host || url.pathname.startsWith("/admin")) {
         event.preventDefault();
-        window.location.href = url.href;
+        location.href = url.href;
     }
 });
