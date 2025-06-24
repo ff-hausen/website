@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AusflugAnmeldungController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -26,7 +27,10 @@ Route::middleware('auth')->group(function () {
 Route::inertia('/impressum', 'Imprint')->name('imprint');
 Route::inertia('/datenschutz', 'Privacy')->name('privacy');
 
-Route::inertia('/ausflug/anmeldung', 'Vereinsausflug/Anmeldung');
+Route::prefix('/ausflug')->group(function () {
+    Route::get('/anmeldung', [AusflugAnmeldungController::class, 'index'])->name('ausflug.anmeldung');
+    Route::post('/anmeldung', [AusflugAnmeldungController::class, 'store']);
+});
 
 require __DIR__.'/passkeys.php';
 
