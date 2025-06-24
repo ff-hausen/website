@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('type');
+            $table->boolean('primary')->default(false);
             $table->boolean('verified')->default(false);
             $table->timestamps();
         });

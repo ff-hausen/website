@@ -26,12 +26,12 @@ const emit = defineEmits<{
     <button
         :type="type ?? 'button'"
         :class="{
-            'bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800':
+            'bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-300':
                 color === 'blue' && !disabled,
-            'bg-blue-400 text-white dark:bg-blue-500':
+            'bg-blue-400 text-white':
                 color === 'blue' && disabled,
 
-            'border border-gray-200 bg-white text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700':
+            'border border-gray-200 bg-white text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:ring-gray-100 ':
                 color === 'alternative' && !disabled,
 
             'cursor-not-allowed': disabled,

@@ -30,6 +30,8 @@ Route::inertia('/datenschutz', 'Privacy')->name('privacy');
 Route::prefix('/ausflug')->group(function () {
     Route::get('/anmeldung', [AusflugAnmeldungController::class, 'index'])->name('ausflug.anmeldung');
     Route::post('/anmeldung', [AusflugAnmeldungController::class, 'store']);
+
+    Route::get('/verification/{submissionId}', [AusflugAnmeldungController::class, 'verification'])->name('ausflug.verification');
 });
 
 require __DIR__.'/passkeys.php';

@@ -15,7 +15,7 @@ export interface Participant {
     phone: string | null;
     type: "ea" | "verein" | null;
     hasErrors: boolean;
-    error: string | null;
+    primary: boolean;
 }
 
 const formElement = useTemplateRef("form-element");
@@ -31,13 +31,17 @@ let newParticipant = reactive<Participant>({
     phone: null,
     type: null,
     hasErrors: false,
-    error: null,
+    primary: false,
 });
 
 function addParticipant(): void {
     const formIsValid = formElement.value?.reportValidity();
 
     if (formIsValid) {
+        if (participants.value.length === 0) {
+            newParticipant.primary = true;
+        }
+
         participants.value.push(newParticipant);
         resetParticipantForm();
     }
@@ -57,7 +61,7 @@ function resetParticipantForm() {
         phone: null,
         type: null,
         hasErrors: false,
-        error: null,
+        primary: false,
     });
 }
 

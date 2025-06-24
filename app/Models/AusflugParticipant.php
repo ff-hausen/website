@@ -16,5 +16,17 @@ class AusflugParticipant extends Model
         'phone',
         'type',
         'verified',
+        'primary',
     ];
+
+    public function price(): int
+    {
+        switch ($this->type) {
+            case 'ea':
+                return 90;
+            case 'verein':
+            default:
+                return 150;
+        }
+    }
 }

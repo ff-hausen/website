@@ -17,6 +17,7 @@ class AusflugParticipantRequest extends FormRequest
             'participants.*.email' => ['nullable', 'email', 'max:254'],
             'participants.*.phone' => ['nullable'],
             'participants.*.type' => ['required', Rule::in(['ea', 'verein'])],
+            'participants.*.primary' => ['boolean'],
         ];
     }
 

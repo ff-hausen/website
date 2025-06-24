@@ -23,7 +23,7 @@ const props = defineProps<{
     >
         <legend
             v-if="legend"
-            class="text-sm font-medium text-gray-900 dark:text-white"
+            class="text-sm font-medium text-gray-900"
         >
             {{ legend }}
         </legend>
@@ -35,14 +35,14 @@ const props = defineProps<{
                     type="radio"
                     :name="id"
                     :value="value"
-                    class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:focus:bg-blue-600 dark:focus:ring-blue-600"
+                    class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300 "
                     :checked="model === value"
                     @change="model = value"
                     :required="required"
                 />
                 <label
                     :for="id + '-' + value"
-                    class="ms-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+                    class="ms-2 block text-sm font-medium text-gray-900 "
                 >
                     {{ label }}
                 </label>
