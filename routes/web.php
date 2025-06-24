@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function () {
 Route::inertia('/impressum', 'Imprint')->name('imprint');
 Route::inertia('/datenschutz', 'Privacy')->name('privacy');
 
+Route::inertia('/ausflug/anmeldung', 'Vereinsausflug/Anmeldung');
+
 require __DIR__.'/passkeys.php';
 
 require __DIR__.'/auth.php';
