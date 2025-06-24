@@ -109,7 +109,7 @@ async function registerPasskey() {
             <ul class="ml-3 flex flex-col gap-2">
                 <li v-for="passkey in passkeys" :key="passkey.id">
                     <div class="flex items-center">
-                        <div class="flex-grow flex-col">
+                        <div class="grow flex-col">
                             <div class="font-bold">{{ passkey.name }}</div>
                             <div class="text-sm text-gray-500">
                                 Erstellt

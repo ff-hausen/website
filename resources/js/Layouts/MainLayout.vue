@@ -67,7 +67,7 @@ const userNavigation: Array<UserNavigationItem> = [
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <Link href="/" class="flex items-center">
                                 <img
                                     class="h-10"
@@ -218,7 +218,7 @@ const userNavigation: Array<UserNavigationItem> = [
                 </div>
                 <div class="border-t border-red-700 pb-3 pt-4" v-if="user">
                     <div class="flex items-center px-5">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <img
                                 v-if="user.image_url"
                                 class="h-10 w-10 rounded-full"
@@ -236,7 +236,7 @@ const userNavigation: Array<UserNavigationItem> = [
                         </div>
                         <button
                             type="button"
-                            class="relative ml-auto flex-shrink-0 rounded-full bg-red-600 p-1 text-red-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
+                            class="relative ml-auto shrink-0 rounded-full bg-red-600 p-1 text-red-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
                         >
                             <span class="absolute -inset-1.5" />
                             <span class="sr-only">View notifications</span>
@@ -281,7 +281,7 @@ const userNavigation: Array<UserNavigationItem> = [
                 </h1>
             </div>
         </header>
-        <main class="flex-grow">
+        <main class="grow">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <slot />
             </div>

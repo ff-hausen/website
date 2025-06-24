@@ -15,7 +15,7 @@ const { contactFormTopics } = defineProps<{
     <MainLayout>
         <Hero
             image="/images/geraetehaus.webp"
-            class="mb-4 h-[300px] bg-[top_20%_center] md:mb-12 md:h-[500px]"
+            class="mb-4 h-[300px] bg-position-[top_20%_center] md:mb-12 md:h-[500px]"
         >
             <h1 class="pb-12 text-3xl md:text-4xl lg:text-5xl">
                 Freiwillige Feuerwehr Hausen
@@ -28,7 +28,7 @@ const { contactFormTopics } = defineProps<{
         <IntroCard
             image="/images/intro/einsatzabteilung.webp"
             pull="left"
-            class="bg-[right_15%_center]"
+            class="bg-position-[right_15%_center]"
         >
             <h1 class="text-2xl font-black">Einsatzabteilung</h1>
             <p>ab 17 Jahren</p>
@@ -38,7 +38,7 @@ const { contactFormTopics } = defineProps<{
         <IntroCard
             image="/images/intro/jugendfeuerwehr.webp"
             pull="right"
-            class="bg-[left_10%_center]"
+            class="bg-position-[left_10%_center]"
         >
             <h1 class="text-2xl font-black">Jugendfeuerwehr</h1>
             <p>von 10 bis 17 Jahren</p>
@@ -51,7 +51,7 @@ const { contactFormTopics } = defineProps<{
         <IntroCard
             image="/images/intro/minifeuerwehr.webp"
             pull="left"
-            class="bg-[top_15%_center]"
+            class="bg-position-[top_15%_center]"
         >
             <h1 class="text-2xl font-black">Minifeuerwehr</h1>
             <p>von 6 bis 10 Jahren</p>
