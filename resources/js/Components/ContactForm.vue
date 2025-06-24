@@ -5,6 +5,7 @@ import InputLabel from "@/Components/Laravel/InputLabel.vue";
 import TextInput from "@/Components/Laravel/TextInput.vue";
 import { inject } from "vue";
 import { route as ziggyRoute } from "ziggy-js";
+import { ChevronDownIcon } from "@heroicons/vue/16/solid";
 
 const route = inject<typeof ziggyRoute>("route")!;
 
@@ -64,19 +65,25 @@ const form = useForm("post", route("contact-form.send"), {
                 </div>
                 <div class="sm:col-span-2">
                     <InputLabel for="topic" required>Thema</InputLabel>
-                    <select
-                        name="topic"
-                        id="topic"
-                        v-model="form.topic"
-                        @change="form.validate('topic')"
-                        aria-describedby="required-description"
-                        class="mt-1 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
-                    >
-                        <option></option>
-                        <option v-for="topic in topics" :key="topic">
-                            {{ topic }}
-                        </option>
-                    </select>
+                    <div class="mt-2 grid grid-cols-1">
+                        <select
+                            name="topic"
+                            id="topic"
+                            v-model="form.topic"
+                            @change="form.validate('topic')"
+                            aria-describedby="required-description"
+                            class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-red-600 sm:text-sm/6"
+                        >
+                            <option></option>
+                            <option v-for="topic in topics" :key="topic">
+                                {{ topic }}
+                            </option>
+                        </select>
+                        <ChevronDownIcon
+                            class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                            aria-hidden="true"
+                        />
+                    </div>
                     <InputError :message="form.errors.topic" />
                 </div>
                 <div class="sm:col-span-2">
@@ -88,8 +95,9 @@ const form = useForm("post", route("contact-form.send"), {
                         v-model="form.message"
                         @change="form.validate('message')"
                         aria-describedby="required-description"
-                        class="mt-1 block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-red-600 sm:text-sm/6"
                     />
+
                     <InputError :message="form.errors.message" />
                 </div>
             </div>
@@ -115,7 +123,7 @@ const form = useForm("post", route("contact-form.send"), {
                 </div>
                 <button
                     type="submit"
-                    class="rounded-md bg-red-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                    class="rounded-md bg-red-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                 >
                     Nachricht senden
                 </button>

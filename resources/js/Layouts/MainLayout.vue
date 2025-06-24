@@ -76,7 +76,7 @@ const userNavigation: Array<UserNavigationItem> = [
                                     aria-hidden="true"
                                 />
                                 <div
-                                    class="ml-2 hidden flex-col justify-center text-justify font-black leading-tight text-white md:block"
+                                    class="ml-2 hidden flex-col justify-center text-justify leading-tight font-black text-white md:block"
                                 >
                                     <div>Freiwillige Feuerwehr</div>
                                     <div>Frankfurt Hausen</div>
@@ -92,7 +92,7 @@ const userNavigation: Array<UserNavigationItem> = [
                                     :class="[
                                         item.current
                                             ? 'bg-red-700 text-white'
-                                            : 'text-white hover:bg-red-500 hover:bg-opacity-75',
+                                            : 'text-white hover:bg-red-500/75',
                                         'rounded-md px-3 py-2 text-sm font-medium',
                                     ]"
                                     :aria-current="
@@ -107,7 +107,7 @@ const userNavigation: Array<UserNavigationItem> = [
                         <div class="ml-4 flex items-center md:ml-6">
                             <button
                                 type="button"
-                                class="relative rounded-full bg-red-600 p-1 text-red-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
+                                class="relative rounded-full bg-red-600 p-1 text-red-200 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600 focus:outline-hidden"
                             >
                                 <span class="absolute -inset-1.5" />
                                 <span class="sr-only">View notifications</span>
@@ -118,7 +118,7 @@ const userNavigation: Array<UserNavigationItem> = [
                             <Menu as="div" class="relative ml-3">
                                 <div>
                                     <MenuButton
-                                        class="relative flex max-w-xs items-center rounded-full bg-red-600 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
+                                        class="relative flex max-w-xs items-center rounded-full bg-red-600 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600 focus:outline-hidden"
                                     >
                                         <span class="absolute -inset-1.5" />
                                         <span class="sr-only"
@@ -141,7 +141,7 @@ const userNavigation: Array<UserNavigationItem> = [
                                     leave-to-class="transform opacity-0 scale-95"
                                 >
                                     <MenuItems
-                                        class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                        class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-hidden"
                                     >
                                         <MenuItem
                                             v-for="item in userNavigation"
@@ -180,7 +180,7 @@ const userNavigation: Array<UserNavigationItem> = [
                     <div class="-mr-2 flex md:hidden">
                         <!-- Mobile menu button -->
                         <DisclosureButton
-                            class="relative inline-flex items-center justify-center rounded-md bg-red-600 p-2 text-red-200 hover:bg-red-500 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
+                            class="relative inline-flex items-center justify-center rounded-md bg-red-600 p-2 text-red-200 hover:bg-red-500/75 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600 focus:outline-hidden"
                         >
                             <span class="absolute -inset-0.5" />
                             <span class="sr-only">Open main menu</span>
@@ -200,7 +200,7 @@ const userNavigation: Array<UserNavigationItem> = [
             </div>
 
             <DisclosurePanel class="md:hidden">
-                <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
                     <DisclosureButton
                         v-for="item in navigation"
                         :key="item.name"
@@ -209,14 +209,14 @@ const userNavigation: Array<UserNavigationItem> = [
                         :class="[
                             item.current
                                 ? 'bg-red-700 text-white'
-                                : 'text-white hover:bg-red-500 hover:bg-opacity-75',
+                                : 'text-white hover:bg-red-500/75',
                             'block rounded-md px-3 py-2 text-base font-medium',
                         ]"
                         :aria-current="item.current ? 'page' : undefined"
                         >{{ item.name }}
                     </DisclosureButton>
                 </div>
-                <div class="border-t border-red-700 pb-3 pt-4" v-if="user">
+                <div class="border-t border-red-700 pt-4 pb-3" v-if="user">
                     <div class="flex items-center px-5">
                         <div class="shrink-0">
                             <img
@@ -236,7 +236,7 @@ const userNavigation: Array<UserNavigationItem> = [
                         </div>
                         <button
                             type="button"
-                            class="relative ml-auto shrink-0 rounded-full bg-red-600 p-1 text-red-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
+                            class="relative ml-auto shrink-0 rounded-full bg-red-600 p-1 text-red-200 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600 focus:outline-none"
                         >
                             <span class="absolute -inset-1.5" />
                             <span class="sr-only">View notifications</span>
@@ -254,18 +254,18 @@ const userNavigation: Array<UserNavigationItem> = [
                                     ? LinkButton
                                     : Link
                             "
-                            class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"
+                            class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500/75"
                         >
                             {{ item.name }}
                         </DisclosureButton>
                     </div>
                 </div>
-                <div class="border-t border-red-700 pb-3 pt-4" v-else>
+                <div class="border-t border-red-700 pt-4 pb-3" v-else>
                     <div class="mt-3 space-y-1 px-2">
                         <DisclosureButton
                             :href="route('login')"
                             :as="Link"
-                            class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500 hover:bg-opacity-75"
+                            class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-white hover:bg-red-500/75"
                         >
                             Mitgliederbereich
                         </DisclosureButton>
@@ -274,9 +274,9 @@ const userNavigation: Array<UserNavigationItem> = [
             </DisclosurePanel>
         </Disclosure>
 
-        <header class="bg-white shadow-sm" v-if="title">
+        <header class="bg-white shadow-xs" v-if="title">
             <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-                <h1 class="text-lg font-semibold leading-6 text-gray-900">
+                <h1 class="text-lg leading-6 font-semibold text-gray-900">
                     {{ title }}
                 </h1>
             </div>

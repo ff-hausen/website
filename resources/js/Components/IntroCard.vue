@@ -20,7 +20,7 @@ const containerClasses =
     >
         <div class="mask-full relative h-full" :class="maskClasses">
             <div
-                class="absolute flex h-full flex-col items-start justify-center gap-2 px-8 text-white md:w-[40%]"
+                class="absolute flex h-full flex-col justify-center gap-2 px-8 text-white md:w-[40%]"
                 :class="containerClasses"
             >
                 <slot></slot>

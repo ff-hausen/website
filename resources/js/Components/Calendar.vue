@@ -25,7 +25,7 @@ function formatStartTime(event: CalenderEvent): string {
     <div class="my-8 px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
             <div class="sm:flex-auto">
-                <h1 class="text-base font-semibold leading-6 text-gray-900">
+                <h1 class="text-base leading-6 font-semibold text-gray-900">
                     Termine
                 </h1>
                 <p class="mt-2 text-sm text-gray-700">
@@ -39,7 +39,7 @@ function formatStartTime(event: CalenderEvent): string {
                     class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
                 >
                     <div
-                        class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg"
+                        class="overflow-hidden shadow-sm ring-1 ring-black/5 sm:rounded-lg"
                     >
                         <table class="min-w-full divide-y divide-gray-300">
                             <thead class="bg-gray-50">
@@ -53,7 +53,7 @@ function formatStartTime(event: CalenderEvent): string {
                                     <th scope="col"></th>
                                     <th
                                         scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                                        class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                                     >
                                         Titel
                                     </th>
@@ -68,7 +68,7 @@ function formatStartTime(event: CalenderEvent): string {
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 <tr v-if="events.length === 0">
                                     <td
-                                        class="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500"
+                                        class="px-3 py-4 text-center text-sm whitespace-nowrap text-gray-500"
                                         colspan="4"
                                     >
                                         Keine Termine vorhanden.
@@ -76,7 +76,7 @@ function formatStartTime(event: CalenderEvent): string {
                                 </tr>
                                 <tr v-for="event in events" :key="event.id">
                                     <td
-                                        class="whitespace-nowrap px-3 py-4 align-text-top text-sm text-gray-500"
+                                        class="px-3 py-4 align-text-top text-sm whitespace-nowrap text-gray-500"
                                     >
                                         {{ formatStartTime(event) }}
                                     </td>
@@ -88,7 +88,7 @@ function formatStartTime(event: CalenderEvent): string {
                                         />
                                     </td>
                                     <td
-                                        class="flex flex-col gap-1 whitespace-nowrap py-4 pl-4 pr-3 align-text-top text-sm font-medium text-gray-900 sm:pl-6"
+                                        class="flex flex-col gap-1 py-4 pr-3 pl-4 align-text-top text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6"
                                     >
                                         <div class="ml-0.5">
                                             {{ event.title }}
@@ -108,7 +108,7 @@ function formatStartTime(event: CalenderEvent): string {
                                         </div>
                                     </td>
                                     <td
-                                        class="whitespace-nowrap px-3 py-4 align-text-top text-sm text-gray-500"
+                                        class="px-3 py-4 align-text-top text-sm whitespace-nowrap text-gray-500"
                                     >
                                         <div
                                             v-if="
