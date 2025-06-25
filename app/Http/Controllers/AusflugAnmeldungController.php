@@ -7,6 +7,7 @@ use App\Mail\Ausflug\AnmeldungConfirmationMail;
 use App\Mail\Ausflug\AnmeldungInfoMail;
 use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -40,8 +41,12 @@ class AusflugAnmeldungController extends Controller
 
     }
 
-    public function verification(string $submissionId)
+    public function verification(Request $request, string $submissionId)
     {
+        if (! $request->hasValidSignature()) {
+            abort(401);
+        }
+
         $affectedRows = AusflugParticipant::whereSubmissionId($submissionId)
             ->whereVerified(false)
             ->update([
