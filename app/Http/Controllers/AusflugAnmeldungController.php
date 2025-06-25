@@ -56,9 +56,7 @@ class AusflugAnmeldungController extends Controller
 
             // Send notification to board
             $infoRecipients = explode(',', config('verein-ausflug.info_recipients'));
-            foreach ($infoRecipients as $recipient) {
-                Mail::to($recipient)->send(new AusflugAnmeldungInfoMail($participants));
-            }
+            Mail::to($infoRecipients)->send(new AusflugAnmeldungInfoMail($participants));
         }
 
         return Inertia::render('Vereinsausflug/Confirmation', [
