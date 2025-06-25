@@ -15,6 +15,7 @@ class AusflugParticipant extends Model
         'email',
         'phone',
         'type',
+        'price',
         'verified',
         'primary',
     ];
@@ -25,16 +26,5 @@ class AusflugParticipant extends Model
             'ea' => 'Einsatzabteilung',
             'verein' => 'Verein/Freunde',
         };
-    }
-
-    public function price(): int
-    {
-        switch ($this->type) {
-            case 'ea':
-                return 90;
-            case 'verein':
-            default:
-                return 150;
-        }
     }
 }

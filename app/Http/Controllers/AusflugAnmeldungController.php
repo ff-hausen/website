@@ -28,6 +28,10 @@ class AusflugAnmeldungController extends Controller
             $newParticipant = AusflugParticipant::create([
                 ...$participant,
                 'submission_id' => $submissionId,
+                'price' => match ($participant['type']) {
+                    'ea' => 90,
+                    'verein' => 150,
+                },
             ]);
 
             if ($newParticipant->primary) {

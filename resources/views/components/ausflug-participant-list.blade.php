@@ -3,6 +3,6 @@
 {{ $participant->street }} \
 {{ $participant->zip_code }} {{ $participant->city }} {{ ($participant->email || $participant->phone) ? '\\' : '' }}
 {{ collect([$participant->email, $participant->phone])->filter()->join(' / ') }} \
-{{ $participant->typeLocale() }} ({{ $participant->price() }} €)
+{{ $participant->typeLocale() }} ({{ $participant->price }} €)
 
 @endforeach

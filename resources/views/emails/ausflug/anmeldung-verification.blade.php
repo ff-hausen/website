@@ -4,10 +4,10 @@
 Teilnehmer:innen:
 
 @foreach($participants as $participant)
-- {{ $participant->name }} ({{ $participant->price() }} €)
+- {{ $participant->name }} ({{ $participant->price }} €)
 @endforeach
 
-**Gesamtbetrag:** {{ $participants->reduce(fn($c, $p) => $p->price() + $c, 0) }} €
+**Gesamtbetrag:** {{ $participants->reduce(fn($c, $p) => $p->price + $c, 0) }} €
 
 Bitte bestätige deine Anmeldung mit dem Klick auf den folgenden Link:
 

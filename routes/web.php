@@ -28,6 +28,10 @@ Route::inertia('/impressum', 'Imprint')->name('imprint');
 Route::inertia('/datenschutz', 'Privacy')->name('privacy');
 
 Route::prefix('/ausflug')->group(function () {
+    Route::get('/', function () {
+        return to_route('ausflug.anmeldung');
+    });
+
     Route::get('/anmeldung', [AusflugAnmeldungController::class, 'index'])->name('ausflug.anmeldung');
     Route::post('/anmeldung', [AusflugAnmeldungController::class, 'store']);
 

@@ -4,50 +4,113 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AusflugParticipantResource\Pages;
 use App\Models\AusflugParticipant;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class AusflugParticipantResource extends Resource
 {
     protected static ?string $model = AusflugParticipant::class;
 
+    protected static ?string $modelLabel = 'Vereinsausflug Teilnehmer:innen';
+
+    protected static ?string $pluralModelLabel = 'Vereinsausflug Teilnehmer:innen';
+
     protected static ?string $slug = 'ausflug-participants';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
+    protected static ?string $navigationLabel = 'Vereinsausflug Teilnehmer:innen';
 
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(2)
             ->schema([
                 TextInput::make('name')
+                    ->columnSpanFull()
                     ->required(),
 
-                TextInput::make('street')
-                    ->required(),
+                Fieldset::make('Adresse')
+                    ->columns(3)
+                    ->columnSpan(1)
+                    ->schema([
+                        TextInput::make('street')
+                            ->label('Straße')
+                            ->columnSpanFull()
+                            ->required(),
 
-                TextInput::make('zip_code')
-                    ->required(),
+                        TextInput::make('zip_code')
+                            ->label('PLZ')
+                            ->columnSpan(1)
+                            ->required(),
 
-                TextInput::make('city')
-                    ->required(),
+                        TextInput::make('city')
+                            ->label('Stadt')
+                            ->columnSpan(2)
+                            ->required(),
+                    ]),
 
-                TextInput::make('email'),
+                Fieldset::make('Kontakt')
+                    ->columnSpan(1)
+                    ->columns(1)
+                    ->schema([
+                        TextInput::make('email')
+                            ->label('E-Mail'),
 
-                TextInput::make('phone'),
+                        TextInput::make('phone')
+                            ->label('Telefon'),
+                    ]),
 
-                TextInput::make('type')
-                    ->required(),
+                Radio::make('type')
+                    ->label('Vereinsmitgliedschaft')
+                    ->inline()
+                    ->inlineLabel(false)
+                    ->options([
+                        'ea' => 'Einsatzabteilung',
+                        'verein' => 'Verein/Freunde',
+                    ])
+                    ->descriptions([
+                        'ea' => '90 €',
+                        'verein' => '150 €',
+                    ])
+                    ->live()
+                    ->afterStateUpdated(function (Set $set, string $state) {
+                        $price = match ($state) {
+                            'ea' => 90,
+                            'verein' => 150,
+                        };
+
+                        $set('price', $price);
+                    }),
+
+                TextInput::make('price')
+                    ->readOnly()
+                    ->suffix('€')
+                    ->numeric(),
 
                 Placeholder::make('created_at')
                     ->label('Created Date')
+                    ->columnStart(1)
                     ->content(fn (?AusflugParticipant $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
                 Placeholder::make('updated_at')
@@ -59,27 +122,81 @@ class AusflugParticipantResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('submission_id')
+                    ->label('Anmeldung'),
+            ])
+            ->defaultGroup('submission_id')
             ->columns([
-                TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
+                Split::make([
+                    IconColumn::make('primary')
+                        ->boolean()
+                        ->trueIcon('heroicon-s-star')
+                        ->trueColor('warning')
+                        ->falseIcon('heroicon-o-minus')
+                        ->falseColor('gray')
+                        ->size(IconColumn\IconColumnSize::Medium)
+                        ->grow(false),
 
-                TextColumn::make('street'),
+                    TextColumn::make('name')
+                        ->label('Name')
+                        ->weight(FontWeight::Bold)
+                        ->searchable()
+                        ->sortable(),
 
-                TextColumn::make('zip_code'),
+                    Stack::make([
+                        TextColumn::make('street')
+                            ->label('Adresse'),
 
-                TextColumn::make('city'),
+                        TextColumn::make('city')
+                            ->getStateUsing(fn (AusflugParticipant $participant) => $participant->zip_code.' '.$participant->city),
+                    ]),
 
-                TextColumn::make('email')
-                    ->searchable()
-                    ->sortable(),
+                    Stack::make([
+                        TextColumn::make('email')
+                            ->icon('heroicon-o-envelope')
+                            ->searchable()
+                            ->sortable(),
 
-                TextColumn::make('phone'),
+                        TextColumn::make('phone')
+                            ->icon('heroicon-o-phone'),
+                    ]),
 
-                TextColumn::make('type'),
+                    Stack::make([
+                        TextColumn::make('type')
+                            ->badge()
+                            ->formatStateUsing(fn (AusflugParticipant $p) => $p->typeLocale())
+                            ->color(fn (string $state): string => match ($state) {
+                                'ea' => 'danger',
+                                'verein' => 'warning',
+                            }),
+
+                        TextColumn::make('price')
+                            ->icon('heroicon-o-currency-euro')
+                            ->suffix(' €')
+                            ->summarize(
+                                Sum::make()
+                                    ->money('EUR')
+                                    ->query(fn (QueryBuilder $query) => $query->where('verified', true))
+                            ),
+                    ]),
+
+                    IconColumn::make('verified')
+                        ->label('Verifiziert')
+                        ->boolean()
+                        ->grow(false),
+                ]),
             ])
             ->filters([
-                //
+                TernaryFilter::make('verified')
+                    ->label('Verifiziert')
+                    ->default(true),
+
+                SelectFilter::make('type')
+                    ->options([
+                        'ea' => 'Einsatzabteilung',
+                        'verein' => 'Verein/Freunde',
+                    ]),
             ])
             ->actions([
                 EditAction::make(),
