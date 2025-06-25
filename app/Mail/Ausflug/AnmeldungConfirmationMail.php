@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Ausflug;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class AusflugAnmeldungInfoMail extends Mailable implements ShouldQueue
+class AnmeldungConfirmationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -25,14 +25,14 @@ class AusflugAnmeldungInfoMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Neue Anmeldung zum Vereinsausflug',
+            subject: 'Bestätigung deiner Anmeldung zum Vereinsausflug',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.ausflug-anmeldung-info',
+            markdown: 'emails.ausflug.anmeldung-confirmation',
             with: [
                 'participants' => $this->participants,
                 'url' => URL::signedRoute('ausflug.verification', ['submissionId' => $this->submissionId]),

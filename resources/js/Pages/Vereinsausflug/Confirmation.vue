@@ -140,7 +140,8 @@ const totalAmount = computed(() => {
         </table>
 
         <p class="mb-4">
-            Bitte überweise den Gesamtbetrag bitte auf folgendes Konto:
+            Bitte überweise den Gesamtbetrag bis spätestens 01.08.2025 auf
+            folgendes Konto:
         </p>
         <div class="font-bold">Frankfurter Sparkasse</div>
         <div>

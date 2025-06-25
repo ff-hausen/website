@@ -1,35 +1,40 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Ausflug;
 
-use App\Models\AusflugParticipant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class AusflugAnmeldungVerificationMail extends Mailable implements ShouldQueue
+class AnmeldungInfoMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(protected string $submissionId) {}
+    protected string $submissionId;
+
+    public function __construct(protected Collection $participants)
+    {
+        $this->submissionId = $this->participants[0]->submission_id;
+    }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Vereinsausflug Anmeldung',
+            subject: 'Neue Anmeldung zum Vereinsausflug',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.ausflug-anmeldung-verification',
+            markdown: 'emails.ausflug.anmeldung-info',
             with: [
-                'participants' => AusflugParticipant::whereSubmissionId($this->submissionId)->get(),
+                'participants' => $this->participants,
                 'url' => URL::signedRoute('ausflug.verification', ['submissionId' => $this->submissionId]),
             ]
         );

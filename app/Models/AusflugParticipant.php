@@ -19,6 +19,14 @@ class AusflugParticipant extends Model
         'primary',
     ];
 
+    public function typeLocale(): string
+    {
+        return match ($this->type) {
+            'ea' => 'Einsatzabteilung',
+            'verein' => 'Verein/Freunde',
+        };
+    }
+
     public function price(): int
     {
         switch ($this->type) {
