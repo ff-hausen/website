@@ -34,17 +34,36 @@ let newParticipant = reactive<Participant>({
     primary: false,
 });
 
-function addParticipant(): void {
+function isStringDirty(value: string | null): boolean {
+    return !!value && value.trim() !== "";
+}
+
+function isFormDirty(): boolean {
+    return (
+        isStringDirty(newParticipant.name) ||
+        isStringDirty(newParticipant.street) ||
+        isStringDirty(newParticipant.zip_code) ||
+        isStringDirty(newParticipant.city) ||
+        isStringDirty(newParticipant.email) ||
+        isStringDirty(newParticipant.phone)
+    );
+}
+
+function addParticipant(): boolean {
     const formIsValid = formElement.value?.reportValidity();
 
-    if (formIsValid) {
-        if (participants.value.length === 0) {
-            newParticipant.primary = true;
-        }
-
-        participants.value.push(newParticipant);
-        resetParticipantForm();
+    if (!formIsValid) {
+        return false;
     }
+
+    if (participants.value.length === 0) {
+        newParticipant.primary = true;
+    }
+
+    participants.value.push(newParticipant);
+    resetParticipantForm();
+
+    return true;
 }
 
 function removeParticipant(participant: Participant): void {
@@ -88,6 +107,11 @@ const hasErrors = computed(() => {
 });
 
 function submitRegistration(): void {
+    // Add participant if someone typed new information but didn't add them themselves.
+    if (isFormDirty() && !addParticipant()) {
+        return;
+    }
+
     router.post(
         route("ausflug.anmeldung"),
         {
