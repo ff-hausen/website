@@ -91,8 +91,8 @@ class ContactFormTopicsResource extends Resource
                 //
             ])
             ->actions([
-                DownStepAction::make()->iconButton(),
-                UpStepAction::make()->iconButton(),
+//                DownStepAction::make()->iconButton(),
+//                UpStepAction::make()->iconButton(),
                 EditAction::make(),
             ])
             ->defaultSort('sort_order', 'asc')

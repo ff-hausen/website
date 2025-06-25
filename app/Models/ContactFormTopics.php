@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContactFormTopics extends Model
 {
-    use SortOrder;
-
     protected $fillable = [
         'name',
         'sort_order',

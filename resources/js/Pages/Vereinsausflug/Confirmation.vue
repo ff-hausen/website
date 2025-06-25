@@ -80,7 +80,7 @@ const totalAmount = computed(() => {
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                <tr v-for="participant in participants" :key="participant.name">
+                <tr v-for="participant in participants" :key="participant.name!">
                     <td
                         class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0"
                     >
