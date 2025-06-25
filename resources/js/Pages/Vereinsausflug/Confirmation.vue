@@ -37,7 +37,7 @@ const totalAmount = computed(() => {
     <Head title="Vereinsausflug Anmeldung Bestätigung" />
 
     <MainLayout>
-        <h1 class="text-2xl font-bold mt-4 mb-8">Anmeldung erfolgreich</h1>
+        <h1 class="mt-4 mb-8 text-2xl font-bold">Anmeldung erfolgreich</h1>
 
         <p class="mb-4">
             Deine Anmeldung ist bestätigt. Die folgende Zusammenfassung erhältst
@@ -73,14 +73,17 @@ const totalAmount = computed(() => {
                     </th>
                     <th
                         scope="col"
-                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 text-right"
+                        class="px-3 py-3.5 text-left text-right text-sm font-semibold text-gray-900"
                     >
                         Betrag
                     </th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-                <tr v-for="participant in participants" :key="participant.name!">
+                <tr
+                    v-for="participant in participants"
+                    :key="participant.name!"
+                >
                     <td
                         class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0"
                     >
@@ -136,12 +139,14 @@ const totalAmount = computed(() => {
             </tfoot>
         </table>
 
-        <p class="mb-4">Bitte überweise den Gesamtbetrag bitte auf folgendes Konto:</p>
-        <p>
-            <div class="font-bold">Frankfurter Sparkasse</div>
-            <div><span class="font-medium">IBAN:</span> DE51 5005 0201 0000 3191 29</div>
-            <div><span class="font-medium">BIC:</span> HELADEF1822</div>
+        <p class="mb-4">
+            Bitte überweise den Gesamtbetrag bitte auf folgendes Konto:
         </p>
+        <div class="font-bold">Frankfurter Sparkasse</div>
+        <div>
+            <span class="font-medium">IBAN:</span> DE51 5005 0201 0000 3191 29
+        </div>
+        <div><span class="font-medium">BIC:</span> HELADEF1822</div>
     </MainLayout>
 </template>
 
