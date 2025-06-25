@@ -156,7 +156,7 @@ function submitRegistration(): void {
 
                     <p class="font-bold">Samstag, 27.09.2025</p>
 
-                    <ul class="list-disc">
+                    <ul class="list-inside list-disc sm:list-outside">
                         <li>
                             <span class="font-medium">08:00 Uhr</span> – Abfahrt
                             am Ellerfeld (FF Hausen)
@@ -189,7 +189,7 @@ function submitRegistration(): void {
 
                     <p class="font-bold">Sonntag, 28.09.2025</p>
 
-                    <ul class="list-disc">
+                    <ul class="list-inside list-disc sm:list-outside">
                         <li>
                             <span class="font-medium">10:00 Uhr</span> – Abfahrt
                             nach Siegen
@@ -235,7 +235,7 @@ function submitRegistration(): void {
             </div>
             <div
                 v-else
-                class="mx-auto flex max-w-3xl flex-row justify-between gap-8"
+                class="mx-auto flex max-w-3xl flex-col justify-between gap-8 sm:flex-row"
             >
                 <form class="w-sm" ref="form-element">
                     <TextInput
@@ -311,7 +311,9 @@ function submitRegistration(): void {
                     </Button>
                 </form>
 
-                <section class="mb-6 flex w-sm flex-col items-end">
+                <section
+                    class="mb-6 flex w-sm flex-col items-center sm:items-end"
+                >
                     <h2 class="text-xl font-medium">Teilnehmer:innen:</h2>
 
                     <div class="-mx-4 mb-8 flow-root sm:mx-0">
