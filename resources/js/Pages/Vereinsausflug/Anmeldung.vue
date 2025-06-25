@@ -433,7 +433,10 @@ function submitRegistration(): void {
                     </div>
 
                     <Button
-                        :disabled="participants.length === 0 || hasErrors"
+                        :disabled="
+                            hasErrors ||
+                            (participants.length === 0 && !isFormDirty())
+                        "
                         @click="submitRegistration"
                         >Anmeldung absenden
                     </Button>
