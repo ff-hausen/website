@@ -42,7 +42,7 @@ class ContactMessage extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.contact-message',
+            markdown: 'emails.contact-message',
         );
     }
 
