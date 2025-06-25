@@ -253,8 +253,8 @@ function submitRegistration(): void {
 
             <div v-if="submitted">
                 <p class="my-16 h-svh text-center text-xl font-medium">
-                    Vielen Dank. Um die Anmeldung abzuschließen, klicke bitte
-                    auf den Link in der E-Mail.
+                    Vielen Dank! Bitte klicke auf den Link in der E-Mail, um deine Anmeldung
+                    abzuschließen. Schau zur Sicherheit auch in deinem Spam-Ordner nach.
                 </p>
             </div>
             <div
