@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AusflugParticipantRequest;
+use App\Mail\AusflugAnmeldungConfirmationMail;
+use App\Mail\AusflugAnmeldungInfoMail;
 use App\Mail\AusflugAnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
 use Illuminate\Support\Facades\Mail;
@@ -49,9 +51,14 @@ class AusflugAnmeldungController extends Controller
         $participants = AusflugParticipant::whereSubmissionId($submissionId)->get();
 
         if ($affectedRows > 0) {
-            // TODO: Send confirmation email to all participants
+            // Send confirmation email to all participants
+            $participants->whereNotNull('email')->each(fn ($p) => Mail::to($p->email)->send(new AusflugAnmeldungConfirmationMail($participants)));
 
-            // TODO: Send notification to board
+            // Send notification to board
+            $infoRecipients = explode(',', config('verein-ausflug.info_recipients'));
+            foreach ($infoRecipients as $recipient) {
+                Mail::to($recipient)->send(new AusflugAnmeldungInfoMail($participants));
+            }
         }
 
         return Inertia::render('Vereinsausflug/Confirmation', [
