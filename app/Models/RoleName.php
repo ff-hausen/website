@@ -16,13 +16,13 @@ enum RoleName: string implements HasLabel
 
     case AltersUndEhrenabteilung = 'Alters- und Ehrenabteilung';
 
-    case JugendfeuerwehrLeitung = 'Jugendfeuerwehr Leitung';
+    case JugendfeuerwehrLeitung = 'JF Leitung';
 
-    case JugendfeuerwehrBetreuer = 'Jugendfeuerwehr Betreuer';
+    case JugendfeuerwehrBetreuer = 'JF Betreuer';
 
-    case MinifeuerwehrLeitung = 'Minifeuerwehr Leitung';
+    case MinifeuerwehrLeitung = 'MF Leitung';
 
-    case MinifeuerwehrBetreuer = 'Minifeuerwehr Betreuer';
+    case MinifeuerwehrBetreuer = 'MF Betreuer';
 
     case Gruppenfuehrer = 'Gruppenführer';
 
