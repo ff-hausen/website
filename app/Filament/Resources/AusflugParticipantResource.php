@@ -126,7 +126,6 @@ class AusflugParticipantResource extends Resource
                 Group::make('submission_id')
                     ->label('Anmeldung'),
             ])
-            ->defaultGroup('submission_id')
             ->columns([
                 Split::make([
                     IconColumn::make('primary')
