@@ -17,11 +17,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
-    use InteractsWithRoles;
+    use HasRoles;
 
     protected $fillable = [
         'first_name',
@@ -46,11 +47,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class);
     }
 
     public function passkeys(): HasMany
