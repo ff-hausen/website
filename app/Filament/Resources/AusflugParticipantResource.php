@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AusflugParticipantResource\Pages;
+use App\Mail\Ausflug\AnmeldungConfirmationMail;
 use App\Models\AusflugParticipant;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Placeholder;
@@ -12,10 +13,9 @@ use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
@@ -26,6 +26,7 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Mail;
 
 class AusflugParticipantResource extends Resource
 {
@@ -198,8 +199,24 @@ class AusflugParticipantResource extends Resource
                     ]),
             ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
+                Action::make('summary')
+                    ->label('Zusammenfassung')
+                    ->icon('heroicon-o-list-bullet')
+                    ->url(fn (AusflugParticipant $participant) => $participant->summaryUrl())
+                    ->openUrlInNewTab()
+                    ->visible(fn (AusflugParticipant $participant) => $participant->verified),
+
+                Action::make('resend_verification')
+                    ->label('Verifizierung neustarten')
+                    ->icon('heroicon-o-arrow-path')
+                    ->action(function (AusflugParticipant $participant) {
+                        $participants = AusflugParticipant::whereSubmissionId($participant->submission_id)->get();
+                        $primary = $participants->where('primary', true)->first();
+
+                        Mail::to($primary->email)->send(new AnmeldungConfirmationMail($participants));
+                    })
+                    ->requiresConfirmation()
+                    ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
