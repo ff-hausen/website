@@ -106,6 +106,18 @@ const hasErrors = computed(() => {
     return participants.value.reduce((carry, p) => p.hasErrors || carry, false);
 });
 
+function applyLastAddress(): void {
+    if (participants.value.length === 0) {
+        return;
+    }
+
+    const latestParticipant = participants.value[participants.value.length - 1];
+
+    newParticipant.street = latestParticipant.street;
+    newParticipant.zip_code = latestParticipant.zip_code;
+    newParticipant.city = latestParticipant.city;
+}
+
 function submitRegistration(): void {
     // Add participant if someone typed new information but didn't add them themselves.
     if (isFormDirty() && !addParticipant()) {
@@ -253,8 +265,9 @@ function submitRegistration(): void {
 
             <div v-if="submitted">
                 <p class="my-16 h-svh text-center text-xl font-medium">
-                    Vielen Dank! Bitte klicke auf den Link in der E-Mail, um deine Anmeldung
-                    abzuschließen. Schau zur Sicherheit auch in deinem Spam-Ordner nach.
+                    Vielen Dank! Bitte klicke auf den Link in der E-Mail, um
+                    deine Anmeldung abzuschließen. Schau zur Sicherheit auch in
+                    deinem Spam-Ordner nach.
                 </p>
             </div>
             <div
@@ -274,7 +287,18 @@ function submitRegistration(): void {
                         autocomplete="home street-address"
                         required
                         v-model="newParticipant.street"
-                        >Straße/Hausnummer
+                    >
+                        <span class="flex justify-between">
+                            Straße/Hausnummer
+                            <button
+                                type="button"
+                                v-if="participants.length > 0"
+                                @click="applyLastAddress"
+                                class="cursor-pointer text-sm font-medium text-blue-700 underline"
+                            >
+                                Gleiche Adresse?
+                            </button>
+                        </span>
                     </TextInput>
                     <TextInput
                         id="zip"
