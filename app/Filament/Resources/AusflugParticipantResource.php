@@ -105,7 +105,6 @@ class AusflugParticipantResource extends Resource
                     }),
 
                 TextInput::make('price')
-                    ->readOnly()
                     ->suffix('€')
                     ->numeric(),
 
