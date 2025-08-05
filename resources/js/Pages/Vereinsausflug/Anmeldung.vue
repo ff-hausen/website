@@ -14,6 +14,7 @@ export interface Participant {
     email: string | null;
     phone: string | null;
     type: "ea" | "verein" | null;
+    price?: number;
     hasErrors: boolean;
     primary: boolean;
 }
@@ -344,7 +345,6 @@ function submitRegistration(): void {
                             xmlns="http://www.w3.org/2000/svg"
                             class="me-2 h-3.5 w-3.5"
                             aria-hidden="true"
-                            fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
@@ -407,7 +407,6 @@ function submitRegistration(): void {
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke-width="1.5"
                                                 stroke="currentColor"

@@ -29,7 +29,7 @@ function price(participant: Participant): number {
 }
 
 const totalAmount = computed(() => {
-    return props.participants.reduce((c, p) => c + price(p), 0);
+    return props.participants.reduce((c, p) => c + (p.price ?? 0), 0);
 });
 </script>
 
@@ -73,7 +73,7 @@ const totalAmount = computed(() => {
                     </th>
                     <th
                         scope="col"
-                        class="px-3 py-3.5 text-left text-right text-sm font-semibold text-gray-900"
+                        class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
                     >
                         Betrag
                     </th>
@@ -111,7 +111,7 @@ const totalAmount = computed(() => {
                     <td
                         class="px-3 py-4 text-right text-sm whitespace-nowrap text-gray-500"
                     >
-                        {{ price(participant) }} €
+                        {{ participant.price }} €
                     </td>
                 </tr>
             </tbody>
