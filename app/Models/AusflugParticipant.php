@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class AusflugParticipant extends Model
 {
@@ -20,6 +21,15 @@ class AusflugParticipant extends Model
         'verified',
         'primary',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (AusflugParticipant $participant) {
+            if (! $participant->submission_id) {
+                $participant->submission_id = Str::uuid7();
+            }
+        });
+    }
 
     public function summaryUrl(): string
     {
