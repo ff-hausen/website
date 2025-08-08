@@ -16,11 +16,21 @@ class AusflugAnmeldungController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Vereinsausflug/Anmeldung');
+        $deadline = config('verein-ausflug.deadline');
+
+        return Inertia::render('Vereinsausflug/Anmeldung', [
+            'isRegistrationOpen' => ! $deadline || ! now()->isAfter($deadline),
+        ]);
     }
 
     public function store(AusflugParticipantRequest $request)
     {
+        // Check if the deadline has passed
+        $deadline = config('verein-ausflug.deadline');
+        if ($deadline && now()->isAfter($deadline)) {
+            return redirect()->back()->withErrors(['deadline' => 'Die Anmeldefrist ist leider abgelaufen.']);
+        }
+
         $submissionId = Str::uuid7();
 
         $primary = null;

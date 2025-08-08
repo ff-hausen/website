@@ -19,6 +19,10 @@ export interface Participant {
     primary: boolean;
 }
 
+const props = defineProps<{
+    isRegistrationOpen: boolean;
+}>();
+
 const formElement = useTemplateRef("form-element");
 
 const participants = ref<Participant[]>([]);
@@ -162,7 +166,7 @@ function submitRegistration(): void {
     <Head title="Vereinsausflug" />
 
     <MainLayout>
-        <section>
+        <section v-if="isRegistrationOpen">
             <article class="mx-auto my-6 max-w-2xl">
                 <h1 class="mb-3 text-4xl font-bold underline">
                     Anmeldung zum Vereinsausflug 2025
@@ -465,6 +469,12 @@ function submitRegistration(): void {
                     </Button>
                 </section>
             </div>
+        </section>
+        <section v-else>
+              <h1 class="mb-3 text-4xl font-bold underline">
+                    Anmeldung zum Vereinsausflug 2025
+                </h1>
+                <p class="mb-4 font-bold">🚫 Die Anmeldefrist ist leider bereits abgelaufen!</p>
         </section>
     </MainLayout>
 </template>
