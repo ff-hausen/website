@@ -4,10 +4,16 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import Hero from "@/Components/Hero.vue";
 import IntroCard from "@/Components/IntroCard.vue";
 import ContactSection from "@/Components/ContactSection.vue";
+import dayjs from "dayjs";
+import { computed } from "vue";
 
 const { contactFormTopics } = defineProps<{
     contactFormTopics: string[];
 }>();
+
+const isBeforeTdot = computed(() => {
+    return dayjs().isBefore("2025-08-30T22:00:00");
+});
 </script>
 
 <template>
@@ -24,6 +30,14 @@ const { contactFormTopics } = defineProps<{
                 für euch im Einsatz seit 1882
             </p>
         </Hero>
+
+        <div class="flex flex-col" v-if="isBeforeTdot">
+            <img
+                src="/images/tdot_banner.JPG"
+                class="justify-center rounded-2xl"
+                alt="Tag der offenen Tür am 30. August 2025 ab 14 Uhr"
+            />
+        </div>
 
         <IntroCard
             image="/images/intro/einsatzabteilung.webp"
