@@ -9,6 +9,7 @@ use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -77,6 +78,17 @@ class AusflugAnmeldungController extends Controller
             $infoRecipients = explode(',', config('verein-ausflug.info_recipients'));
             Mail::to($infoRecipients)->send(new AnmeldungInfoMail($participants));
         }
+
+        return redirect()->to(URL::signedRoute('ausflug.anmeldung', ['submissionId' => $submissionId]));
+    }
+
+    public function summary(Request $request, string $submissionId)
+    {
+        if (! $request->hasValidSignature()) {
+            abort(401);
+        }
+
+        $participants = AusflugParticipant::whereSubmissionId($submissionId)->get();
 
         return Inertia::render('Vereinsausflug/Confirmation', [
             'participants' => $participants,

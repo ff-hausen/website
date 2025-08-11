@@ -12,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -202,11 +203,13 @@ class AusflugParticipantResource extends Resource
                     ->label('Zusammenfassung')
                     ->icon('heroicon-o-list-bullet')
                     ->url(fn (AusflugParticipant $participant) => $participant->summaryUrl())
-                    ->openUrlInNewTab()
-                    ->visible(fn (AusflugParticipant $participant) => $participant->verified),
+                    ->openUrlInNewTab(),
 
                 Action::make('resend_verification')
                     ->label('Verifizierung neustarten')
+                    ->tooltip('Verifizierungsmail erneut senden')
+                    ->button()
+                    ->size(ActionSize::Medium)
                     ->icon('heroicon-o-arrow-path')
                     ->action(function (AusflugParticipant $participant) {
                         $participants = AusflugParticipant::whereSubmissionId($participant->submission_id)->get();
@@ -216,6 +219,17 @@ class AusflugParticipantResource extends Resource
                     })
                     ->requiresConfirmation()
                     ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
+
+                Action::make('verify')
+                    ->label('Freigeben')
+                    ->tooltip('Anmeldung manuell freigeben')
+                    ->button()
+                    ->size(ActionSize::Medium)
+                    ->icon('heroicon-o-check-badge')
+                    ->action(fn (AusflugParticipant $participant) => AusflugParticipant::whereSubmissionId($participant->submission_id)->update(['verified' => true]))
+                    ->requiresConfirmation()
+                    ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
