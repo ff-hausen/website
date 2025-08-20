@@ -35,6 +35,8 @@ Route::prefix('/ausflug')->group(function () {
     Route::get('/anmeldung', [AusflugAnmeldungController::class, 'index'])->name('ausflug.anmeldung');
     Route::post('/anmeldung', [AusflugAnmeldungController::class, 'store']);
 
+    Route::get('/summary/{submissionId}', [AusflugAnmeldungController::class, 'summary'])->name('ausflug.summary');
+
     Route::get('/verification/{submissionId}', [AusflugAnmeldungController::class, 'verification'])->name('ausflug.verification');
 });
 

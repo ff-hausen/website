@@ -9,6 +9,7 @@ use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -16,11 +17,21 @@ class AusflugAnmeldungController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Vereinsausflug/Anmeldung');
+        $deadline = config('verein-ausflug.deadline');
+
+        return Inertia::render('Vereinsausflug/Anmeldung', [
+            'isRegistrationOpen' => ! $deadline || ! now()->isAfter($deadline),
+        ]);
     }
 
     public function store(AusflugParticipantRequest $request)
     {
+        // Check if the deadline has passed
+        $deadline = config('verein-ausflug.deadline');
+        if ($deadline && now()->isAfter($deadline)) {
+            return redirect()->back()->withErrors(['deadline' => 'Die Anmeldefrist ist leider abgelaufen.']);
+        }
+
         $submissionId = Str::uuid7();
 
         $primary = null;
@@ -67,6 +78,17 @@ class AusflugAnmeldungController extends Controller
             $infoRecipients = explode(',', config('verein-ausflug.info_recipients'));
             Mail::to($infoRecipients)->send(new AnmeldungInfoMail($participants));
         }
+
+        return redirect()->to(URL::signedRoute('ausflug.anmeldung', ['submissionId' => $submissionId]));
+    }
+
+    public function summary(Request $request, string $submissionId)
+    {
+        if (! $request->hasValidSignature()) {
+            abort(401);
+        }
+
+        $participants = AusflugParticipant::whereSubmissionId($submissionId)->get();
 
         return Inertia::render('Vereinsausflug/Confirmation', [
             'participants' => $participants,

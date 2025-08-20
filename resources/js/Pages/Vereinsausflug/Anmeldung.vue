@@ -14,9 +14,14 @@ export interface Participant {
     email: string | null;
     phone: string | null;
     type: "ea" | "verein" | null;
+    price?: number;
     hasErrors: boolean;
     primary: boolean;
 }
+
+const props = defineProps<{
+    isRegistrationOpen: boolean;
+}>();
 
 const formElement = useTemplateRef("form-element");
 
@@ -106,6 +111,18 @@ const hasErrors = computed(() => {
     return participants.value.reduce((carry, p) => p.hasErrors || carry, false);
 });
 
+function applyLastAddress(): void {
+    if (participants.value.length === 0) {
+        return;
+    }
+
+    const latestParticipant = participants.value[participants.value.length - 1];
+
+    newParticipant.street = latestParticipant.street;
+    newParticipant.zip_code = latestParticipant.zip_code;
+    newParticipant.city = latestParticipant.city;
+}
+
 function submitRegistration(): void {
     // Add participant if someone typed new information but didn't add them themselves.
     if (isFormDirty() && !addParticipant()) {
@@ -149,7 +166,7 @@ function submitRegistration(): void {
     <Head title="Vereinsausflug" />
 
     <MainLayout>
-        <section>
+        <section v-if="isRegistrationOpen">
             <article class="mx-auto my-6 max-w-2xl">
                 <h1 class="mb-3 text-4xl font-bold underline">
                     Anmeldung zum Vereinsausflug 2025
@@ -253,8 +270,9 @@ function submitRegistration(): void {
 
             <div v-if="submitted">
                 <p class="my-16 h-svh text-center text-xl font-medium">
-                    Vielen Dank! Bitte klicke auf den Link in der E-Mail, um deine Anmeldung
-                    abzuschließen. Schau zur Sicherheit auch in deinem Spam-Ordner nach.
+                    Vielen Dank! Bitte klicke auf den Link in der E-Mail, um
+                    deine Anmeldung abzuschließen. Schau zur Sicherheit auch in
+                    deinem Spam-Ordner nach.
                 </p>
             </div>
             <div
@@ -274,7 +292,18 @@ function submitRegistration(): void {
                         autocomplete="home street-address"
                         required
                         v-model="newParticipant.street"
-                        >Straße/Hausnummer
+                    >
+                        <span class="flex justify-between">
+                            Straße/Hausnummer
+                            <button
+                                type="button"
+                                v-if="participants.length > 0"
+                                @click="applyLastAddress"
+                                class="cursor-pointer text-sm font-medium text-blue-700 underline"
+                            >
+                                Gleiche Adresse?
+                            </button>
+                        </span>
                     </TextInput>
                     <TextInput
                         id="zip"
@@ -320,7 +349,6 @@ function submitRegistration(): void {
                             xmlns="http://www.w3.org/2000/svg"
                             class="me-2 h-3.5 w-3.5"
                             aria-hidden="true"
-                            fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
@@ -383,7 +411,6 @@ function submitRegistration(): void {
                                         >
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke-width="1.5"
                                                 stroke="currentColor"
@@ -442,6 +469,12 @@ function submitRegistration(): void {
                     </Button>
                 </section>
             </div>
+        </section>
+        <section v-else>
+              <h1 class="mb-3 text-4xl font-bold underline">
+                    Anmeldung zum Vereinsausflug 2025
+                </h1>
+                <p class="mb-4 font-bold">🚫 Die Anmeldefrist ist leider bereits abgelaufen!</p>
         </section>
     </MainLayout>
 </template>

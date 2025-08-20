@@ -2,6 +2,7 @@
 
 namespace App\Mail\Ausflug;
 
+use App\Models\AusflugParticipant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,6 +18,9 @@ class AnmeldungInfoMail extends Mailable implements ShouldQueue
 
     protected string $submissionId;
 
+    /**
+     * @param  Collection<AusflugParticipant>  $participants
+     */
     public function __construct(protected Collection $participants)
     {
         $this->submissionId = $this->participants[0]->submission_id;
