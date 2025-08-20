@@ -28,6 +28,10 @@ class AusflugParticipant extends Model
     protected static function booted(): void
     {
         static::creating(function (AusflugParticipant $participant) {
+            if (!$participant->primary) {
+                $participant->primary = true;
+            }
+
             if (! $participant->submission_id) {
                 $participant->submission_id = Str::uuid7();
             }
