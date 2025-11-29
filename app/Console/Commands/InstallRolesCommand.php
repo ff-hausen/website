@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class InstallRolesCommand extends Command
@@ -27,6 +30,18 @@ class InstallRolesCommand extends Command
 
     public function handle(): void
     {
+        $this->createRoles();
+
+        $this->createAdminPermissions();
+
+        $this->createAdminUser();
+    }
+
+    /**
+     * @return void
+     */
+    public function createRoles(): void
+    {
         foreach ($this->roles as $role => $wikiRole) {
             Role::updateOrCreate([
                 'name' => $role,
@@ -34,5 +49,33 @@ class InstallRolesCommand extends Command
                 'wiki_name' => $wikiRole,
             ]);
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function createAdminUser(): void
+    {
+        if (User::count() === 0) {
+            $adminUser = User::forceCreate([
+                'name' => 'Administrator',
+                'email' => 'admin@ff-frankfurt-hausen.de',
+                'email_verified_at' => now(),
+                'user_verified_at' => now(),
+                'password' => Hash::make('changeme'),
+            ]);
+            $adminUser->assignRole('Administrator');
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function createAdminPermissions(): void
+    {
+        $adminPermission = Permission::createOrFirst([
+            'name' => 'can access admin panel',
+        ]);
+        $adminPermission->assignRole('Administrator');
     }
 }
