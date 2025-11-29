@@ -1,0 +1,16 @@
+{
+    "First name": "Vorname",
+    "Last name": "Nachname",
+    "Email": "E-Mail Adresse",
+    "User Verified Date": "Benutzer freigeschaltet seit",
+    "Email Verified Date": "E-Mail verifiziert seit",
+    "Password": "Passwort",
+    "Created Date": "Erstellt am",
+    "Last Modified Date": "Zuletzt bearbeitet am",
+    "Wiki name": "Name im Wiki",
+    "Users count": "Anzahl Benutzer",
+    "Permissions": "Berechtigungen",
+    "Roles": "Rollen",
+    "Show in userlist": "Zeige in Benutzerübersicht",
+    "Divisions": "Abteilungen"
+}

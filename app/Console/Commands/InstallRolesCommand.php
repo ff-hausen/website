@@ -37,9 +37,6 @@ class InstallRolesCommand extends Command
         $this->createAdminUser();
     }
 
-    /**
-     * @return void
-     */
     public function createRoles(): void
     {
         foreach ($this->roles as $role => $wikiRole) {
@@ -51,14 +48,11 @@ class InstallRolesCommand extends Command
         }
     }
 
-    /**
-     * @return void
-     */
     public function createAdminUser(): void
     {
         if (User::count() === 0) {
             $adminUser = User::forceCreate([
-                'name' => 'Administrator',
+                'first_name' => 'Admin',
                 'email' => 'admin@ff-frankfurt-hausen.de',
                 'email_verified_at' => now(),
                 'user_verified_at' => now(),
@@ -68,9 +62,6 @@ class InstallRolesCommand extends Command
         }
     }
 
-    /**
-     * @return void
-     */
     public function createAdminPermissions(): void
     {
         $adminPermission = Permission::createOrFirst([

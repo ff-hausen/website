@@ -9,6 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('first_name')->after('name');
+            $table->string('last_name')->nullable()->after('first_name');
+            $table->dropColumn('name');
+
             $table->datetime('user_verified_at')->nullable()->after('email_verified_at');
         });
     }
@@ -16,7 +20,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->removeColumn('user_verified_at');
+            $table->string('name')->after('last_name');
+            $table->dropColumn('first_name');
+            $table->dropColumn('last_name');
+
+            $table->dropColumn('user_verified_at');
         });
     }
 };

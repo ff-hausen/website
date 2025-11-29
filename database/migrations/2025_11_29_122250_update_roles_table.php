@@ -10,13 +10,15 @@ return new class extends Migration
     {
         Schema::table('roles', function (Blueprint $table) {
             $table->string('wiki_name')->nullable()->after('name');
+            $table->boolean('show_in_userlist')->default(false)->after('wiki_name');
         });
     }
 
     public function down(): void
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->removeColumn('wiki_name');
+            $table->dropColumn('wiki_name');
+            $table->dropColumn('show_in_userlist');
         });
     }
 };

@@ -8,10 +8,12 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -25,6 +27,12 @@ class RoleResource extends Resource
 
     protected static ?string $slug = 'roles';
 
+    protected static ?string $modelLabel = 'Rolle';
+
+    protected static ?string $pluralModelLabel = 'Rollen';
+
+    protected static ?string $navigationLabel = 'Rollen';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ShieldCheck;
 
     protected static \UnitEnum|string|null $navigationGroup = 'Nutzerverwaltung';
@@ -36,19 +44,31 @@ class RoleResource extends Resource
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->translateLabel()
                     ->required(),
 
-                TextInput::make('wiki_name'),
+                TextInput::make('wiki_name')
+                    ->translateLabel(),
 
-                TextEntry::make('created_at')
-                    ->label('Created Date')
-                    ->state(fn (?Role $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                Checkbox::make('show_in_userlist')
+                    ->translateLabel(),
 
-                TextEntry::make('updated_at')
-                    ->label('Last Modified Date')
-                    ->state(fn (?Role $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                Grid::make()
+                    ->columnSpanFull()
+                    ->schema([
+                        TextEntry::make('created_at')
+                            ->translateLabel()
+                            ->label('Created Date')
+                            ->state(fn (?Role $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+
+                        TextEntry::make('updated_at')
+                            ->translateLabel()
+                            ->label('Last Modified Date')
+                            ->state(fn (?Role $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                    ]),
 
                 Section::make('Permissions')
+                    ->translateLabel()
                     ->columnSpanFull()
                     ->schema([
 
@@ -65,13 +85,16 @@ class RoleResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('wiki_name')
+                    ->translateLabel()
                     ->sortable(),
 
                 TextColumn::make('users_count')
+                    ->translateLabel()
                     ->numeric()
                     ->counts('users')
                     ->sortable(),

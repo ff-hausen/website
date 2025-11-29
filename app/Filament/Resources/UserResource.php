@@ -10,14 +10,17 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -30,6 +33,12 @@ class UserResource extends Resource
 
     protected static ?string $slug = 'users';
 
+    protected static ?string $modelLabel = 'Benutzer';
+
+    protected static ?string $pluralModelLabel = 'Benutzer';
+
+    protected static ?string $navigationLabel = 'Benutzer';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
     protected static \UnitEnum|string|null $navigationGroup = 'Nutzerverwaltung';
@@ -40,17 +49,22 @@ class UserResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->columnSpanFull()
+                TextInput::make('first_name')
+                    ->translateLabel()
                     ->required(),
+
+                TextInput::make('last_name')
+                    ->translateLabel(),
 
                 Grid::make()
                     ->columns(1)
                     ->schema([
                         TextInput::make('email')
+                            ->translateLabel()
                             ->required(),
 
                         DatePicker::make('email_verified_at')
+                            ->translateLabel()
                             ->label('Email Verified Date'),
                     ]),
 
@@ -58,6 +72,7 @@ class UserResource extends Resource
                     ->columns(1)
                     ->schema([
                         TextInput::make('password')
+                            ->translateLabel()
                             ->password()
                             ->live()
                             // Required on creation
@@ -75,14 +90,29 @@ class UserResource extends Resource
                             ->dehydrated(fn (?string $state): bool => filled($state)),
 
                         DatePicker::make('user_verified_at')
+                            ->translateLabel()
                             ->label('User Verified Date'),
                     ]),
 
+                Section::make('Roles')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->schema([
+
+                        CheckboxList::make('roles')
+                            ->hiddenLabel()
+                            ->columns(3)
+                            ->relationship(titleAttribute: 'name'),
+
+                    ]),
+
                 TextEntry::make('created_at')
+                    ->translateLabel()
                     ->label('Created Date')
                     ->state(fn (?User $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
                 TextEntry::make('updated_at')
+                    ->translateLabel()
                     ->label('Last Modified Date')
                     ->state(fn (?User $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
 
@@ -100,17 +130,33 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('first_name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('last_name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('email')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('user_verified_at')
-                    ->label('User Verified Date')
-                    ->date(),
+                TextColumn::make('roles')
+                    ->label('Divisions')
+                    ->translateLabel()
+                    ->badge()
+                    ->state(fn (User $user) => $user->roles()->where('show_in_userlist', true)->get()->pluck('name'))
+                    ->color(fn ($state) => match ($state) {
+                        'Einsatzabteilung' => Color::Red,
+                        'Vereinsmitglied' => Color::Amber,
+                        'Alters- und Ehrenabteilung' => Color::Green,
+                        default => 'gray',
+                    }),
+
             ])
             ->filters([
                 //
