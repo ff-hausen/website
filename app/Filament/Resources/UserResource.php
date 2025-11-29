@@ -30,7 +30,11 @@ class UserResource extends Resource
 
     protected static ?string $slug = 'users';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
+
+    protected static \UnitEnum|string|null $navigationGroup = 'Nutzerverwaltung';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
@@ -104,16 +108,8 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('email_verified_at')
-                    ->label('Email Verified Date')
-                    ->date(),
-
-                TextColumn::make('two_factor_secret'),
-
-                TextColumn::make('two_factor_recovery_codes'),
-
-                TextColumn::make('two_factor_confirmed_at')
-                    ->label('Two Factor Confirmed Date')
+                TextColumn::make('user_verified_at')
+                    ->label('User Verified Date')
                     ->date(),
             ])
             ->filters([

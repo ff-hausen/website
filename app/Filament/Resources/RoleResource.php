@@ -25,7 +25,11 @@ class RoleResource extends Resource
 
     protected static ?string $slug = 'roles';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ShieldCheck;
+
+    protected static \UnitEnum|string|null $navigationGroup = 'Nutzerverwaltung';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
@@ -64,7 +68,13 @@ class RoleResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('wiki_name'),
+                TextColumn::make('wiki_name')
+                    ->sortable(),
+
+                TextColumn::make('users_count')
+                    ->numeric()
+                    ->counts('users')
+                    ->sortable(),
             ])
             ->filters([
                 //
