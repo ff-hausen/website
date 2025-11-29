@@ -1,5 +1,6 @@
 {
-    "name": "laravel/laravel",
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "laravel/vue-starter-kit",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
     "keywords": [
@@ -9,34 +10,21 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "bvanhoekelen/terminal-style": "^1.0",
-        "creativeorange/gravatar": "^1.0",
-        "filament/filament": "^3.2",
-        "hracik/php-color-converter": "^0.0.3",
-        "inertiajs/inertia-laravel": "^v2.0.3",
+        "inertiajs/inertia-laravel": "^2.0",
+        "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
-        "laravel/passport": "^12.0",
-        "laravel/prompts": "^v0.3.5",
-        "laravel/tinker": "^2.9",
-        "spatie/laravel-data": "^4.8",
-        "tightenco/ziggy": "^v2.5.3",
-        "tii/csv-state-parser": "^1.0",
-        "web-auth/webauthn-lib": "^5.0"
+        "laravel/tinker": "^2.10.1",
+        "laravel/wayfinder": "^0.1.9"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.13",
-        "deployer/deployer": "^7.4",
         "fakerphp/faker": "^1.23",
-        "laravel-lang/lang": "^15.7",
-        "laravel/breeze": "^2.1",
-        "laravel/pint": "^1.13",
-        "laravel/sail": "^1.26",
+        "laravel/pail": "^1.2.2",
+        "laravel/pint": "^1.24",
+        "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
-        "pestphp/pest": "^3.0",
-        "pestphp/pest-plugin-laravel": "^3.0",
-        "spatie/laravel-db-snapshots": "^2.6",
-        "spatie/laravel-ray": "^1.37"
+        "nunomaduro/collision": "^8.6",
+        "pestphp/pest": "^4.1",
+        "pestphp/pest-plugin-laravel": "^4.0"
     },
     "autoload": {
         "psr-4": {
@@ -51,10 +39,30 @@
         }
     },
     "scripts": {
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate --force",
+            "npm install",
+            "npm run build"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+        ],
+        "dev:ssr": [
+            "npm run build:ssr",
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr --kill-others"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -66,6 +74,9 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]
     },
     "extra": {

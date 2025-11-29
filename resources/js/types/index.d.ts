@@ -1,48 +1,39 @@
-import { Config } from "ziggy-js";
-import { Method } from "@inertiajs/core";
+import { InertiaLinkProps } from '@inertiajs/vue3';
+import type { LucideIcon } from 'lucide-vue-next';
+
+export interface Auth {
+    user: User;
+}
+
+export interface BreadcrumbItem {
+    title: string;
+    href: string;
+}
+
+export interface NavItem {
+    title: string;
+    href: NonNullable<InertiaLinkProps['href']>;
+    icon?: LucideIcon;
+    isActive?: boolean;
+}
+
+export type AppPageProps<
+    T extends Record<string, unknown> = Record<string, unknown>,
+> = T & {
+    name: string;
+    quote: { message: string; author: string };
+    auth: Auth;
+    sidebarOpen: boolean;
+};
 
 export interface User {
     id: number;
-    first_name: string;
-    last_name: string;
+    name: string;
     email: string;
-    email_verified_at?: string;
-    image_url?: string;
+    avatar?: string;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
 }
 
-export interface OAuthClient {
-    id: string;
-    user_id?: number;
-    name: string;
-    provider?: string;
-    redirect: string;
-    personal_access_client: boolean;
-    password_client: boolean;
-    revoked: boolean;
-    created_at?: boolean;
-    updated_at?: boolean;
-}
-
-export type PageProps<
-    T extends Record<string, unknown> = Record<string, unknown>,
-> = T & {
-    auth: {
-        user: User;
-        can: {
-            access_admin: boolean;
-        };
-    };
-    ziggy: Config & { location: string };
-};
-
-export interface MainNavigationItem {
-    name: string;
-    href: string;
-    current: boolean;
-}
-
-export interface UserNavigationItem {
-    name: string;
-    href: string;
-    method?: Method;
-}
+export type BreadcrumbItemType = BreadcrumbItem;

@@ -2,41 +2,25 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Inertia\Middleware;
-use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
-    public function handle(Request $request, Closure $next)
-    {
-        $response = parent::handle($request, $next);
-
-        $location = $response->headers->get('location');
-        $path = parse_url($location, PHP_URL_PATH);
-
-        if (str_starts_with($path, '/admin')) {
-            return Inertia::location($response->getTargetUrl());
-        }
-
-        if ($location && ! str_starts_with($location, config('app.url'))) {
-            return Inertia::location($location);
-        }
-
-        return $response;
-    }
-
     /**
-     * The root template that is loaded on the first page visit.
+     * The root template that's loaded on the first page visit.
+     *
+     * @see https://inertiajs.com/server-side-setup#root-template
      *
      * @var string
      */
     protected $rootView = 'app';
 
     /**
-     * Determine the current asset version.
+     * Determines the current asset version.
+     *
+     * @see https://inertiajs.com/asset-versioning
      */
     public function version(Request $request): ?string
     {
@@ -46,22 +30,22 @@ class HandleInertiaRequests extends Middleware
     /**
      * Define the props that are shared by default.
      *
+     * @see https://inertiajs.com/shared-data
+     *
      * @return array<string, mixed>
      */
     public function share(Request $request): array
     {
+        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+
         return [
             ...parent::share($request),
+            'name' => config('app.name'),
+            'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user()?->append(['image_url']),
-                'can' => [
-                    'access_admin' => $request->user()?->can('access-admin') ?? false,
-                ],
+                'user' => $request->user(),
             ],
-            'ziggy' => fn () => [
-                ...(new Ziggy)->toArray(),
-                'location' => $request->url(),
-            ],
+            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
 }

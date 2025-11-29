@@ -1,40 +1,29 @@
-import "./bootstrap";
-import "../css/app.css";
+import '../css/app.css';
 
-import { createApp, DefineComponent, h } from "vue";
-import { createInertiaApp, router } from "@inertiajs/vue3";
-import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { ZiggyVue } from "../../vendor/tightenco/ziggy";
-import dayjs from "dayjs";
-import de from "dayjs/locale/de";
+import { createInertiaApp } from '@inertiajs/vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import type { DefineComponent } from 'vue';
+import { createApp, h } from 'vue';
+import { initializeTheme } from './composables/useAppearance';
 
-const appName = import.meta.env.VITE_APP_NAME || "Laravel";
-
-dayjs.locale(de);
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) =>
         resolvePageComponent(
-            `./Pages/${name}.vue`,
-            import.meta.glob<DefineComponent>("./Pages/**/*.vue"),
+            `./pages/${name}.vue`,
+            import.meta.glob<DefineComponent>('./pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(ZiggyVue)
             .mount(el);
     },
     progress: {
-        color: "#4B5563",
+        color: '#4B5563',
     },
 });
 
-router.on("before", (event) => {
-    const url = event.detail.visit.url;
-
-    if (url.host !== location.host || url.pathname.startsWith("/admin")) {
-        event.preventDefault();
-        location.href = url.href;
-    }
-});
+// This will set light / dark mode on page load...
+initializeTheme();

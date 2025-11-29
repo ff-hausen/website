@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LaravelIdeaPersonalSettings">
+    <option name="generationStringOptionValues">
+      <map>
+        <entry key="createDatabaseMigration.create" value="" />
+        <entry key="createFormRequest.generateAuthorize" value="" />
+        <entry key="createMailable.markdown" value="1" />
+        <entry key="createMailable.shouldQueue" value="1" />
+        <entry key="createPolicy.userClass" value="\App\Models\User" />
+        <entry key="createResourceController.apiOnly" value="1" />
+        <entry key="newModelSimpleOption:addFillable" value="1" />
+        <entry key="postGeneration:filamentResource" value="1" />
+        <entry key="postGeneration:formRequest" value="1" />
+      </map>
+    </option>
+  </component>
+</project>
