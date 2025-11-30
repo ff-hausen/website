@@ -45,6 +45,8 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $recordTitleAttribute = 'full_name';
+
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -152,8 +154,8 @@ class UserResource extends Resource
                     ->state(fn (User $user) => $user->roles()->where('show_in_userlist', true)->get()->pluck('name'))
                     ->color(fn ($state) => match ($state) {
                         'Einsatzabteilung' => Color::Red,
-                        'Vereinsmitglied' => Color::Amber,
-                        'Alters- und Ehrenabteilung' => Color::Green,
+                        'Vereinsmitglied' => Color::Blue,
+                        'Alters- und Ehrenabteilung' => Color::Amber,
                         default => 'gray',
                     }),
 
@@ -183,6 +185,6 @@ class UserResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['name', 'email'];
+        return ['first_name', 'last_name', 'email'];
     }
 }

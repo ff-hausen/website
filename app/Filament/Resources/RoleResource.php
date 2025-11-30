@@ -3,18 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoleResource\Pages;
+use App\Filament\Resources\RoleResource\RelationManagers\PermissionsRelationManager;
+use App\Filament\Resources\RoleResource\RelationManagers\UsersRelationManager;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -38,6 +39,8 @@ class RoleResource extends Resource
     protected static \UnitEnum|string|null $navigationGroup = 'Nutzerverwaltung';
 
     protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
@@ -66,17 +69,6 @@ class RoleResource extends Resource
                             ->label('Last Modified Date')
                             ->state(fn (?Role $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
                     ]),
-
-                Section::make('Permissions')
-                    ->translateLabel()
-                    ->columnSpanFull()
-                    ->schema([
-
-                        CheckboxList::make('permissions')
-                            ->hiddenLabel()
-                            ->relationship(titleAttribute: 'name'),
-
-                    ]),
             ]);
     }
 
@@ -103,6 +95,7 @@ class RoleResource extends Resource
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
@@ -119,6 +112,14 @@ class RoleResource extends Resource
             'index' => Pages\ListRoles::route('/'),
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            UsersRelationManager::make(),
+            PermissionsRelationManager::make(),
         ];
     }
 

@@ -28,6 +28,24 @@ class InstallRolesCommand extends Command
         'Gruppenführer' => null,
     ];
 
+    protected $permissions = [
+        // User
+        'view any users',
+        'create users',
+        'update users',
+        'delete any users',
+        // Role
+        'view any roles',
+        'create roles',
+        'update roles',
+        'delete any roles',
+        // Permissions
+        'view any permissions',
+        'create permissions',
+        'update permissions',
+        'delete any permissions',
+    ];
+
     public function handle(): void
     {
         $this->createRoles();
@@ -35,6 +53,8 @@ class InstallRolesCommand extends Command
         $this->createAdminPermissions();
 
         $this->createAdminUser();
+
+        $this->createOtherPermissions();
     }
 
     public function createRoles(): void
@@ -46,6 +66,14 @@ class InstallRolesCommand extends Command
                 'wiki_name' => $wikiRole,
             ]);
         }
+    }
+
+    public function createAdminPermissions(): void
+    {
+        $adminPermission = Permission::createOrFirst([
+            'name' => 'access admin panel',
+        ]);
+        $adminPermission->assignRole('Administrator');
     }
 
     public function createAdminUser(): void
@@ -62,11 +90,12 @@ class InstallRolesCommand extends Command
         }
     }
 
-    public function createAdminPermissions(): void
+    protected function createOtherPermissions()
     {
-        $adminPermission = Permission::createOrFirst([
-            'name' => 'can access admin panel',
-        ]);
-        $adminPermission->assignRole('Administrator');
+        foreach ($this->permissions as $permission) {
+            Permission::createOrFirst([
+                'name' => $permission,
+            ]);
+        }
     }
 }

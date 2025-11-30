@@ -6,6 +6,7 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -43,6 +44,16 @@ class User extends Authenticatable implements FilamentUser, HasName
         'remember_token',
     ];
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->can('access admin panel');
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->full_name;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -57,13 +68,10 @@ class User extends Authenticatable implements FilamentUser, HasName
         ];
     }
 
-    public function canAccessPanel(Panel $panel): bool
+    protected function fullName(): Attribute
     {
-        return $this->hasPermissionTo('can access admin panel');
-    }
-
-    public function getFilamentName(): string
-    {
-        return trim("{$this->first_name} {$this->last_name}");
+        return Attribute::get(
+            fn ($value, array $attributes) => trim("{$attributes['first_name']} {$attributes['last_name']}"),
+        );
     }
 }
