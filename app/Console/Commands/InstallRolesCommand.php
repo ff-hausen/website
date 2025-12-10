@@ -29,32 +29,35 @@ class InstallRolesCommand extends Command
     ];
 
     protected $permissions = [
+        // Admin
+        'admin-panel:access',
         // User
-        'view any users',
-        'create users',
-        'update users',
-        'delete any users',
+        'users:view-any',
+        'users:create',
+        'users:update',
+        'users:delete-any',
         // Role
-        'view any roles',
-        'create roles',
-        'update roles',
-        'delete any roles',
+        'roles:view-any',
+        'roles:create',
+        'roles:update',
+        'roles:delete-any',
         // Permissions
-        'view any permissions',
-        'create permissions',
-        'update permissions',
-        'delete any permissions',
+        'permissions:view-any',
+        'permissions:create',
+        'permissions:update',
+        'permissions:delete-any',
+        'permissions:assign',
     ];
 
     public function handle(): void
     {
         $this->createRoles();
 
-        $this->createAdminPermissions();
+        $this->createPermissions();
 
         $this->createAdminUser();
 
-        $this->createOtherPermissions();
+        $this->assignPermissionsToAdmin();
     }
 
     public function createRoles(): void
@@ -68,12 +71,12 @@ class InstallRolesCommand extends Command
         }
     }
 
-    public function createAdminPermissions(): void
+    public function assignPermissionsToAdmin(): void
     {
-        $adminPermission = Permission::createOrFirst([
-            'name' => 'access admin panel',
-        ]);
-        $adminPermission->assignRole('Administrator');
+        $adminRole = Role::whereName('Administrator')->first();
+        foreach ($this->permissions as $permission) {
+            $adminRole->givePermissionTo($permission);
+        }
     }
 
     public function createAdminUser(): void
@@ -90,7 +93,7 @@ class InstallRolesCommand extends Command
         }
     }
 
-    protected function createOtherPermissions()
+    protected function createPermissions()
     {
         foreach ($this->permissions as $permission) {
             Permission::createOrFirst([

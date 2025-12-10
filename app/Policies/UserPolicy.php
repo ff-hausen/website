@@ -11,31 +11,31 @@ class UserPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view any users');
+        return $user->hasPermissionTo('users:view-any');
     }
 
     public function view(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('view any users');
+        return $user->hasPermissionTo('users:view-any');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create users');
+        return $user->hasPermissionTo('users:create');
     }
 
     public function update(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('update users');
+        return $user->hasPermissionTo('users:update');
     }
 
     public function delete(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('delete any users');
+        return $user->hasPermissionTo('users:delete-any');
     }
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('delete any users');
+        return $user->hasPermissionTo('users:delete-any');
     }
 }

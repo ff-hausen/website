@@ -6,9 +6,9 @@ use Filament\Actions\AttachAction;
 use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
 class PermissionsRelationManager extends RelationManager
@@ -30,8 +30,16 @@ class PermissionsRelationManager extends RelationManager
         return $table
             ->searchable(['name'])
             ->columns([
-                TextColumn::make('name'),
+                Stack::make([
+                    TextColumn::make('name'),
+                ]),
             ])
+            ->contentGrid([
+                'sm' => 2,
+                'md' => 3,
+                'xl' => 4,
+            ])
+            ->defaultSort('name')
             ->headerActions([
                 AttachAction::make()
                     ->multiple()
@@ -41,7 +49,7 @@ class PermissionsRelationManager extends RelationManager
             ])
             ->recordActions([
                 DetachAction::make()
-                    ->authorize('detach')
+                    ->authorize('detach-any')
                     ->after(fn (PermissionRegistrar $registrar) => $registrar->forgetCachedPermissions()),
             ])
             ->toolbarActions([

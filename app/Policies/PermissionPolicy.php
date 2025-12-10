@@ -12,7 +12,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view any permissions');
+        return $user->hasPermissionTo('permissions:view-any');
     }
 
     /**
@@ -20,7 +20,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo('view any permissions');
+        return $user->hasPermissionTo('permissions:view-any');
     }
 
     /**
@@ -28,7 +28,7 @@ class PermissionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('create permissions');
+        return $user->hasPermissionTo('permissions:create');
     }
 
     /**
@@ -36,12 +36,12 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo('update permissions');
+        return $user->hasPermissionTo('permissions:update');
     }
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('delete any permissions');
+        return $user->hasPermissionTo('permissions:delete-any');
     }
 
     /**
@@ -49,26 +49,16 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission): bool
     {
-        return $user->hasPermissionTo('delete any permissions');
+        return $user->hasPermissionTo('permissions:delete-any');
     }
 
     public function attachAny(User $user): bool
     {
-        return true;
-    }
-
-    public function attach(User $user, Permission $permission): bool
-    {
-        return true;
+        return $user->hasPermissionTo('permissions:assign');
     }
 
     public function detachAny(User $user): bool
     {
-        return true;
-    }
-
-    public function detach(User $user, Permission $permission): bool
-    {
-        return true;
+        return $user->hasPermissionTo('permissions:assign');
     }
 }
