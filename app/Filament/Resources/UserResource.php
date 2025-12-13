@@ -91,7 +91,7 @@ class UserResource extends Resource
                             ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
                             ->dehydrated(fn (?string $state): bool => filled($state)),
 
-                        DatePicker::make('user_verified_at')
+                        DatePicker::make('user_approved_at')
                             ->translateLabel()
                             ->label('User Verified Date'),
                     ]),

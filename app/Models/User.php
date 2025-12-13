@@ -64,15 +64,15 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     {
         return [
             'email_verified_at' => 'datetime',
-            'user_verified_at' => 'datetime',
+            'user_approved_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
 
-    public function isUserVerified(): bool
+    public function isUserApproved(): bool
     {
-        return $this->user_verified_at !== null;
+        return $this->user_approved_at !== null;
     }
 
     protected function fullName(): Attribute

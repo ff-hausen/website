@@ -86,7 +86,7 @@ class InstallRolesCommand extends Command
                 'first_name' => 'Admin',
                 'email' => 'admin@ff-frankfurt-hausen.de',
                 'email_verified_at' => now(),
-                'user_verified_at' => now(),
+                'user_approved_at' => now(),
                 'password' => Hash::make('changeme'),
             ]);
             $adminUser->assignRole('Administrator');

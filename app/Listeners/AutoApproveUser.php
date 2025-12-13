@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Carbon;
 
-class AutoVerifyUser
+class AutoApproveUser
 {
     /**
      * Create the event listener.
@@ -32,9 +32,9 @@ class AutoVerifyUser
             |> strtolower(...)
             |> (fn ($x) => explode('@', $x)[1]);
 
-        if ($domain === 'ff-frankfurt-hausen.de' && $user->user_verified_at === null) {
+        if ($domain === 'ff-frankfurt-hausen.de' && $user->user_approved_at === null) {
             $user->forceFill([
-                'user_verified_at' => Carbon::now(),
+                'user_approved_at' => Carbon::now(),
             ])->save();
         } else {
             // TODO: Notify administrator
