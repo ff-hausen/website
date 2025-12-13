@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -14,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser, HasName, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
@@ -45,6 +46,11 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
         'remember_token',
     ];
 
+    protected $appends = [
+        'full_name',
+        'avatar_url',
+    ];
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->can('admin-panel:access');
@@ -53,6 +59,16 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     public function getFilamentName(): string
     {
         return $this->full_name;
+    }
+
+    public function isUserApproved(): bool
+    {
+        return $this->user_approved_at !== null;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url;
     }
 
     /**
@@ -70,15 +86,19 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
         ];
     }
 
-    public function isUserApproved(): bool
-    {
-        return $this->user_approved_at !== null;
-    }
-
     protected function fullName(): Attribute
     {
         return Attribute::get(
             fn ($value, array $attributes) => trim("{$attributes['first_name']} {$attributes['last_name']}"),
+        );
+    }
+
+    protected function avatarUrl(): Attribute
+    {
+        $hash = \hash('sha256', $this->email);
+
+        return Attribute::make(
+            get: fn ($value, array $attributes) => route('avatar', ['hash' => $hash]),
         );
     }
 }
