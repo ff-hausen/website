@@ -38,4 +38,9 @@ class UserPolicy
     {
         return $user->hasPermissionTo('users:delete-any');
     }
+
+    public function approve(User $user): bool
+    {
+        return $user->hasPermissionTo('users:approve');
+    }
 }

@@ -36,6 +36,7 @@ class InstallRolesCommand extends Command
         'users:create',
         'users:update',
         'users:delete-any',
+        'users:approve',
         // Role
         'roles:view-any',
         'roles:create',

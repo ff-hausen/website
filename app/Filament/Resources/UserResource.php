@@ -22,7 +22,9 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -66,8 +68,9 @@ class UserResource extends Resource
                             ->required(),
 
                         DatePicker::make('email_verified_at')
+                            ->label('Email Verified Date')
                             ->translateLabel()
-                            ->label('Email Verified Date'),
+                            ->nullable(),
                     ]),
 
                 Grid::make()
@@ -92,8 +95,9 @@ class UserResource extends Resource
                             ->dehydrated(fn (?string $state): bool => filled($state)),
 
                         DatePicker::make('user_approved_at')
+                            ->label('User Verified Date')
                             ->translateLabel()
-                            ->label('User Verified Date'),
+                            ->nullable(),
                     ]),
 
                 Section::make('Roles')
@@ -132,40 +136,69 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                IconColumn::make('user_approved_at')
+                    ->label('Active')
+                    ->translateLabel()
+                    ->boolean()
+                    ->state(fn (User $user) => $user->isUserApproved())
+                    ->tooltip(fn (User $user) => $user->isUserApproved() ? __('User is approved') : __('User is not approved'))
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('first_name')
                     ->translateLabel()
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('last_name')
                     ->translateLabel()
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('email')
                     ->translateLabel()
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('roles')
                     ->label('Divisions')
                     ->translateLabel()
                     ->badge()
-                    ->state(fn (User $user) => $user->roles()->where('show_in_userlist', true)->get()->pluck('name'))
+                    ->state(fn (User $user) => $user->roles()->where('show_in_userlist', true)->get()->pluck('name')->sort())
                     ->color(fn ($state) => match ($state) {
                         'Einsatzabteilung' => Color::Red,
                         'Vereinsmitglied' => Color::Blue,
                         'Alters- und Ehrenabteilung' => Color::Amber,
                         default => 'gray',
-                    }),
+                    })
+                    ->listWithLineBreaks()
+                    ->toggleable(),
 
             ])
             ->filters([
-                //
+                TernaryFilter::make('user_approved_at')
+                    ->translateLabel()
+                    ->nullable(),
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                Action::make('Approve User')
+                    ->label('Approve User')
+                    ->translateLabel()
+                    ->icon(Heroicon::CheckBadge)
+                    ->visible(fn (User $user): bool => ! $user->isUserApproved())
+                    ->authorize('approve')
+                    ->action(function (User $user) {
+                        $user->forceFill([
+                            'user_approved_at' => now(),
+                        ])->save();
+                    }),
+                EditAction::make()
+                    ->iconButton(),
+                DeleteAction::make()
+                    ->iconButton(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
