@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('last_name')->nullable()->after('first_name');
             $table->dropColumn('name');
 
-            $table->datetime('user_approved_at')->nullable()->after('email_verified_at');
+            $table->timestamp('user_approved_at')->nullable()->after('email_verified_at');
         });
     }
 
