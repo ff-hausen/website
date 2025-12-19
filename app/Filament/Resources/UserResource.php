@@ -28,6 +28,7 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Tomloprod\Colority\Support\Facades\Colority;
 
 class UserResource extends Resource
 {
@@ -168,12 +169,7 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->badge()
                     ->state(fn (User $user) => $user->roles()->where('show_in_userlist', true)->get()->pluck('name')->sort())
-                    ->color(fn ($state) => match ($state) {
-                        'Einsatzabteilung' => Color::Red,
-                        'Vereinsmitglied' => Color::Blue,
-                        'Alters- und Ehrenabteilung' => Color::Amber,
-                        default => 'gray',
-                    })
+                    ->color(fn ($state) => Color::hex(Colority::textToColor($state)->toHex()->getValueColor()))
                     ->listWithLineBreaks()
                     ->toggleable(),
 
