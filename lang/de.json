@@ -17,5 +17,8 @@
     "Approve User": "Nutzer freischalten",
     "Active":  "Aktiv",
     "User is approved": "Nutzer ist freigeschaltet",
-    "User is not approved": "Nutzer ist nicht freigeschaltet"
+    "User is not approved": "Nutzer ist nicht freigeschaltet",
+    "Department": "Abteilung",
+    "Background color": "Hintergrundfarbe",
+    "Text color": "Textfarbe"
 }

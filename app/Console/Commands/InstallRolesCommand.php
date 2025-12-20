@@ -48,6 +48,10 @@ class InstallRolesCommand extends Command
         'permissions:update',
         'permissions:delete-any',
         'permissions:assign',
+        // Calendar
+        'calendar:create:ea',
+        'calendar:create:jf',
+        'calendar:create:mf',
     ];
 
     public function handle(): void
