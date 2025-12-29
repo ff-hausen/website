@@ -27,6 +27,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class EventResource extends Resource
 {
@@ -34,7 +35,15 @@ class EventResource extends Resource
 
     protected static ?string $slug = 'calendar/events';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|UnitEnum|null $navigationGroup = 'Dienstplan';
+
+    protected static ?string $navigationLabel = 'Termine';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CalendarDays;
+
+    protected static ?string $modelLabel = 'Termin';
+
+    protected static ?string $pluralModelLabel = 'Termine';
 
     public static function form(Schema $schema): Schema
     {

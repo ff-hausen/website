@@ -16,13 +16,16 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Tomloprod\Colority\Support\Algorithms\ContrastRatioScore;
 use Tomloprod\Colority\Support\Facades\Colority;
 use UnitEnum;
 
@@ -34,8 +37,6 @@ class TypeResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Dienstplan';
 
-    protected static ?string $navigationParentItem = 'Termine';
-
     protected static ?string $navigationLabel = 'Veranstaltungsart';
 
     protected static ?string $modelLabel = 'Veranstaltungsart';
@@ -45,6 +46,15 @@ class TypeResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Tag;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static function badgeColor(string $backgroundColor, string $textColor) {
+        return [
+            50 => $backgroundColor, // background (light)
+            200 => $textColor, // text
+            400 => $backgroundColor, // background (dark)
+            600 => $backgroundColor, // outline
+        ];
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -70,20 +80,34 @@ class TypeResource extends Resource
                     })
                     ->default(fn () => request()->get('department')),
 
-                ColorPicker::make('background_color')
-                    ->translateLabel()
-                    ->nullable()
-                    ->live()
-                    ->afterStateUpdated(function ($state, Set $set) {
-                        if (filled($state)) {
-                            $set('text_color', ColorContrast::findTextColor($state));
-                        }
-                    }),
+                Section::make('Farben')
+                    ->icon(Heroicon::PaintBrush)
+                    ->iconColor(Color::Blue)
+                    ->columnSpanFull()
+                    ->columns(3)
+                    ->schema([
+                        ColorPicker::make('background_color')
+                            ->translateLabel()
+                            ->nullable()
+                            ->live()
+                            ->afterStateUpdated(function ($state, Set $set) {
+                                if (filled($state)) {
+                                    $set('text_color', ColorContrast::findTextColor($state, ContrastRatioScore::Excellent));
+                                }
+                            }),
 
-                ColorPicker::make('text_color')
-                    ->translateLabel()
-                    ->disabled()
-                    ->dehydrated(),
+                        ColorPicker::make('text_color')
+                            ->translateLabel()
+                            ->disabled()
+                            ->dehydrated(),
+
+                        TextEntry::make('name')
+                            ->label('Example')
+                            ->translateLabel()
+                            ->badge()
+                            ->size(TextSize::Medium)
+                            ->color(fn (Get $get) => static::badgeColor($get('background_color'), $get('text_color'))),
+                    ]),
 
                 TextEntry::make('created_at')
                     ->label('Created Date')
@@ -104,7 +128,9 @@ class TypeResource extends Resource
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
-                    ->badge()->color(fn (Type $record) => Color::hex($record->background_color)),
+                    ->badge()
+                    ->size(TextSize::Medium)
+                    ->color(fn (Type $record) => static::badgeColor($record->background_color, $record->text_color)),
             ])
             ->filters([
                 //
