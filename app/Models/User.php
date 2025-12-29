@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use Uri\Rfc3986\Uri;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, MustVerifyEmail
 {
@@ -97,10 +98,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName, 
 
     protected function avatarUrl(): Attribute
     {
-        $hash = \hash('sha256', $this->email);
-
         return Attribute::make(
-            get: fn ($value, array $attributes) => route('avatar', ['hash' => $hash]),
+            get: function ($value, array $attributes) {
+                $hash = \hash('sha256', $attributes['email']);
+
+                return new Uri('https://api.dicebear.com/9.x/thumbs/svg')
+                    ->withQuery(http_build_query([
+                        'seed' => $hash,
+                        'shapeColor' => 'B1121A,D62828,FF3B30,C44536,8C1D18,5A0F0A,F06A4B,9E2A2B',
+                    ]))->toString();
+            },
         );
     }
 }

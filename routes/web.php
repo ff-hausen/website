@@ -14,6 +14,4 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['active-user'])->name('dashboard');
 
-Route::get('profile/avatar/{hash}', \App\Http\Controllers\AvatarController::class)->name('avatar');
-
 require __DIR__.'/settings.php';
