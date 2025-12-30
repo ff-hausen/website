@@ -15,10 +15,13 @@ use Filament\Actions\RestoreAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -49,6 +52,23 @@ class EventResource extends Resource
     {
         return $schema
             ->components([
+                Section::make('Termindetails')
+                    ->schema([
+                        TextInput::make('title')
+                            ->translateLabel()
+                            ->required()
+                            ->autofocus()
+                            ->columnSpanFull(),
+
+                        Group::make([
+                            DateTimePicker::make('starts_at')
+                                ->translateLabel()
+                                ->seconds(false)
+                                ->required()
+                                ->live(),
+                        ]),
+                    ]),
+
                 TextInput::make('title')
                     ->required(),
 
