@@ -68,7 +68,7 @@ const isBeforeTdot = computed(() => {
             class="bg-position-[top_15%_center]"
         >
             <h1 class="text-2xl font-black">Minifeuerwehr</h1>
-            <p>von 6 bis 10 Jahren</p>
+            <p>von 4 bis 10 Jahren</p>
             <p class="text-base">
                 Trifft sich außerhalb der Schulferien jeden Freitag um 16:30 Uhr
             </p>
