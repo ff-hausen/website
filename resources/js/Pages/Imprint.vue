@@ -25,7 +25,7 @@ import Box from "@/Components/Box.vue";
                     <strong>Vertreten durch:</strong><br />
                     Andreas Gombert<br />
                     Moritz Krieger<br />
-                    Regina Nardi<br />
+                    Tanja W&uuml;rker<br />
                     Stevie W&uuml;rker
                 </p>
 
