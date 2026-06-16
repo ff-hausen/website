@@ -29,8 +29,10 @@ class AppServiceProvider extends ServiceProvider
         \Gate::define('access-admin', function (User $user) {
             return $user->hasAnyRole([
                 RoleName::Administrator,
+                RoleName::Vereinsvorstand,
                 RoleName::JugendfeuerwehrLeitung,
                 RoleName::MinifeuerwehrLeitung,
+                RoleName::AusflugOrga,
             ]);
         });
 

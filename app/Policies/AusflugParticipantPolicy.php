@@ -22,7 +22,7 @@ class AusflugParticipantPolicy
 
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasRole(RoleName::AusflugOrga);
     }
 
     public function view(User $user, AusflugParticipant $ausflugParticipant): bool

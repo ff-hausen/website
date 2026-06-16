@@ -14,6 +14,8 @@ enum RoleName: string implements HasLabel
 
     case Vereinsvorstand = 'Vereinsvorstand';
 
+    case AusflugOrga = 'Vereinsausflug Orga';
+
     case AltersUndEhrenabteilung = 'Alters- und Ehrenabteilung';
 
     case JugendfeuerwehrLeitung = 'JF Leitung';
