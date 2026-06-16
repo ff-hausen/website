@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Gate;
 use App\Models\Passport\Client;
 use App\Models\RoleName;
 use App\Models\User;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;

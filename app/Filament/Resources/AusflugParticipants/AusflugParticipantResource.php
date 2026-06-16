@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\AusflugParticipants;
 
-use App\Filament\Resources\AusflugParticipantResource\Pages;
 use App\Filament\Resources\AusflugParticipants\Pages\CreateAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\EditAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\ListAusflugParticipants;
 use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
+use App\Models\RoleName;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
@@ -20,6 +22,8 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
+use Filament\Support\Enums\TextSize;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
@@ -30,6 +34,7 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 
 class AusflugParticipantResource extends Resource
@@ -42,7 +47,7 @@ class AusflugParticipantResource extends Resource
 
     protected static ?string $slug = 'ausflug-participants';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-ticket';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-ticket';
 
     protected static ?string $navigationLabel = 'Vereinsausflug Teilnehmer:innen';
 
@@ -175,7 +180,10 @@ class AusflugParticipantResource extends Resource
                             }),
 
                         TextColumn::make('price')
-                            ->icon('heroicon-o-currency-euro')
+                            ->icon(fn (AusflugParticipant $record) => is_null($record->paid_at) ? Heroicon::OutlinedCurrencyEuro : Heroicon::CurrencyEuro)
+                            ->iconColor(fn (AusflugParticipant $record) => is_null($record->paid_at) ? 'danger' : 'success')
+                            ->size(TextSize::Medium)
+                            ->tooltip(fn (AusflugParticipant $record) => is_null($record->paid_at) ? 'noch nicht bezahlt' : 'Bezahlt am '.$record->paid_at->format('d.m.Y'))
                             ->suffix(' €')
                             ->summarize(
                                 Sum::make()
@@ -187,6 +195,7 @@ class AusflugParticipantResource extends Resource
                     IconColumn::make('verified')
                         ->label('Verifiziert')
                         ->boolean()
+                        ->trueIcon(Heroicon::CheckBadge)
                         ->grow(false),
                 ]),
             ])
@@ -203,38 +212,64 @@ class AusflugParticipantResource extends Resource
             ])
             ->recordActions([
                 Action::make('summary')
-                    ->label('Zusammenfassung')
+                    ->hiddenLabel()
                     ->icon('heroicon-o-list-bullet')
+                    ->iconButton()
                     ->url(fn (AusflugParticipant $participant) => $participant->summaryUrl())
                     ->openUrlInNewTab(),
 
-                Action::make('resend_verification')
-                    ->label('Verifizierung neustarten')
-                    ->tooltip('Verifizierungsmail erneut senden')
-                    ->button()
-                    ->size(Size::Medium)
-                    ->icon('heroicon-o-arrow-path')
-                    ->action(function (AusflugParticipant $participant) {
-                        $participants = AusflugParticipant::whereSubmissionId($participant->submission_id)->get();
-                        $primary = $participants->where('primary', true)->first();
+                ActionGroup::make([
 
-                        Mail::to($primary->email)->send(new AnmeldungVerificationMail($participant->submission_id));
-                    })
-                    ->requiresConfirmation()
-                    ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
+                    Action::make('mark_paid')
+                        ->label('Als bezahlt markieren')
+                        ->tooltip('Markiert die Anmeldung als bezahlt')
+                        ->size(Size::Medium)
+                        ->icon(Heroicon::CreditCard)
+                        ->action(function (AusflugParticipant $participant) {
+                            $participant->update([
+                                'paid_at' => now(),
+                            ]);
+                        })
+                        ->requiresConfirmation()
+                        ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
 
-                Action::make('verify')
-                    ->label('Freigeben')
-                    ->tooltip('Anmeldung manuell freigeben')
-                    ->button()
-                    ->size(Size::Medium)
-                    ->icon('heroicon-o-check-badge')
-                    ->action(fn (AusflugParticipant $participant) => AusflugParticipant::whereSubmissionId($participant->submission_id)->update(['verified' => true]))
-                    ->requiresConfirmation()
-                    ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
+                    Action::make('resend_verification')
+                        ->label('Verifizierung neustarten')
+                        ->tooltip('Verifizierungsmail erneut senden')
+                        ->size(Size::Medium)
+                        ->icon('heroicon-o-arrow-path')
+                        ->action(function (AusflugParticipant $participant) {
+                            $participants = AusflugParticipant::whereSubmissionId($participant->submission_id)->get();
+                            $primary = $participants->where('primary', true)->first();
+
+                            Mail::to($primary->email)->send(new AnmeldungVerificationMail($participant->submission_id));
+                        })
+                        ->requiresConfirmation()
+                        ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
+
+                    Action::make('verify')
+                        ->label('Freigeben')
+                        ->tooltip('Anmeldung manuell freigeben')
+                        ->size(Size::Medium)
+                        ->icon('heroicon-o-check-badge')
+                        ->action(fn (AusflugParticipant $participant) => AusflugParticipant::whereSubmissionId($participant->submission_id)->update(['verified' => true]))
+                        ->requiresConfirmation()
+                        ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
+                ])->button(),
 
             ])
             ->toolbarActions([
+                BulkAction::make('mark_paid')
+                    ->label('Als bezahlt markieren')
+                    ->icon(HeroIcon::CreditCard)
+                    ->tooltip('Markiert die Anmeldung als bezahlt')
+                    ->action(function (Collection $selectedRecords) {
+                        $ids = $selectedRecords->pluck('id');
+                        AusflugParticipant::whereIn('id', $ids)->update(['paid_at' => now()]);
+                    })
+                    ->requiresConfirmation()
+                    ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
+
                 DeleteBulkAction::make(),
             ]);
     }

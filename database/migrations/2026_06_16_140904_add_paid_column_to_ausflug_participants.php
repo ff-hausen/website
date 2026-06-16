@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('ausflug_participants', function (Blueprint $table) {
-            $table->boolean('paid')->default(false)->after('price');
+            $table->timestamp('paid_at')->nullable()->after('price');
         });
     }
 

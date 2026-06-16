@@ -21,9 +21,17 @@ class AusflugParticipant extends Model
         'phone',
         'type',
         'price',
+        'paid_at',
         'verified',
         'primary',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'paid_at' => 'immutable_datetime',
+        ];
+    }
 
     protected static function booted(): void
     {
