@@ -31,6 +31,12 @@ function price(participant: Participant): number {
 const totalAmount = computed(() => {
     return props.participants.reduce((c, p) => c + (p.price ?? 0), 0);
 });
+
+const outstandingAmount = computed(() => {
+    return props.participants
+        .filter((p) => p.paid_at === null)
+        .reduce((c, p) => c + (p.price ?? 0), 0);
+});
 </script>
 
 <template>
@@ -77,6 +83,12 @@ const totalAmount = computed(() => {
                     >
                         Betrag
                     </th>
+                    <th
+                        scope="col"
+                        class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"
+                    >
+                        Bezahlt?
+                    </th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -113,6 +125,43 @@ const totalAmount = computed(() => {
                     >
                         {{ participant.price }} €
                     </td>
+                    <td class="px-3 py-4 text-center text-sm whitespace-nowrap">
+                        <span
+                            v-if="participant.paid_at !== null"
+                            class="flex justify-center"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-6 text-green-500"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                />
+                            </svg>
+                        </span>
+                        <span v-else class="flex justify-center">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-6 text-red-500"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                />
+                            </svg>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
             <tfoot>
@@ -120,34 +169,57 @@ const totalAmount = computed(() => {
                     <th
                         scope="row"
                         colspan="4"
-                        class="hidden px-3 py-4 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0"
+                        class="hidden px-3 py-2 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0"
                     >
                         Gesamtbetrag
                     </th>
                     <th
                         scope="row"
-                        class="px-3 py-4 text-left text-sm font-semibold text-gray-900 sm:hidden"
+                        class="px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:hidden"
                     >
                         Gesamtbetrag
                     </th>
                     <td
-                        class="px-3 py-4 text-right text-sm font-semibold text-gray-900"
+                        class="px-3 py-2 text-right text-sm font-semibold text-gray-900"
                     >
                         {{ totalAmount }} €
+                    </td>
+                </tr>
+                <tr>
+                    <th
+                        scope="row"
+                        colspan="4"
+                        class="hidden px-3 py-2 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0"
+                    >
+                        Offener Betrag
+                    </th>
+                    <th
+                        scope="row"
+                        class="px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:hidden"
+                    >
+                        Offener Betrag
+                    </th>
+                    <td
+                        class="px-3 py-2 text-right text-sm font-semibold text-gray-900"
+                    >
+                        {{ outstandingAmount }} €
                     </td>
                 </tr>
             </tfoot>
         </table>
 
-        <p class="mb-4">
-            Bitte überweise den Gesamtbetrag bis spätestens 31.07.2026 auf
-            folgendes Konto:
-        </p>
-        <div class="font-bold">Frankfurter Sparkasse</div>
-        <div>
-            <span class="font-medium">IBAN:</span> DE51 5005 0201 0000 3191 29
+        <div v-if="outstandingAmount > 0">
+            <p class="mb-4">
+                Bitte überweise den offenen Betrag bis spätestens 31.07.2026 auf
+                folgendes Konto:
+            </p>
+            <div class="font-bold">Frankfurter Sparkasse</div>
+            <div>
+                <span class="font-medium">IBAN:</span> DE51 5005 0201 0000 3191
+                29
+            </div>
+            <div><span class="font-medium">BIC:</span> HELADEF1822</div>
         </div>
-        <div><span class="font-medium">BIC:</span> HELADEF1822</div>
     </MainLayout>
 </template>
 

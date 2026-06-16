@@ -15,6 +15,7 @@ export interface Participant {
     phone: string | null;
     type: "ea" | "verein" | null;
     price?: number;
+    paid_at?: Date;
     hasErrors: boolean;
     errors: string[];
     primary: boolean;
