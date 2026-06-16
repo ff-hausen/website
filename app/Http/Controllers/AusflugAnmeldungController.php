@@ -80,7 +80,7 @@ class AusflugAnmeldungController extends Controller
             Mail::to($infoRecipients)->send(new AnmeldungInfoMail($participants));
         }
 
-        return redirect()->to(URL::signedRoute('ausflug.anmeldung', ['submissionId' => $submissionId]));
+        return redirect()->to(URL::signedRoute('ausflug.summary', ['submissionId' => $submissionId]));
     }
 
     public function summary(Request $request, string $submissionId)
