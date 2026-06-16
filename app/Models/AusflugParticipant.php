@@ -28,7 +28,7 @@ class AusflugParticipant extends Model
     protected static function booted(): void
     {
         static::creating(function (AusflugParticipant $participant) {
-            if (!$participant->primary) {
+            if (! isset($participant->primary)) {
                 $participant->primary = true;
             }
 

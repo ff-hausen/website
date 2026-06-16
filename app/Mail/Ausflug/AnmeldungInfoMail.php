@@ -39,7 +39,7 @@ class AnmeldungInfoMail extends Mailable implements ShouldQueue
             markdown: 'emails.ausflug.anmeldung-info',
             with: [
                 'participants' => $this->participants,
-                'url' => URL::signedRoute('ausflug.verification', ['submissionId' => $this->submissionId]),
+                'url' => URL::signedRoute('ausflug.summary', ['submissionId' => $this->submissionId]),
             ]
         );
     }

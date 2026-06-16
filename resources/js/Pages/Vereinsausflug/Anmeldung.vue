@@ -163,15 +163,16 @@ function submitRegistration(): void {
 </script>
 
 <template>
-    <Head title="Vereinsausflug" />
+    <Head title="Vereinsausflug 2026" />
 
     <MainLayout>
         <section v-if="isRegistrationOpen">
             <article class="mx-auto my-6 max-w-2xl">
                 <h1 class="mb-3 text-4xl font-bold underline">
-                    Anmeldung zum Vereinsausflug 2025
+                    Anmeldung zum Vereinsausflug 2026 nach Karlsruhe und
+                    Heidelberg
                 </h1>
-                <p class="mb-4">am 27.09. – 28.09.2025</p>
+                <p class="mb-4">am 26.9. &ndash; 27.9.2026</p>
 
                 <div class="flex flex-col gap-4">
                     <p>
@@ -180,88 +181,167 @@ function submitRegistration(): void {
                     </p>
 
                     <p>
-                        wir laden euch herzlich zu unserem diesjährigen
-                        Vereinsausflug ein – dieses Mal geht es in die schöne
-                        Stadt Wuppertal mit einem Abstecher nach Siegen!
+                        hiermit möchten wir euch herzlich zu unserem
+                        <span class="font-medium"
+                            >Ausflug 2026 der Freiwilligen Feuerwehr
+                            Frankfurt-Hausen</span
+                        >
+                        einladen. In diesem Jahr führt uns die Reise am
+                        <span class="font-medium">26. und 27.09.2026</span>
+                        nach Karlsruhe, Schwetzingen und Heidelberg.
                     </p>
 
                     <p>
-                        Wir freuen uns auf ein spannendes, geselliges Wochenende
-                        mit euch – mit interessanten Führungen, gutem Essen und
-                        vielen schönen Momenten.
+                        Wir freuen uns auf ein schönes, geselliges Wochenende
+                        mit euch – mit interessanten Besichtigungen, gemeinsamen
+                        Führungen, gutem Essen und hoffentlich bestem
+                        Reisewetter.
                     </p>
 
                     <h2 class="text-2xl font-bold">
                         🚌 Reiseplan im Überblick:
                     </h2>
 
-                    <p class="font-bold">Samstag, 27.09.2025</p>
+                    <p class="font-bold">Samstag, 26.09.2026</p>
 
                     <ul class="list-inside list-disc sm:list-outside">
                         <li>
                             <span class="font-medium">08:00 Uhr</span> – Abfahrt
-                            am Ellerfeld (FF Hausen)
+                            am Feuerwehrhaus „Am Ellerfeld 18“ in Richtung
+                            Karlsruhe
+                        </li>
+                        <li>Fahrt mit einem Reisebus der Firma Schlosser</li>
+                        <li>Frühstückspause auf einem Autobahnrastplatz</li>
+                        <li>
+                            <span class="font-medium">11:00 Uhr</span> – Besuch
+                            der Freiwilligen Feuerwehr Karlsruhe-Durlach mit
+                            Führung durch die Feuerwache
+                            <br />
+                            Die Feuerwehr Durlach ist eine der ältesten, wenn
+                            nicht die älteste Freiwillige Feuerwehr in
+                            Deutschland.
                         </li>
                         <li>
-                            <span class="font-medium">09:30 Uhr</span> –
-                            Frühstückspause <br />
-                            Serways Raststätte Fernthal West, BAB3,
-                            Rasthausstraße 10–12, 53577 Neustadt (Wied)
-                        </li>
-                        <li>
-                            <span class="font-medium">12:00 Uhr</span> – Ankunft
-                            Wuppertal City
+                            <span class="font-medium">ab ca. 12:30 Uhr</span> –
+                            Zeit zur freien Verfügung in Karlsruhe-Durlach
                         </li>
                         <li>
                             <span class="font-medium">14:00 Uhr</span> –
-                            Stadtführung in Wuppertal
+                            Gemeinsame 1,5-stündige Führung durch Durlach
                         </li>
                         <li>
-                            <span class="font-medium">17:30 Uhr</span> –
-                            Check-in im B&B Hotel Wuppertal-City <br />
-                            (Hofaue 4, 42103 Wuppertal)
+                            Anschließend Weiterfahrt mit dem Bus zum Novotel
+                            Karlsruhe
                         </li>
                         <li>
-                            <span class="font-medium">19:00 Uhr</span> –
-                            Gemeinsames Abendessen <br />
-                            Wagner am Mäuerchen, Mäuerchen 4, 42103 Wuppertal
+                            <span class="font-medium">17:30 Uhr</span> – Treffen
+                            an der Rezeption und gemeinsamer Spaziergang zum
+                            Abendessen in Karlsruhe
                         </li>
                     </ul>
 
-                    <p class="font-bold">Sonntag, 28.09.2025</p>
+                    <p class="font-bold">Sonntag, 27.09.2026</p>
 
                     <ul class="list-inside list-disc sm:list-outside">
                         <li>
-                            <span class="font-medium">10:00 Uhr</span> – Abfahrt
-                            nach Siegen
+                            Nach dem Frühstück im Hotel treffen wir uns an der
+                            Rezeption
                         </li>
                         <li>
-                            <span class="font-medium">11:30 Uhr</span> – Besuch
-                            des Oberen Schlosses & Siegerlandmuseums inkl.
-                            Führung
+                            <span class="font-medium">10:00 Uhr</span> – Abfahrt
+                            mit dem Bus nach Schwetzingen
                         </li>
+                        <li>
+                            Gemeinsame Besichtigung von Schloss Schwetzingen
+                            <br />
+                            Wer möchte, kann im Anschluss auch den sehr
+                            sehenswerten Schlossgarten besuchen.
+                        </li>
+                        <li>Zeit zur freien Verfügung in Schwetzingen</li>
                         <li>
                             <span class="font-medium">14:00 Uhr</span> –
-                            Stadtführung durch Kay: von der Oberstadt in die
-                            Unterstadt
+                            Weiterfahrt nach Heidelberg
                         </li>
                         <li>
-                            <span class="font-medium">17:30 Uhr</span> –
-                            Gemeinsames Abendessen <br />
-                            (Geplant: „Zum Häutebacher“, zwei Alternativen sind
-                            angefragt)
+                            Zeit zur freien Verfügung in Heidelberg
+                            <br />
+                            Zum Zeitpunkt unseres Besuchs findet der
+                            „Heidelberger Herbst“ statt, inklusive
+                            verkaufsoffenem Sonntag. Das größte und älteste
+                            Stadtfest der Region bietet Live-Musik,
+                            Kunsthandwerkermärkte und einen riesigen Flohmarkt.
                         </li>
                         <li>
-                            <span class="font-medium">20:00 Uhr</span> –
-                            Heimfahrt nach Frankfurt
+                            <span class="font-medium">16:30 Uhr</span> –
+                            Weiterfahrt mit dem Bus nach Darmstadt
+                        </li>
+                        <li>
+                            Gemeinsames Abendessen im Restaurant Bölle
+                            <br />
+                            <span class="font-medium">Hinweis:</span> Das
+                            Abendessen ist nicht im Preis enthalten und muss
+                            selbst gezahlt werden.
+                        </li>
+                        <li>
+                            <span class="font-medium">ca. 20:30 Uhr</span> –
+                            Rückfahrt nach Frankfurt
+                        </li>
+                        <li>
+                            <span class="font-medium">ca. 21:00 Uhr</span> –
+                            Ankunft in Frankfurt
                         </li>
                     </ul>
-                    <p>Wir freuen uns auf ein tolles Wochenende mit euch!</p>
+
+                    <h2 class="text-2xl font-bold">💶 Kosten</h2>
+
+                    <p>
+                        Der Preis beträgt
+                        <span class="font-medium">150 € pro Person</span>.
+                        Mitglieder der Einsatzabteilung zahlen
+                        <span class="font-medium">90 €</span>.
+                    </p>
+
+                    <p>
+                        Im Preis enthalten sind die Busfahrt, die Eintritte und
+                        Führungen am Samstag und Sonntag, die Übernachtung mit
+                        Frühstück sowie das Abendessen am Samstagabend ohne
+                        Getränke.
+                    </p>
+
+                    <h2 class="text-2xl font-bold">📝 Anmeldung</h2>
+
+                    <p>
+                        Die Anmeldung muss bis zum
+                        <span class="font-medium">15.07.2026</span>
+                        erfolgen.
+                    </p>
+
+                    <h2 class="text-2xl font-bold">🏦 Bezahlung</h2>
+
+                    <p>
+                        Die Bezahlung muss bis zum
+                        <span class="font-medium">31.07.2026</span>
+                        auf folgendes Konto erfolgen:
+                    </p>
+
+                    <p>
+                        <span class="font-medium">IBAN:</span>
+                        DE51 5005 0201 0000 3191 29
+                    </p>
+
+                    <p>
+                        Wir freuen uns auf eine schöne Fahrt bei hoffentlich
+                        gutem Reisewetter!
+                    </p>
 
                     <p>
                         Mit kameradschaftlichen Grüßen <br />
-                        <span class="font-bold">Kay & Heiko</span> <br />
-                        Freiwillige Feuerwehr Frankfurt Hausen e.V.
+                        <span class="font-bold">
+                            Michael Winter, Friedrich Lamp, Marco Nardi, Heiko
+                            Horvath und Jürgen Wandtke
+                        </span>
+                        <br />
+                        Freiwillige Feuerwehr Frankfurt-Hausen
                     </p>
                 </div>
             </article>
@@ -471,10 +551,12 @@ function submitRegistration(): void {
             </div>
         </section>
         <section v-else>
-              <h1 class="mb-3 text-4xl font-bold underline">
-                    Anmeldung zum Vereinsausflug 2025
-                </h1>
-                <p class="mb-4 font-bold">🚫 Die Anmeldefrist ist leider bereits abgelaufen!</p>
+            <h1 class="mb-3 text-4xl font-bold underline">
+                Anmeldung zum Vereinsausflug 2026
+            </h1>
+            <p class="mb-4 font-bold">
+                🚫 Die Anmeldefrist ist leider bereits abgelaufen!
+            </p>
         </section>
     </MainLayout>
 </template>

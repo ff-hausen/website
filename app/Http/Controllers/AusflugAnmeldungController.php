@@ -54,6 +54,7 @@ class AusflugAnmeldungController extends Controller
         Mail::to($primary->email)
             ->send(new AnmeldungVerificationMail($submissionId));
 
+        return back();
     }
 
     public function verification(Request $request, string $submissionId)

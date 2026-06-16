@@ -10,7 +10,7 @@ Die folgenden Teilnehmer:innen wurden angemeldet:
 
 **Gesamtbetrag: {{ $participants->reduce(fn($c, $p) => $c+$p->price, 0) }} €**
 
-Überweise den Gesamtbetrag bitte bis spätestens 01.08.2025 auf folgendes Konto:
+Überweise den Gesamtbetrag bitte bis spätestens 31.07.2026 auf folgendes Konto:
 
 Frankfurter Sparkasse \
 IBAN: DE51 5005 0201 0000 3191 29 \
