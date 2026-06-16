@@ -16,6 +16,7 @@ export interface Participant {
     type: "ea" | "verein" | null;
     price?: number;
     hasErrors: boolean;
+    errors: string[];
     primary: boolean;
 }
 
@@ -36,6 +37,7 @@ let newParticipant = reactive<Participant>({
     phone: null,
     type: null,
     hasErrors: false,
+    errors: [],
     primary: false,
 });
 
@@ -85,6 +87,7 @@ function resetParticipantForm() {
         phone: null,
         type: null,
         hasErrors: false,
+        errors: [],
         primary: false,
     });
 }
@@ -109,6 +112,15 @@ const totalAmount = computed(() => {
 const submitted = ref(false);
 const hasErrors = computed(() => {
     return participants.value.reduce((carry, p) => p.hasErrors || carry, false);
+});
+const participantErrors = computed(() => {
+    const errors: string[] = [];
+    participants.value.forEach((participant) => {
+        participant.errors.forEach((error) => {
+            errors.push(error);
+        });
+    });
+    return errors;
 });
 
 function applyLastAddress(): void {
@@ -153,8 +165,10 @@ function submitRegistration(): void {
 
                     const split = key.split(/\./);
                     const index = parseInt(split[1]);
+                    const value = e[key];
 
                     participants.value[index].hasErrors = true;
+                    participants.value[index].errors.push(value);
                 });
             },
         },
@@ -395,7 +409,6 @@ function submitRegistration(): void {
                     <TextInput
                         id="city"
                         autocomplete="home address-level2"
-                        required
                         v-model="newParticipant.city"
                         >Stadt
                     </TextInput>
@@ -534,9 +547,16 @@ function submitRegistration(): void {
                         v-if="hasErrors"
                         class="mb-4 text-sm font-medium text-red-400"
                     >
-                        Bei den rot markierten Teilnehmer:innen gab es Probleme
-                        mit den Daten. Bitte entferne sie und füge sie neu
-                        hinzu.
+                        Bei den rot markierten Teilnehmer:innen gab es folgende
+                        Probleme bei der Eingabe:
+
+                        <ul class="list-inside list-disc">
+                            <li v-for="error in participantErrors">
+                                {{ error }}
+                            </li>
+                        </ul>
+
+                        Bitte entferne sie und füge sie neu hinzu.
                     </div>
 
                     <Button
