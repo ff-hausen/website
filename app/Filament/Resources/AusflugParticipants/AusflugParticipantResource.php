@@ -5,6 +5,7 @@ namespace App\Filament\Resources\AusflugParticipants;
 use App\Filament\Resources\AusflugParticipants\Pages\CreateAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\EditAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\ListAusflugParticipants;
+use App\Jobs\AusflugParticipantsPaidJob;
 use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
 use App\Models\RoleName;
@@ -204,7 +205,12 @@ class AusflugParticipantResource extends Resource
                     ->label('Verifiziert')
                     ->default(true),
 
+                TernaryFilter::make('paid_at')
+                    ->label('bezahlt')
+                    ->nullable(),
+
                 SelectFilter::make('type')
+                    ->label('Typ')
                     ->options([
                         'ea' => 'Einsatzabteilung',
                         'verein' => 'Verein/Freunde',
@@ -226,9 +232,7 @@ class AusflugParticipantResource extends Resource
                         ->size(Size::Medium)
                         ->icon(Heroicon::CreditCard)
                         ->action(function (AusflugParticipant $participant) {
-                            $participant->update([
-                                'paid_at' => now(),
-                            ]);
+                            AusflugParticipantsPaidJob::dispatch(collect($participant));
                         })
                         ->requiresConfirmation()
                         ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
@@ -261,11 +265,10 @@ class AusflugParticipantResource extends Resource
             ->toolbarActions([
                 BulkAction::make('mark_paid')
                     ->label('Als bezahlt markieren')
-                    ->icon(HeroIcon::CreditCard)
+                    ->icon(Heroicon::CreditCard)
                     ->tooltip('Markiert die Anmeldung als bezahlt')
                     ->action(function (Collection $selectedRecords) {
-                        $ids = $selectedRecords->pluck('id');
-                        AusflugParticipant::whereIn('id', $ids)->update(['paid_at' => now()]);
+                        AusflugParticipantsPaidJob::dispatch($selectedRecords);
                     })
                     ->requiresConfirmation()
                     ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
