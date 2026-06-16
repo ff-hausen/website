@@ -20,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
@@ -238,6 +239,7 @@ class AusflugParticipantResource extends Resource
                             NotifyAusflugParticipantsPaid::dispatch([$participant->id]);
                         })
                         ->requiresConfirmation()
+                        ->color(Color::Amber)
                         ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
 
                     Action::make('resend_verification')
@@ -276,6 +278,7 @@ class AusflugParticipantResource extends Resource
                         NotifyAusflugParticipantsPaid::dispatch($ids);
                     })
                     ->requiresConfirmation()
+                    ->color(Color::Amber)
                     ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
 
                 DeleteBulkAction::make(),
