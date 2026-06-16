@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use App\Models\Passkey;
 use App\Support\JsonSerializer;
 use Illuminate\Http\Request;
@@ -78,7 +79,7 @@ class PasskeyController extends Controller
                 publicKeyCredentialCreationOptions: Session::get('passkey-registration-options'),
                 host: $request->getHost(),
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error('Passkey validation failed.', ['error' => $e]);
 
             throw ValidationException::withMessages([
@@ -146,7 +147,7 @@ class PasskeyController extends Controller
                 host: $request->getHost(),
                 userHandle: null,
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error('Passkey authentication failed.', ['error' => $e]);
 
             throw ValidationException::withMessages([

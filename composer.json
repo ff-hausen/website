@@ -11,7 +11,7 @@
         "php": "^8.2",
         "bvanhoekelen/terminal-style": "^1.0",
         "creativeorange/gravatar": "^1.0",
-        "filament/filament": "^3.2",
+        "filament/filament": "^4.0",
         "hracik/php-color-converter": "^0.0.3",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",

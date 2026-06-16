@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Tii\CsvStateParser\CsvStateParser;
 
 /**
- * @extends CsvStateParser<Collection<int, \App\CsvParser\FlorixErreichbarkeiten\Person>>
+ * @extends CsvStateParser<Collection<int, Person>>
  */
 class Parser extends CsvStateParser
 {

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Roles;
 
+use Exception;
 use App\Models\Role;
 use App\Models\RoleName;
 use Illuminate\Console\Command;
@@ -22,7 +23,7 @@ class ImportCommand extends Command
                 ]);
 
                 $imported++;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 //
             }
         }

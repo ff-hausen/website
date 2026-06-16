@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands\Import;
 
+use WeakMap;
+use Exception;
 use App\CsvParser\FlorixErreichbarkeiten\Parser;
 use App\CsvParser\FlorixErreichbarkeiten\Person;
 use App\Models\Role;
@@ -26,12 +28,12 @@ class ImportUserCommand extends Command
 
     protected $description = 'Importiert ein Erreichbarkeiten CSV-Report als User der Anwendung.';
 
-    protected \WeakMap $status;
+    protected WeakMap $status;
 
     public function __construct()
     {
         parent::__construct();
-        $this->status = new \WeakMap;
+        $this->status = new WeakMap;
     }
 
     public function handle(Parser $parser): void
@@ -66,7 +68,7 @@ class ImportUserCommand extends Command
                     default => terminal_style('Bereits angelegt', 'green'),
                 };
 
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->status[$person] = terminal_style('Fehler', 'red', null, 'bold');
                 Log::error($e);
             }
