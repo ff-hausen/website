@@ -2,25 +2,24 @@
 
 namespace App\Filament\Resources\AusflugParticipants;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Fieldset;
-use Filament\Schemas\Components\Utilities\Set;
-use Filament\Support\Enums\IconSize;
-use Filament\Actions\Action;
-use Filament\Support\Enums\Size;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\AusflugParticipants\Pages\ListAusflugParticipants;
+use App\Filament\Resources\AusflugParticipantResource\Pages;
 use App\Filament\Resources\AusflugParticipants\Pages\CreateAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\EditAusflugParticipant;
-use App\Filament\Resources\AusflugParticipantResource\Pages;
-use App\Mail\Ausflug\AnmeldungConfirmationMail;
+use App\Filament\Resources\AusflugParticipants\Pages\ListAusflugParticipants;
+use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\IconSize;
+use Filament\Support\Enums\Size;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
@@ -219,7 +218,7 @@ class AusflugParticipantResource extends Resource
                         $participants = AusflugParticipant::whereSubmissionId($participant->submission_id)->get();
                         $primary = $participants->where('primary', true)->first();
 
-                        Mail::to($primary->email)->send(new AnmeldungConfirmationMail($participants));
+                        Mail::to($primary->email)->send(new AnmeldungVerificationMail($participant->submission_id));
                     })
                     ->requiresConfirmation()
                     ->visible(fn (AusflugParticipant $participant) => ! $participant->verified),
@@ -236,9 +235,7 @@ class AusflugParticipantResource extends Resource
 
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                DeleteBulkAction::make(),
             ]);
     }
 
