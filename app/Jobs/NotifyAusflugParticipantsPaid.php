@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class AusflugParticipantsPaidJob implements ShouldQueue
+class NotifyAusflugParticipantsPaid implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -25,17 +25,12 @@ class AusflugParticipantsPaidJob implements ShouldQueue
         $submissions = $participants->groupBy('submission_id');
 
         foreach ($submissions as $submissionId => $submissionParticipants) {
-            $this->markSubmissionAsPaid($submissionId, $submissionParticipants);
+            $this->notifySubmissionAsPaid($submissionId, $submissionParticipants);
         }
     }
 
-    public function markSubmissionAsPaid(string $submissionId, $participants): void
+    public function notifySubmissionAsPaid(string $submissionId, $participants): void
     {
-        $ids = $participants->pluck('id');
-        AusflugParticipant::whereIn('id', $ids)->update([
-            'paid_at' => now(),
-        ]);
-
         $paidAmount = $participants->sum('price');
         $outstandingAmount = AusflugParticipant::whereSubmissionId($submissionId)->whereNull('paid_at')->get()->sum('price');
 

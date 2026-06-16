@@ -5,7 +5,7 @@ namespace App\Filament\Resources\AusflugParticipants;
 use App\Filament\Resources\AusflugParticipants\Pages\CreateAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\EditAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\ListAusflugParticipants;
-use App\Jobs\AusflugParticipantsPaidJob;
+use App\Jobs\NotifyAusflugParticipantsPaid;
 use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
 use App\Models\RoleName;
@@ -232,7 +232,10 @@ class AusflugParticipantResource extends Resource
                         ->size(Size::Medium)
                         ->icon(Heroicon::CreditCard)
                         ->action(function (AusflugParticipant $participant) {
-                            AusflugParticipantsPaidJob::dispatch([$participant->id]);
+                            AusflugParticipant::whereId($participant->id)->update([
+                                'paid_at' => now(),
+                            ]);
+                            NotifyAusflugParticipantsPaid::dispatch([$participant->id]);
                         })
                         ->requiresConfirmation()
                         ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
@@ -268,7 +271,9 @@ class AusflugParticipantResource extends Resource
                     ->icon(Heroicon::CreditCard)
                     ->tooltip('Markiert die Anmeldung als bezahlt')
                     ->action(function (Collection $selectedRecords) {
-                        AusflugParticipantsPaidJob::dispatch($selectedRecords->pluck('id')->toArray());
+                        $ids = $selectedRecords->pluck('id')->toArray();
+                        AusflugParticipant::whereIn('id', $ids)->update(['paid_at' => now()]);
+                        NotifyAusflugParticipantsPaid::dispatch($ids);
                     })
                     ->requiresConfirmation()
                     ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
