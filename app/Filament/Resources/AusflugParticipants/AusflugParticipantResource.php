@@ -232,7 +232,7 @@ class AusflugParticipantResource extends Resource
                         ->size(Size::Medium)
                         ->icon(Heroicon::CreditCard)
                         ->action(function (AusflugParticipant $participant) {
-                            AusflugParticipantsPaidJob::dispatch(collect($participant));
+                            AusflugParticipantsPaidJob::dispatch([$participant->id]);
                         })
                         ->requiresConfirmation()
                         ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
@@ -268,7 +268,7 @@ class AusflugParticipantResource extends Resource
                     ->icon(Heroicon::CreditCard)
                     ->tooltip('Markiert die Anmeldung als bezahlt')
                     ->action(function (Collection $selectedRecords) {
-                        AusflugParticipantsPaidJob::dispatch($selectedRecords);
+                        AusflugParticipantsPaidJob::dispatch($selectedRecords->pluck('id')->toArray());
                     })
                     ->requiresConfirmation()
                     ->visible(auth()->user()->hasRole(RoleName::Vereinsvorstand)),
