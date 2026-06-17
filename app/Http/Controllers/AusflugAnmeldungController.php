@@ -9,8 +9,9 @@ use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 
 class AusflugAnmeldungController extends Controller
@@ -18,9 +19,14 @@ class AusflugAnmeldungController extends Controller
     public function index()
     {
         $deadline = config('verein-ausflug.deadline');
+        $markdownPath = resource_path('content/vereinsausflug/einladung.md');
+        $invitationMarkdown = File::exists($markdownPath)
+            ? File::get($markdownPath)
+            : '';
 
         return Inertia::render('Vereinsausflug/Anmeldung', [
             'isRegistrationOpen' => ! $deadline || ! now()->isAfter($deadline),
+            'invitationHtml' => Str::markdown($invitationMarkdown),
         ]);
     }
 
