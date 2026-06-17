@@ -190,19 +190,20 @@ function submitRegistration(): void {
 
             <hr class="mb-12" />
 
-            <div v-if="submitted">
-                <p
-                    class="mx-auto my-16 max-w-lg text-center text-xl font-medium"
+            <div class="min-h-168">
+                <div v-if="submitted" class="flex min-h-168 items-start">
+                    <p
+                        class="mx-auto mt-16 max-w-lg text-center text-xl font-medium"
+                    >
+                        Vielen Dank! Bitte klicke auf den Link in der E-Mail,
+                        um deine Anmeldung abzuschließen. Schau zur Sicherheit
+                        auch in deinem Spam-Ordner nach.
+                    </p>
+                </div>
+                <div
+                    v-else
+                    class="mx-auto flex max-w-3xl flex-col justify-between gap-8 px-1 sm:flex-row sm:px-0"
                 >
-                    Vielen Dank! Bitte klicke auf den Link in der E-Mail, um
-                    deine Anmeldung abzuschließen. Schau zur Sicherheit auch in
-                    deinem Spam-Ordner nach.
-                </p>
-            </div>
-            <div
-                v-else
-                class="mx-auto flex max-w-3xl flex-col justify-between gap-8 px-1 sm:flex-row sm:px-0"
-            >
                 <form class="w-full min-w-0 sm:max-w-sm" ref="form-element">
                     <TextInput
                         id="name"
@@ -405,6 +406,7 @@ function submitRegistration(): void {
                         >Anmeldung absenden
                     </Button>
                 </section>
+                </div>
             </div>
         </section>
         <section v-else>
