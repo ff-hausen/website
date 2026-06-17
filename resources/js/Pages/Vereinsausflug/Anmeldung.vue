@@ -184,14 +184,16 @@ function submitRegistration(): void {
     <MainLayout>
         <section v-if="isRegistrationOpen">
             <article
-                class="mx-auto my-6 max-w-2xl text-gray-900 [&_h1]:mb-3 [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:underline [&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:text-2xl [&_h2]:font-bold [&_p]:mb-4 [&_strong]:font-semibold [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
+                class="mx-auto my-6 max-w-2xl text-gray-900 [&_code]:break-all [&_h1]:mb-3 [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:underline [&_h2]:mt-6 [&_h2]:mb-2 [&_h2]:text-2xl [&_h2]:font-bold [&_p]:mb-4 [&_strong]:font-semibold [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
                 v-html="props.invitationHtml"
             />
 
             <hr class="mb-12" />
 
             <div v-if="submitted">
-                <p class="my-16 h-svh text-center text-xl font-medium">
+                <p
+                    class="mx-auto my-16 max-w-lg text-center text-xl font-medium"
+                >
                     Vielen Dank! Bitte klicke auf den Link in der E-Mail, um
                     deine Anmeldung abzuschließen. Schau zur Sicherheit auch in
                     deinem Spam-Ordner nach.
@@ -199,9 +201,9 @@ function submitRegistration(): void {
             </div>
             <div
                 v-else
-                class="mx-auto flex max-w-3xl flex-col justify-between gap-8 sm:flex-row"
+                class="mx-auto flex max-w-3xl flex-col justify-between gap-8 px-1 sm:flex-row sm:px-0"
             >
-                <form class="w-sm" ref="form-element">
+                <form class="w-full min-w-0 sm:max-w-sm" ref="form-element">
                     <TextInput
                         id="name"
                         autocomplete="home name"
@@ -285,12 +287,16 @@ function submitRegistration(): void {
                 </form>
 
                 <section
-                    class="mb-6 flex w-sm flex-col items-center sm:items-end"
+                    class="mb-6 flex w-full min-w-0 flex-col items-center sm:max-w-sm sm:items-end"
                 >
-                    <h2 class="text-xl font-medium">Teilnehmer:innen:</h2>
+                    <h2 class="text-xl font-medium sm:text-right">
+                        Teilnehmer:innen:
+                    </h2>
 
-                    <div class="-mx-4 mb-8 flow-root sm:mx-0">
-                        <table class="divide-y divide-gray-300">
+                    <div class="mb-8 w-full overflow-x-auto sm:w-auto">
+                        <table
+                            class="min-w-full divide-y divide-gray-300 sm:ml-auto"
+                        >
                             <tbody>
                                 <tr v-if="participants.length === 0">
                                     <td
@@ -306,14 +312,16 @@ function submitRegistration(): void {
                                     :key="participant.name!"
                                 >
                                     <td
-                                        class="pr-3 pl-4 text-sm whitespace-nowrap sm:pl-6"
+                                        class="pr-3 pl-4 text-sm sm:pl-6"
                                         :class="[
                                             participant.hasErrors
                                                 ? 'font-bold text-red-400'
                                                 : 'font-medium text-gray-900',
                                         ]"
                                     >
-                                        {{ participant.name }}
+                                        <span class="wrap-break-word">{{
+                                            participant.name
+                                        }}</span>
                                     </td>
                                     <td
                                         class="pr-4 pl-3 text-right text-sm text-gray-500 sm:pr-0"
@@ -326,6 +334,7 @@ function submitRegistration(): void {
                                         <Button
                                             size="small"
                                             color="alternative"
+                                            class="me-0! w-auto!"
                                             @click="
                                                 removeParticipant(participant)
                                             "
