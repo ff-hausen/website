@@ -208,17 +208,47 @@ const outstandingAmount = computed(() => {
             </tfoot>
         </table>
 
-        <div v-if="outstandingAmount > 0">
-            <p class="mb-4">
+        <div v-if="outstandingAmount > 0" class="mt-8">
+            <p class="mb-6 text-lg font-semibold">
                 Bitte überweise den offenen Betrag bis spätestens 31.07.2026 auf
                 folgendes Konto:
             </p>
-            <div class="font-bold">Frankfurter Sparkasse</div>
-            <div>
-                <span class="font-medium">IBAN:</span> DE51 5005 0201 0000 3191
-                29
+            <div class="border rounded-lg border-gray-300 bg-gray-50 p-6">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                        <div class="text-xs font-medium uppercase text-gray-600">
+                            Bank
+                        </div>
+                        <div class="mt-1 text-lg font-semibold text-gray-900">
+                            Frankfurter Sparkasse
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xs font-medium uppercase text-gray-600">
+                            Empfänger
+                        </div>
+                        <div class="mt-1 text-lg font-semibold text-gray-900">
+                            Freiwillige Feuerwehr Frankfurt-Hausen e.V.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xs font-medium uppercase text-gray-600">
+                            IBAN
+                        </div>
+                        <div class="mt-1 font-mono text-base text-gray-900">
+                            DE51 5005 0201 0000 3191 29
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xs font-medium uppercase text-gray-600">
+                            BIC
+                        </div>
+                        <div class="mt-1 font-mono text-base text-gray-900">
+                            HELADEF1822
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div><span class="font-medium">BIC:</span> HELADEF1822</div>
         </div>
     </MainLayout>
 </template>
