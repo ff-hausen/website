@@ -10,11 +10,16 @@ Die folgenden Teilnehmer:innen wurden angemeldet:
 
 **Gesamtbetrag: {{ $participants->reduce(fn($c, $p) => $c+$p->price, 0) }} €**
 
-Überweise den Gesamtbetrag bitte bis spätestens 31.07.2026 auf folgendes Konto:
+## Zahlungsinformationen
 
-Frankfurter Sparkasse \
-IBAN: DE51 5005 0201 0000 3191 29 \
-BIC: HELADEF1822
+Bitte überweise den Gesamtbetrag bis spätestens 31.07.2026 auf folgendes Konto:
+
+| | |
+|---|---|
+| **Bank** | Frankfurter Sparkasse |
+| **Empfänger** | Freiwillige Feuerwehr Frankfurt-Hausen e.V. |
+| **IBAN** | DE51 5005 0201 0000 3191 29 |
+| **BIC** | HELADEF1822 |
 
 @component('mail::button', ['url' => $url])
 Zur Übersichtsseite

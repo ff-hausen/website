@@ -339,10 +339,20 @@ function submitRegistration(): void {
                         auf folgendes Konto erfolgen:
                     </p>
 
-                    <p>
-                        <span class="font-medium">IBAN:</span>
-                        DE51 5005 0201 0000 3191 29
-                    </p>
+                    <div class="space-y-1 text-sm text-gray-700">
+                        <p>
+                            <span class="font-medium">Bank:</span> Frankfurter Sparkasse
+                        </p>
+                        <p>
+                            <span class="font-medium">Empfänger:</span> Freiwillige Feuerwehr Frankfurt-Hausen e.V.
+                        </p>
+                        <p>
+                            <span class="font-medium">IBAN:</span> DE51 5005 0201 0000 3191 29
+                        </p>
+                        <p>
+                            <span class="font-medium">BIC:</span> HELADEF1822
+                        </p>
+                    </div>
 
                     <p>
                         Wir freuen uns auf eine schöne Fahrt bei hoffentlich
