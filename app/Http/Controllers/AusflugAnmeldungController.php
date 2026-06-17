@@ -7,11 +7,12 @@ use App\Mail\Ausflug\AnmeldungConfirmationMail;
 use App\Mail\Ausflug\AnmeldungInfoMail;
 use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
+use App\Support\EpcPaymentQrCode;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class AusflugAnmeldungController extends Controller
@@ -96,9 +97,20 @@ class AusflugAnmeldungController extends Controller
         }
 
         $participants = AusflugParticipant::whereSubmissionId($submissionId)->get();
+        $outstandingAmount = (float) $participants->whereNull('paid_at')->sum('price');
+        $primary = $participants->where('primary', true)->first();
 
         return Inertia::render('Vereinsausflug/Confirmation', [
             'participants' => $participants,
+            'epcQrCodeDataUri' => $outstandingAmount > 0
+                ? EpcPaymentQrCode::makeDataUri(
+                    recipient: 'Freiwillige Feuerwehr Frankfurt-Hausen e.V.',
+                    iban: 'DE51500502010000319129',
+                    amount: $outstandingAmount,
+                    bic: 'HELADEF1822',
+                    remittanceInformation: 'Vereinsausflug '.$primary->name,
+                )
+                : null,
         ]);
     }
 }

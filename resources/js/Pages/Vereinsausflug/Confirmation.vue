@@ -6,6 +6,7 @@ import { computed } from "vue";
 
 const props = defineProps<{
     participants: Participant[];
+    epcQrCodeDataUri: string | null;
 }>();
 
 function type(type: "ea" | "verein" | null): string {
@@ -334,46 +335,74 @@ const outstandingAmount = computed(() => {
                 folgendes Konto:
             </p>
             <div class="rounded-lg border border-gray-300 bg-gray-50 p-6">
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                        <div
-                            class="text-xs font-medium text-gray-600 uppercase"
-                        >
-                            Bank
-                        </div>
-                        <div class="mt-1 text-lg font-semibold text-gray-900">
-                            Frankfurter Sparkasse
-                        </div>
+                <div
+                    class="grid grid-cols-1 gap-4 md:flex md:items-start md:gap-4"
+                >
+                    <div
+                        v-if="epcQrCodeDataUri"
+                        class="flex flex-col items-center md:shrink-0 md:items-start"
+                    >
+                        <img
+                            :src="epcQrCodeDataUri"
+                            alt="EPC Zahlungs-QR-Code"
+                            class="h-48 w-48 rounded bg-white p-2"
+                        />
                     </div>
-                    <div>
-                        <div
-                            class="text-xs font-medium text-gray-600 uppercase"
+
+                    <div
+                        class="grid grid-cols-1 gap-4 md:flex-1 md:grid-cols-2"
+                    >
+                        <div>
+                            <div
+                                class="text-xs font-medium text-gray-600 uppercase"
+                            >
+                                Bank
+                            </div>
+                            <div
+                                class="mt-1 text-lg font-semibold text-gray-900"
+                            >
+                                Frankfurter Sparkasse
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                class="text-xs font-medium text-gray-600 uppercase"
+                            >
+                                Empfänger
+                            </div>
+                            <div
+                                class="mt-1 text-lg font-semibold text-gray-900"
+                            >
+                                Freiwillige Feuerwehr Frankfurt-Hausen e.V.
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                class="text-xs font-medium text-gray-600 uppercase"
+                            >
+                                IBAN
+                            </div>
+                            <div class="mt-1 font-mono text-base text-gray-900">
+                                DE51 5005 0201 0000 3191 29
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                class="text-xs font-medium text-gray-600 uppercase"
+                            >
+                                BIC
+                            </div>
+                            <div class="mt-1 font-mono text-base text-gray-900">
+                                HELADEF1822
+                            </div>
+                        </div>
+                        <p
+                            v-if="epcQrCodeDataUri"
+                            class="text-sm text-gray-600 md:col-span-2"
                         >
-                            Empfänger
-                        </div>
-                        <div class="mt-1 text-lg font-semibold text-gray-900">
-                            Freiwillige Feuerwehr Frankfurt-Hausen e.V.
-                        </div>
-                    </div>
-                    <div>
-                        <div
-                            class="text-xs font-medium text-gray-600 uppercase"
-                        >
-                            IBAN
-                        </div>
-                        <div class="mt-1 font-mono text-base text-gray-900">
-                            DE51 5005 0201 0000 3191 29
-                        </div>
-                    </div>
-                    <div>
-                        <div
-                            class="text-xs font-medium text-gray-600 uppercase"
-                        >
-                            BIC
-                        </div>
-                        <div class="mt-1 font-mono text-base text-gray-900">
-                            HELADEF1822
-                        </div>
+                            Scanne den QR-Code links in deiner Banking-App, um
+                            die Überweisung direkt vorauszufüllen.
+                        </p>
                     </div>
                 </div>
             </div>
