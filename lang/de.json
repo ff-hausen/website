@@ -100,5 +100,10 @@
     "Types": "Veranstaltungsarten",
     "Created by": "Erstellt von",
     "Responsible": "Verantwortlich",
-    "Description": "Beschreibung"
+    "Description": "Beschreibung",
+    "Street": "Straße",
+    "Zip code": "PLZ",
+    "City" : "Stadt",
+    "Phone": "Telefonnummer",
+    "Paid at": "Bezahlt am"
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\AusflugParticipants;
 use App\Filament\Resources\AusflugParticipants\Pages\CreateAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\EditAusflugParticipant;
 use App\Filament\Resources\AusflugParticipants\Pages\ListAusflugParticipants;
+use App\Filament\Resources\AusflugParticipants\Pages\ViewAusflugParticipant;
 use App\Jobs\NotifyAusflugParticipantsPaid;
 use App\Mail\Ausflug\AnmeldungVerificationMail;
 use App\Models\AusflugParticipant;
@@ -13,22 +14,20 @@ use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
-use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\Layout\Split;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -52,6 +51,80 @@ class AusflugParticipantResource extends Resource
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-ticket';
 
     protected static ?string $navigationLabel = 'Vereinsausflug Teilnehmer:innen';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->columns(2)
+            ->components([
+                TextEntry::make('name')
+                    ->columnSpanFull(),
+
+                Fieldset::make('Adresse')
+                    ->columnSpan(1)
+                    ->columns(3)
+                    ->schema([
+                        TextEntry::make('street')
+                            ->columnSpanFull(),
+
+                        TextEntry::make('zip_code')
+                            ->columnSpan(1),
+
+                        TextEntry::make('city')
+                            ->columnSpan(2),
+                    ]),
+
+                Fieldset::make('Kontakt')
+                    ->columns(1)
+                    ->schema([
+                        TextEntry::make('email')
+                            ->icon(fn (AusflugParticipant $p) => $p->verified ? Heroicon::CheckBadge : Heroicon::ExclamationCircle)
+                            ->iconColor(fn (AusflugParticipant $p) => $p->verified ? 'success' : 'danger')
+                            ->tooltip(fn (AusflugParticipant $p) => sprintf(
+                                'Anmeldung bestätigt: %s',
+                                $p->verified ? 'Ja' : 'Nein'
+                            ))
+                            ->default('-'),
+
+                        TextEntry::make('phone')
+                            ->default('-'),
+                    ]),
+
+                Fieldset::make('Bezahlung')
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('type')
+                            ->label('Vereinsmitgliedschaft')
+                            ->badge()
+                            ->formatStateUsing(fn (AusflugParticipant $p) => $p->typeLocale())
+                            ->color(fn (string $state): string => match ($state) {
+                                'ea' => 'danger',
+                                'verein' => 'warning',
+                            }),
+
+                        TextEntry::make('price')
+                            ->label('Betrag')
+                            ->money('EUR')
+                            ->columnStart(1),
+
+                        TextEntry::make('paid_at')
+                            ->date('d. F Y')
+                            ->beforeContent([
+                                IconEntry::make('paid_at')
+                                    ->hiddenLabel()
+                                    ->getStateUsing(fn (AusflugParticipant $p) => ! is_null($p->paid_at))
+                                    ->tooltip(fn (AusflugParticipant $p) => is_null($p->paid_at) ? 'noch nicht bezahlt' : '')
+                                    ->boolean()
+                                    ->trueIcon(Heroicon::CheckCircle)
+                                    ->trueColor(Color::Green)
+                                    ->falseIcon(Heroicon::OutlinedXCircle)
+                                    ->falseColor(Color::Red),
+                            ]),
+                    ]),
+            ]);
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -117,16 +190,22 @@ class AusflugParticipantResource extends Resource
 
                 TextInput::make('price')
                     ->suffix('€')
+                    ->columnStart(1)
                     ->numeric(),
 
-                Placeholder::make('created_at')
+                DatePicker::make('paid_at')
+                    ->label('Bezahlt am')
+                    ->nullable()
+                    ->hint('Änderungen lösen keine E-Mail Benachrichtigung aus.'),
+
+                TextEntry::make('created_at')
                     ->label('Created Date')
                     ->columnStart(1)
-                    ->content(fn (?AusflugParticipant $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                    ->state(fn (?AusflugParticipant $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
-                Placeholder::make('updated_at')
+                TextEntry::make('updated_at')
                     ->label('Last Modified Date')
-                    ->content(fn (?AusflugParticipant $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                    ->state(fn (?AusflugParticipant $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
             ]);
     }
 
@@ -135,79 +214,54 @@ class AusflugParticipantResource extends Resource
         return $table
             ->groups([
                 Group::make('submission_id')
-                    ->label('Anmeldung'),
+                    ->label('Anmeldung')
+                    // introduces n+1 problems
+                    ->getTitleFromRecordUsing(fn (AusflugParticipant $p) => AusflugParticipant::whereSubmissionId($p->submission_id)->wherePrimary(true)->first()->name),
             ])
             ->columns([
-                Split::make([
-                    IconColumn::make('primary')
-                        ->boolean()
-                        ->trueIcon('heroicon-s-star')
-                        ->trueColor('warning')
-                        ->falseIcon('heroicon-o-minus')
-                        ->falseColor('gray')
-                        ->size(IconSize::Medium)
-                        ->grow(false),
+                TextColumn::make('name')
+                    ->label('Name')
+                    ->icon(fn (AusflugParticipant $record) => $record->primary ? Heroicon::Star : null)
+                    ->iconColor(fn (AusflugParticipant $record) => $record->primary ? 'warning' : 'gray')
+                    ->weight(FontWeight::Bold)
+                    ->searchable()
+                    ->sortable(),
 
-                    TextColumn::make('name')
-                        ->label('Name')
-                        ->weight(FontWeight::Bold)
-                        ->searchable()
-                        ->sortable(),
+                TextColumn::make('type')
+                    ->label('Typ')
+                    ->badge()
+                    ->formatStateUsing(fn (AusflugParticipant $p) => $p->typeLocale())
+                    ->color(fn (string $state): string => match ($state) {
+                        'ea' => 'danger',
+                        'verein' => 'warning',
+                    }),
 
-                    Stack::make([
-                        TextColumn::make('street')
-                            ->label('Adresse'),
+                TextColumn::make('price')
+                    ->label('Betrag')
+                    ->icon(fn (AusflugParticipant $record) => is_null($record->paid_at) ? Heroicon::OutlinedCurrencyEuro : Heroicon::CurrencyEuro)
+                    ->iconColor(fn (AusflugParticipant $record) => is_null($record->paid_at) ? 'danger' : 'success')
+                    ->tooltip(fn (AusflugParticipant $record) => is_null($record->paid_at) ? 'noch nicht bezahlt' : 'Bezahlt am '.$record->paid_at->format('d.m.Y'))
+                    ->money('EUR')
+                    ->summarize(
+                        Sum::make()
+                            ->money('EUR')
+                            ->query(fn (QueryBuilder $query) => $query->where('verified', true))
+                    ),
 
-                        TextColumn::make('city')
-                            ->getStateUsing(fn (AusflugParticipant $participant) => $participant->zip_code.' '.$participant->city),
-                    ]),
-
-                    Stack::make([
-                        TextColumn::make('email')
-                            ->icon('heroicon-o-envelope')
-                            ->searchable()
-                            ->sortable(),
-
-                        TextColumn::make('phone')
-                            ->icon('heroicon-o-phone'),
-                    ]),
-
-                    Stack::make([
-                        TextColumn::make('type')
-                            ->badge()
-                            ->formatStateUsing(fn (AusflugParticipant $p) => $p->typeLocale())
-                            ->color(fn (string $state): string => match ($state) {
-                                'ea' => 'danger',
-                                'verein' => 'warning',
-                            }),
-
-                        TextColumn::make('price')
-                            ->icon(fn (AusflugParticipant $record) => is_null($record->paid_at) ? Heroicon::OutlinedCurrencyEuro : Heroicon::CurrencyEuro)
-                            ->iconColor(fn (AusflugParticipant $record) => is_null($record->paid_at) ? 'danger' : 'success')
-                            ->size(TextSize::Medium)
-                            ->tooltip(fn (AusflugParticipant $record) => is_null($record->paid_at) ? 'noch nicht bezahlt' : 'Bezahlt am '.$record->paid_at->format('d.m.Y'))
-                            ->suffix(' €')
-                            ->summarize(
-                                Sum::make()
-                                    ->money('EUR')
-                                    ->query(fn (QueryBuilder $query) => $query->where('verified', true))
-                            ),
-                    ]),
-
-                    IconColumn::make('verified')
-                        ->label('Verifiziert')
-                        ->boolean()
-                        ->trueIcon(Heroicon::CheckBadge)
-                        ->grow(false),
-                ]),
+                IconColumn::make('verified')
+                    ->label('Bestätigt')
+                    ->tooltip('Hat die Anmeldung per Mail bestätigt')
+                    ->boolean()
+                    ->trueIcon(Heroicon::CheckBadge)
+                    ->grow(false),
             ])
             ->filters([
                 TernaryFilter::make('verified')
-                    ->label('Verifiziert')
+                    ->label('Bestätigt')
                     ->default(true),
 
                 TernaryFilter::make('paid_at')
-                    ->label('bezahlt')
+                    ->label('Bezahlt')
                     ->nullable(),
 
                 SelectFilter::make('type')
@@ -220,6 +274,7 @@ class AusflugParticipantResource extends Resource
             ->recordActions([
                 Action::make('summary')
                     ->hiddenLabel()
+                    ->tooltip('Zeigt die Zusammenfassung an')
                     ->icon('heroicon-o-list-bullet')
                     ->iconButton()
                     ->url(fn (AusflugParticipant $participant) => $participant->summaryUrl())
@@ -290,6 +345,7 @@ class AusflugParticipantResource extends Resource
         return [
             'index' => ListAusflugParticipants::route('/'),
             'create' => CreateAusflugParticipant::route('/create'),
+            'view' => ViewAusflugParticipant::route('/{record}'),
             'edit' => EditAusflugParticipant::route('/{record}/edit'),
         ];
     }

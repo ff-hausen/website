@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Passport\Client;
 use App\Models\RoleName;
 use App\Models\User;
+use Filament\Infolists\Components\Entry;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
                 RoleName::MinifeuerwehrLeitung,
                 RoleName::AusflugOrga,
             ]);
+        });
+
+        Entry::configureUsing(function (Entry $entry) {
+            $entry->translateLabel();
         });
 
         $this->bootPassport();
